@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  grpcui:
+    image: fullstorydev/grpcui:latest
+    ports:
+      - "8081:8080"
+    command: ["-plaintext", "localhost:50051"] # gRPC 서버의 서비스 이름 사용
