@@ -1,6 +1,6 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOneOptions, FindOptionsWhere } from "typeorm";
-import { Users } from "~/src/aggregates/users/domain/users";
+import { Users } from "~/src/aggregates/users/domain/Users";
 import { PsqlUsersMapper } from "~/src/aggregates/users/infrastructures/adaptors/mapper/psql.users.mapper";
 import {
   FindOnePropsInUsersRepository,

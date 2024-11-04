@@ -1,5 +1,5 @@
 import { create } from "@bufbuild/protobuf";
-import { Users } from "~/src/aggregates/users/domain/users";
+import { Users } from "~/src/aggregates/users/domain/Users";
 import { User, UserSchema } from "~/src/gen/v1/model/user_pb";
 import { dayjsToProtobufTimestamp } from "~/src/shared/utils/Date.utils";
 

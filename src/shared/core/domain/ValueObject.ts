@@ -1,36 +1,31 @@
-import { UniqueEntityID } from "~/src/shared/core/domain/UniqueEntityID";
-
 interface ValueObjectProps {
   [index: string]: any;
 }
 
 export abstract class ValueObject<T extends ValueObjectProps> {
   protected readonly props: T;
-  private readonly _id?: UniqueEntityID;
 
-  protected constructor(props: T, id?: UniqueEntityID) {
-    this.props = { ...props };
-    if (id) {
-      this._id = id;
-    }
+  protected constructor(props: T) {
+    this.props = Object.freeze(props);
   }
 
-  public equals(other?: ValueObject<T>): boolean {
-    if (this.id && other.id) {
-      return this.id.equals(other.id);
-    }
-    if (other === null || other === undefined) {
+  public equals(vo?: ValueObject<T>): boolean {
+    if (vo === null || vo === undefined) {
       return false;
     }
 
-    return JSON.stringify(this.props) === JSON.stringify(other.props);
+    if (vo.props === undefined) {
+      return false;
+    }
+
+    return JSON.stringify(this.props) === JSON.stringify(vo.props);
   }
 
-  get id(): UniqueEntityID {
-    return this._id;
-  }
-
-  get propsValue(): T {
+  public getProps(): T {
     return this.props;
+  }
+
+  protected static isValueObject(v: any): v is ValueObject<any> {
+    return v instanceof ValueObject;
   }
 }

@@ -3,7 +3,7 @@ import { GrpcMethod } from "@nestjs/microservices";
 
 import { QueryBus } from "@nestjs/cqrs";
 import { FindOneUserQuery } from "~/src/aggregates/users/applications/queries/FindOneUser/FindOneUser.query";
-import { Users } from "~/src/aggregates/users/domain/users";
+import { Users } from "~/src/aggregates/users/domain/Users";
 import { SchemaUsersMapper } from "~/src/aggregates/users/presentations/grpc/schema.users.mapper";
 import { create } from "@bufbuild/protobuf";
 import { FindOneUserRequest, FindOneUserResult, FindOneUserResultSchema } from "~/src/gen/v1/service/user_pb";

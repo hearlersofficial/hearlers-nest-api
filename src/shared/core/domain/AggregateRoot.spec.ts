@@ -1,30 +1,58 @@
 import { fakerKO as faker } from "@faker-js/faker";
-import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
-import { UniqueEntityID } from "~/src/shared/core/domain/UniqueEntityID";
+import { AggregateRoot } from "./AggregateRoot";
+import { DomainEntityNewProps } from "./DomainEntity";
+import { UniqueEntityId } from "./UniqueEntityId";
+import { Result } from "./Result";
 
-interface AggregateObjectProps {
-  foo: string;
+interface TestAggregateProps {
+  name: string;
 }
 
-class AbstractClass extends AggregateRoot<AggregateObjectProps> {
-  constructor(props: AggregateObjectProps, id: UniqueEntityID) {
+interface TestAggregateNewProps extends DomainEntityNewProps {
+  name: string;
+}
+
+class TestAggregate extends AggregateRoot<TestAggregateProps, TestAggregateNewProps> {
+  private constructor(props: TestAggregateProps, id: UniqueEntityId) {
     super(props, id);
   }
 
-  get foo(): string {
-    return this.props.foo;
+  private static factory(props: TestAggregateProps, id: UniqueEntityId): TestAggregate {
+    return new TestAggregate(props, id);
+  }
+
+  public static createNew(newProps: TestAggregateNewProps): Result<TestAggregate> {
+    return AggregateRoot.createNewChild(newProps, TestAggregate.factory);
+  }
+
+  protected convertToEntityProps(newProps: TestAggregateNewProps): TestAggregateProps {
+    return {
+      name: newProps.name,
+    };
+  }
+
+  protected validateDomain(): Result<void> {
+    if (!this.props.name) {
+      return Result.fail("이름은 필수입니다");
+    }
+    return Result.ok();
+  }
+
+  get name(): string {
+    return this.props.name;
   }
 }
 
-describe("AggregateRoot with AbstractClass", (): void => {
-  it("id 와 foo 값을 반환", (): void => {
-    const foo = faker.lorem.word();
-    const uniqueEntityIDValue: number = faker.number.int({ min: 1, max: 100 });
+describe("AggregateRoot", () => {
+  it("Aggregate를 생성할 수 있다", () => {
+    const name = faker.person.firstName();
+    const result = TestAggregate.createNew({ name });
 
-    const abstractClass: AbstractClass = new AbstractClass({ foo }, new UniqueEntityID(uniqueEntityIDValue));
-
-    expect(abstractClass.id).toBeDefined();
-    expect(abstractClass.id.getNumber()).toEqual(uniqueEntityIDValue);
-    expect(abstractClass.foo).toEqual(foo);
+    expect(result.isSuccess).toBe(true);
+    expect(result.value).toBeDefined();
+    if (result.isSuccess && result.value) {
+      expect(result.value.name).toBe(name);
+      expect(result.value.id.getNumber()).toBe(0);
+    }
   });
 });

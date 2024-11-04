@@ -1,22 +1,22 @@
 import { fakerKO as faker } from "@faker-js/faker";
-import { UniqueEntityID } from "~/src/shared/core/domain/UniqueEntityID";
+import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 
 describe("UniqueEntityID", (): void => {
   it("전달된 값이 반환", (): void => {
     const randomString: string = faker.lorem.word();
     const randomInt: number = faker.number.int({ min: 1, max: 100 });
 
-    const uniqueEntityID: UniqueEntityID = new UniqueEntityID(randomString);
-    const uniqueEntityID2: UniqueEntityID = new UniqueEntityID(randomInt);
+    const uniqueEntityID: UniqueEntityId = new UniqueEntityId(randomString);
+    const uniqueEntityID2: UniqueEntityId = new UniqueEntityId(randomInt);
 
     expect(uniqueEntityID.getValue()).toEqual(randomString);
     expect(uniqueEntityID2.getNumber()).toEqual(randomInt);
   });
 
   it("전달된 값이 없이 생성된 경우 0을 반환", (): void => {
-    const uniqueEntityID: UniqueEntityID = new UniqueEntityID();
+    const uniqueEntityID: UniqueEntityId = new UniqueEntityId();
 
     expect(uniqueEntityID).toBeDefined();
-    expect(uniqueEntityID.getValue()).toEqual("0");
+    expect(uniqueEntityID.getValue()).toEqual(0);
   });
 });

@@ -9,18 +9,16 @@ import { AllExceptionFilter } from "~/src/shared/filters/GrpcExceptionFilter";
 
 async function bootstrap(): Promise<void> {
   const protoFiles = findProtoFiles(join(__dirname, "./proto"));
-  console.log(protoFiles);
   const grpcApp: INestMicroservice = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
     transport: Transport.GRPC,
     options: {
-      package: ["com.hearlers.v1.model", "com.hearlers.v1.service"],
-      protoPath: [join(__dirname, "proto/v1/service/user.proto")],
+      package: ["com.hearlers.v1.model", "com.hearlers.v1.service", "com.hearlers.v1.common"],
+      protoPath: protoFiles,
       url: "localhost:50051",
       loader: {
         includeDirs: [join(__dirname, "proto")],
       },
       onLoadPackageDefinition: (pkg, server) => {
-        console.log(pkg);
         new ReflectionService(pkg).addToServer(server);
       },
     },

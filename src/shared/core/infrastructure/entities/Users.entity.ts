@@ -1,8 +1,11 @@
-import { Column, Entity, OneToOne } from "typeorm";
-import { USER } from "~/src/shared/core/constants/table.constant";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
 
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
+import { UserActivitiesEntity } from "~/src/shared/core/infrastructure/entities/UserActivities.entity";
+import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
+import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
+import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
 import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
 
 @Entity({
@@ -11,29 +14,15 @@ import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
 export class UsersEntity extends CoreEntity {
   @Column({
     type: "varchar",
-    name: USER.COLUMN.NICKNAME,
+    name: "nickname",
     unique: true,
     comment: "닉네임",
   })
   nickname: string;
 
   @Column({
-    type: "varchar",
-    name: USER.COLUMN.PROFILE_IMAGE,
-    comment: "프로필 이미지",
-  })
-  profileImage: string;
-
-  @Column({
-    type: "varchar",
-    name: USER.COLUMN.PHONE_NUMBER,
-    comment: "전화번호",
-  })
-  phoneNumber: string;
-
-  @Column({
     type: "enum",
-    name: USER.COLUMN.AUTH_CHANNEL,
+    name: "auth_channel",
     enum: AuthChannel,
     comment: "인증 채널",
     default: AuthChannel.NONE,
@@ -46,9 +35,28 @@ export class UsersEntity extends CoreEntity {
   })
   kakao: KakaoEntity;
 
-  // @OneToOne(() => NaverEntity, (naver) => naver.user, {
-  //   onDelete: "CASCADE",
-  //   onUpdate: "CASCADE",
-  // })
-  // naver: NaverEntity;
+  @OneToOne(() => UserProfilesEntity, (userProfiles) => userProfiles.user, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn({ name: "user_profiles_id" })
+  userProfiles: UserProfilesEntity;
+
+  @OneToMany(() => UserProgressesEntity, (userProgress) => userProgress.user, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  userProgresses: UserProgressesEntity[];
+
+  @OneToMany(() => UserPromptsEntity, (userPrompt) => userPrompt.user, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  userPrompts: UserPromptsEntity[];
+
+  @OneToMany(() => UserActivitiesEntity, (userActivity) => userActivity.user, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  userActivities: UserActivitiesEntity[];
 }

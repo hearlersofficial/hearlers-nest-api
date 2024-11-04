@@ -1,5 +1,4 @@
 import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
-import { KAKAO } from "~/src/shared/core/constants/table.constant";
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 
@@ -9,15 +8,15 @@ import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.ent
 })
 export class KakaoEntity extends CoreEntity {
   @Column({
-    name: KAKAO.COLUMN.UNIQUE_ID,
+    name: "unique_id",
     comment: "고유 아이디",
   })
   uniqueID: string;
 
   @Column({
-    name: KAKAO.COLUMN.USER_ID,
+    name: "user_id",
   })
-  userID: number;
+  userId: number;
 
   @OneToOne(() => UsersEntity)
   @JoinColumn({ name: "user_id" })

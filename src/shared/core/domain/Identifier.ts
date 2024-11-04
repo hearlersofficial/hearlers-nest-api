@@ -3,16 +3,20 @@ export class Identifier<T> {
     this.value = value;
   }
 
-  equals(id: Identifier<T>): boolean {
+  equals(id?: Identifier<T>): boolean {
     if (!(id instanceof Identifier)) {
       return false;
     }
 
-    return id.getValue() === this.value;
+    if (typeof this.value !== typeof id.value) {
+      return false;
+    }
+
+    return id.value === this.value;
   }
 
-  getValue(): string {
-    return String(this.value);
+  getValue(): T {
+    return this.value;
   }
 
   getNumber(): number {

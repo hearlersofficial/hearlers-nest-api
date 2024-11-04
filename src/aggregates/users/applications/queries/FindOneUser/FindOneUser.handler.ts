@@ -5,7 +5,7 @@ import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 import { FindOneUserQuery } from "~/src/aggregates/users/applications/queries/FindOneUser/FindOneUser.query";
 
 import { FindOneUserUseCase } from "~/src/aggregates/users/applications/useCases/findOneUser/FindOneUserUseCase";
-import { Users } from "~/src/aggregates/users/domain/users";
+import { Users } from "~/src/aggregates/users/domain/Users";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 
 @QueryHandler(FindOneUserQuery)

@@ -1,4 +1,4 @@
-import { Users } from "~/src/aggregates/users/domain/users";
+import { Users } from "~/src/aggregates/users/domain/Users";
 
 export const USER_REPOSITORY = Symbol("USER_REPOSITORY");
 

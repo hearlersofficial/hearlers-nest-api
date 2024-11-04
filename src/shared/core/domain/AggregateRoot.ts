@@ -1,23 +1,10 @@
-import { UniqueEntityID } from "~/src/shared/core/domain/UniqueEntityID";
+import { DomainEntity } from "~/src/shared/core/domain/DomainEntity";
+import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 
-interface AggregateObjectProps {
-  [index: string]: any;
-}
+export interface AggregateRootNewProps {}
 
-export abstract class AggregateRoot<T extends AggregateObjectProps> {
-  protected readonly props: T;
-  private readonly _id: UniqueEntityID;
-
-  protected constructor(props: T, id: UniqueEntityID) {
-    this.props = { ...props };
-    this._id = id;
-  }
-
-  get id(): UniqueEntityID {
-    return this._id;
-  }
-
-  get propsValue(): T {
-    return this.props;
+export abstract class AggregateRoot<T, NewProps extends AggregateRootNewProps> extends DomainEntity<T, NewProps> {
+  protected constructor(props: T, id?: UniqueEntityId) {
+    super(props, id);
   }
 }
