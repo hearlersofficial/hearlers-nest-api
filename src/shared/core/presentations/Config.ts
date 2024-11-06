@@ -20,7 +20,7 @@ export const serviceConfigs = {
     packages: ["com.hearlers.v1.model", "com.hearlers.v1.service", "com.hearlers.v1.common"],
     port: parseInt(process.env.GRPC_PORT || "50052"),
     host: process.env.GRPC_HOST || "localhost",
-    protoPath: process.env.PROTO_PATH || "/proto",
+    protoPath: process.cwd() + process.env.PROTO_PATH || "src/proto",
   },
 };
 

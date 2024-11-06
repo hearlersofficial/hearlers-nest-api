@@ -1,99 +1,209 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# hearlers-api
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## 1. 서비스 개요
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+event-driven-architecture를 기반으로 하여 확장성 있는 애플리케이션을 추구합니다.
+nest.js로 생성된 로직 공유를 위해, 모노레포 마이크로서비스로 **유저 도메인**과 **상담 도메인**을 통합한 레포지토리 입니다.
+CQRS 패턴은 1단계 (command 및 query 로직의 분리)까지만 우선 적용합니다. 비즈니스가 확장되면 no-sql queryDB및 query 서버로 분리합니다.
+gRPC 호스트 서버로 gateway에게만 포트를 노출하며 기타 마이크로서비스와는 kafka를 통해 소통합니다.
 
-## Description
+| Category               | description                                                                                         |
+| ---------------------- | --------------------------------------------------------------------------------------------------- |
+| Concepts               | Domain Driven Design (Subdomains, Bounded Contexts, Ubiquitous Language, Aggregates, Value Objects) |
+| Architecture style     | Event Driven Microservices                                                                          |
+| Architectural patterns | CQRS                                                                                                |
+| Technology             | nest.js, Kafka, gRPC, PostgreSQL                                                                    |
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 1. 요구사항
 
-## Project setup
+- docker
+- docker-compose
+
+## 2. 실행 방법
+
+### 2.1. RUN(LOCAL)
+
+#### proto 파일 동기화 및 빌드
 
 ```bash
-$ npm install
+git submodule update --init --recursive
+make build
 ```
 
-## Compile and run the project
+#### 실행
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+yarn start:dev
 ```
 
-## Run tests
+### 2.1. Deploying(DEV)
+
+TBD...
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker-compose -f docker/docker-compose.yaml up --build
 ```
 
-## Deployment
+## 3. 서비스 구조도
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### 3.1 통신 구조
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+flowchart TD
+    %% 외부 클라이언트에서 게이트웨이로의 접근
+    Client1["Web Client"]
+    Client2["Mobile Client"]
+    Client1 <-->|REST API| GatewayServer
+    Client2 <-->|REST API| GatewayServer
 
-```bash
-$ npm install -g mau
-$ mau deploy
+    %% 게이트웨이가 각 서비스로 라우팅
+    subgraph MicroServers["MicroServers"]
+        GatewayServer
+        GatewayServer <-->|gRPC| UserService["User Service"]
+        GatewayServer <-->|gRPC| CounselingService["Counseling Service"]
+        GatewayServer <-->|gRPC| PaymentService["Payment Service"]
+
+
+    end
+
+    subgraph EventBroker["EventBroker"]
+        KafkaProducer["Event Producer"]
+        KafkaConsumer["Event Consumer"]
+        KafkaProducer --> Kafka["Kafka Broker"]
+        KafkaConsumer --> Kafka
+    end
+
+    %% 각 서비스는 Kafka와 통신
+    UserService <-->|Publishes Events| EventBroker
+    UserService <-->|Consumes Events| EventBroker
+    CounselingService <-->|Publishes Events| EventBroker
+    CounselingService <-->|Consumes Events| EventBroker
+    PaymentService <-->|Publishes Events| EventBroker
+    PaymentService <-->|Consumes Events| EventBroker
+
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 3.2 DDD
 
-## Resources
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+%% ([]) for Entity
+%% () for event
+%% {} for layer class
+flowchart TD
+subgraph BoundedContext
+  subgraph Presentation
+      RestOuter
+      gRPCOuter
+  end
+  subgraph ApplicationOuter["Application"]
+      UseCaseOuter{"Use Case"}
+      HandlerOuter{"Handler"}
+      ReadModel(["Read Model"])
+      subgraph BusOuter["Bus"]
+          CommandBusOuter["Command Bus"]
+          QueryBusOuter["Query Bus"]
+      end
+  end
 
-Check out a few resources that may come in handy when working with NestJS:
+  subgraph Aggregate1["User Aggregate"]
+      subgraph Application1["Application"]
+          UseCase1{"Use Case"}
+          Handler1{"Handler"}
+          subgraph Bus1["Bus"]
+              CommandBus1["CommandBus"]
+              QueryBus1["QueryBus"]
+          end
+      end
+      subgraph Domain1["Domain"]
+          AggregateRoot1["Users"]
+          VO1["Value Object"]
+          DomainEntity1["Domain Entity"]
+          DomainEvent1("Domain Event")
+      end
+      subgraph Infrastructure1["Infrastructure"]
+          Repository1[("Repository")]
+          OrmEntity1(["ORM Entity"])
+      end
+  end
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+  subgraph Aggregate2["Auth Aggregate"]
+      subgraph Application2["Application"]
+          UseCase2{"Use Case"}
+          Handler2{"Handler"}
+          subgraph Bus2["Bus"]
+              CommandBus2["Command Bus"]
+              QueryBus2["Query Bus"]
+          end
+      end
+      subgraph Domain2["Domain"]
+          AggregateRoot2["Auth"]
+          VO2["Value Object"]
+          DomainEntity2["Domain Entity"]
+          DomainEvent2("Domain Event")
+      end
+      subgraph Infrastructure2["Infrastructure"]
+          Repository2[("Repository")]
+          OrmEntity2(["ORM Entity"])
+      end
+  end
+end
+OrmEntity1 <--mapped--> Domain1
+OrmEntity2 <--mapped--> Domain2
+DomainEntity1 --has--> DomainEvent1
+DomainEntity2 --has--> DomainEvent2
 
-## Support
+OrmEntity1 --used--> Repository1
+OrmEntity2 --used--> Repository2
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
+Repository1 --returns--> AggregateRoot1
+Repository2 --returns--> AggregateRoot2
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+AggregateRoot1 --has--> DomainEntity1
+AggregateRoot2 --has--> DomainEntity2
+
+AggregateRoot1 --has--> DomainEvent1
+AggregateRoot2 --has--> DomainEvent2
+
+
+Repository1 --returns---> ReadModel
+Repository2 --returns---> ReadModel
+Application1 --uses--> AggregateRoot1
+Application2 --uses--> AggregateRoot2
+
+AggregateRoot1 --has--> VO1
+AggregateRoot2 --has--> VO2
+
+BusOuter --register --> HandlerOuter
+UseCaseOuter --execute--> UseCase1
+UseCaseOuter --execute--> UseCase2
+UseCaseOuter --read--> ReadModel
+
+Bus1 --register--> Handler1
+Bus2 --register--> Handler2
+Presentation --execute--> Bus1
+Presentation --execute--> Bus2
+HandlerOuter --execute--> UseCaseOuter
+Presentation -- execute --> BusOuter
+
+```
+
+## 4. 서비스 설계
+
+모든 서비스는 도메인 주도 설계의 원칙 아래, 바운디드 컨텍스트 단위로 설계한다. 초기 서비스는 팀의 규모 및 생산성을 고려해여 분리를 하며, 서비스 분리를 하는 우선순위는 다음과 같다.
+
+1. **비즈니스 도메인별 독립성**
+   비즈니스 상 독립적인 팀이 나눠 작업할 필요가 있는 지
+2. **바운디드 컨텍스트의 크기**
+   큰 도메인은 한 서비스로 유지하면 복잡성이 높아지고 관리가 어려워지므로 바운디드 컨텍스트를 기준으로 분리
+3. **프레임워크 및 언어의 분리 필요성**
+   기술적 요구사항이 분리된 경우 각 서비스가 적합한 언어와 프레임워크를 사용하여 최적화된 성능과 확장성을 제공
+4. **서비스의 배포 및 확장 필요성**
+   서비스의 변경 주기가 빠른 기능이 여러 팀에 영향을 미치지 않도록 독립된 서비스로 관리
+5. **데이터 저장소 및 처리 방식의 차이**
+   서로 다른 데이터 스토리지를 사용하는 경우. (분석 데이터와 비즈니스 데이터의 분리 등)
