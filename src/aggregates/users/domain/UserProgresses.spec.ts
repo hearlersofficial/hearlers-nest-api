@@ -99,7 +99,7 @@ describe("UserProgresses", () => {
       const result = UserProgresses.create(
         {
           userId: new UniqueEntityId(faker.number.int()),
-          progressType: "INVALID_TYPE" as ProgressType,
+          progressType: "INVALID_TYPE" as unknown as ProgressType,
           status: ProgressStatus.NOT_STARTED,
           lastUpdated: getNowDayjs(),
           createdAt: getNowDayjs(),
@@ -118,7 +118,7 @@ describe("UserProgresses", () => {
         {
           userId: new UniqueEntityId(faker.number.int()),
           progressType: ProgressType.FIRST_SESSION,
-          status: "INVALID_STATUS" as ProgressStatus,
+          status: "INVALID_STATUS" as unknown as ProgressStatus,
           lastUpdated: getNowDayjs(),
           createdAt: getNowDayjs(),
           updatedAt: getNowDayjs(),

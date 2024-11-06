@@ -1,25 +1,29 @@
 import { Module } from "@nestjs/common";
-import { CqrsModule } from "@nestjs/cqrs";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { CreateUserHandler } from "~/src/aggregates/users/applications/commands/CreateUser/CreateUser.handler";
 import { FindOneUserHandler } from "~/src/aggregates/users/applications/queries/FindOneUser/FindOneUser.handler";
-import { FindOneUserUseCase } from "~/src/aggregates/users/applications/useCases/findOneUser/FindOneUserUseCase";
+import { CreateUserUseCase } from "~/src/aggregates/users/applications/useCases/CreateUserUseCase/CreateUserUseCase";
+import { FindOneUserUseCase } from "~/src/aggregates/users/applications/useCases/FindOneUserUseCase/FindOneUserUseCase";
+
 import { PsqlUsersRepositoryAdaptor } from "~/src/aggregates/users/infrastructures/adaptors/psql.users.repository.adaptor";
 import { USER_REPOSITORY } from "~/src/aggregates/users/infrastructures/users.repository.port";
-import { GrpcUserCommandController } from "~/src/aggregates/users/presentations/grpc/command/users.command.controller";
-import { GrpcUserQueryController } from "~/src/aggregates/users/presentations/grpc/query/users.query.controller";
+import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
+import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
+import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([UsersEntity]), CqrsModule],
+  imports: [TypeOrmModule.forFeature([UsersEntity, UserProgressesEntity, UserProfilesEntity, UserPromptsEntity])],
   providers: [
     FindOneUserUseCase,
     FindOneUserHandler,
+    CreateUserUseCase,
+    CreateUserHandler,
     {
       provide: USER_REPOSITORY,
       useClass: PsqlUsersRepositoryAdaptor,
     },
   ],
-  controllers: [GrpcUserCommandController, GrpcUserQueryController],
   exports: [],
 })
 export class UsersModule {}

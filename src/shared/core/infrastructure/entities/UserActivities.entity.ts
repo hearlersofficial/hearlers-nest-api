@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, JoinColumn, Index } from "typeorm";
+import { Column, Entity, ManyToOne, JoinColumn, Index, RelationId } from "typeorm";
 import { CoreEntity } from "./Core.entity";
 import { UsersEntity } from "./Users.entity";
 import { ActivityType } from "~/src/shared/enums/ActivityType.enum";
@@ -7,6 +7,7 @@ import { DevicePlatform } from "~/src/shared/enums/DevicePlatform.enum";
 @Entity({ name: "user_activities" })
 @Index(["userId", "createdAt"]) // 사용자별 활동 시간순 조회를 위한 인덱스
 export class UserActivitiesEntity extends CoreEntity {
+  @RelationId((userActivities: UserActivitiesEntity) => userActivities.user)
   @Column({ name: "user_id" })
   userId: number;
 

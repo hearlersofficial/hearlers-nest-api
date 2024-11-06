@@ -1,30 +1,26 @@
-import { NestFactory } from "@nestjs/core";
-import { MicroserviceOptions, Transport } from "@nestjs/microservices";
-import { join } from "path";
-import { AppModule } from "~/src/app.module";
-import { findProtoFiles } from "~/src/shared/utils/Proto.utils";
-import { ReflectionService } from "@grpc/reflection";
-import { INestMicroservice } from "@nestjs/common";
-import { AllExceptionFilter } from "~/src/shared/filters/GrpcExceptionFilter";
+import * as dotenv from "dotenv";
+import { UsersServiceModule } from "~/src/services/users/users.service.module";
+dotenv.config({ path: [".env", ".env.dev"] });
+
+import { createGrpcMicroservice, serviceConfigs, ServiceType } from "~/src/shared/core/presentations/Config";
+
+const moduleMap = {
+  [ServiceType.USERS]: UsersServiceModule,
+  // [ServiceType.COUNSELINGS]: CounselingsModule,
+};
 
 async function bootstrap(): Promise<void> {
-  const protoFiles = findProtoFiles(join(__dirname, "./proto"));
-  const grpcApp: INestMicroservice = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
-    transport: Transport.GRPC,
-    options: {
-      package: ["com.hearlers.v1.model", "com.hearlers.v1.service", "com.hearlers.v1.common"],
-      protoPath: protoFiles,
-      url: "localhost:50051",
-      loader: {
-        includeDirs: [join(__dirname, "proto")],
-      },
-      onLoadPackageDefinition: (pkg, server) => {
-        new ReflectionService(pkg).addToServer(server);
-      },
-    },
-  });
+  const serviceType = process.env.SERVICE_TYPE as ServiceType;
 
-  await grpcApp.useGlobalFilters(new AllExceptionFilter());
+  if (!serviceType || !(serviceType in ServiceType)) {
+    throw new Error(`Invalid SERVICE_TYPE. Must be one of: ${Object.values(ServiceType).join(", ")}`);
+  }
+
+  const config = serviceConfigs[serviceType];
+  const module = moduleMap[serviceType];
+
+  const grpcApp = await createGrpcMicroservice(module, serviceType, config);
+
   await grpcApp.listen();
 }
 

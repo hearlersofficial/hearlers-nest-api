@@ -1,3 +1,4 @@
 export interface FindOneUserUseCaseRequest {
-  userId: number;
+  userId?: number;
+  nickname?: string;
 }

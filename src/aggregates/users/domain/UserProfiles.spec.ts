@@ -2,22 +2,38 @@ import { fakerKO as faker } from "@faker-js/faker";
 import { UserProfiles } from "./UserProfiles";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Gender } from "~/src/shared/enums/Gender.enum";
-import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { convertDayjs, getNowDayjs } from "~/src/shared/utils/Date.utils";
 
 describe("UserProfiles", () => {
   const validPhoneNumber = "01012345678";
+  let defaultNewProps: any;
+  let defaultProps: any;
+  let userId: UniqueEntityId;
+
+  beforeEach(() => {
+    userId = new UniqueEntityId(faker.number.int());
+    const now = getNowDayjs();
+
+    defaultNewProps = {
+      userId,
+      profileImage: faker.image.avatar(),
+      phoneNumber: validPhoneNumber,
+      gender: Gender.MALE,
+      birthday: convertDayjs("1990-01-01"),
+      introduction: faker.lorem.paragraph(),
+    };
+
+    defaultProps = {
+      ...defaultNewProps,
+      createdAt: now,
+      updatedAt: now,
+      deletedAt: null,
+    };
+  });
 
   describe("createNew", () => {
     it("새로운 UserProfile을 생성할 수 있다", () => {
-      const userId = new UniqueEntityId(faker.number.int());
-      const result = UserProfiles.createNew({
-        userId,
-        profileImage: faker.image.avatar(),
-        phoneNumber: validPhoneNumber,
-        gender: Gender.MALE,
-        birthday: "1990-01-01",
-        introduction: faker.lorem.paragraph(),
-      });
+      const result = UserProfiles.createNew(defaultNewProps);
 
       expect(result.isSuccess).toBe(true);
       if (result.isSuccess) {
@@ -31,10 +47,8 @@ describe("UserProfiles", () => {
 
     it("필수 값이 없으면 생성에 실패한다", () => {
       const result = UserProfiles.createNew({
-        userId: new UniqueEntityId(faker.number.int()),
-        profileImage: "", // 빈 문자열
-        phoneNumber: validPhoneNumber,
-        gender: Gender.MALE,
+        ...defaultNewProps,
+        profileImage: undefined,
       });
 
       expect(result.isFailure).toBe(true);
@@ -43,10 +57,8 @@ describe("UserProfiles", () => {
 
     it("유효하지 않은 전화번호로 생성하면 실패한다", () => {
       const result = UserProfiles.createNew({
-        userId: new UniqueEntityId(faker.number.int()),
-        profileImage: faker.image.avatar(),
+        ...defaultNewProps,
         phoneNumber: "invalid-phone",
-        gender: Gender.MALE,
       });
 
       expect(result.isFailure).toBe(true);
@@ -56,40 +68,26 @@ describe("UserProfiles", () => {
 
   describe("create", () => {
     it("기존 데이터로 UserProfile을 생성할 수 있다", () => {
-      const now = getNowDayjs();
-      const props = {
-        userId: new UniqueEntityId(faker.number.int()),
-        profileImage: faker.image.avatar(),
-        phoneNumber: validPhoneNumber,
-        gender: Gender.FEMALE,
-        birthday: "1990-01-01",
-        introduction: faker.lorem.paragraph(),
-        createdAt: now,
-        updatedAt: now,
-        deletedAt: null,
-      };
-
-      const result = UserProfiles.create(props, new UniqueEntityId(1));
+      const result = UserProfiles.create(defaultProps, new UniqueEntityId(1));
 
       expect(result.isSuccess).toBe(true);
       if (result.isSuccess) {
         const profile = result.value;
-        expect(profile.userId.equals(props.userId)).toBe(true);
-        expect(profile.phoneNumber).toBe(props.phoneNumber);
-        expect(profile.gender).toBe(props.gender);
+        expect(profile.userId.equals(userId)).toBe(true);
+        expect(profile.phoneNumber).toBe(validPhoneNumber);
+        expect(profile.gender).toBe(Gender.MALE);
       }
     });
   });
 
   describe("updateProfile", () => {
-    it("프로필 정보를 업데이트할 수 있다", () => {
-      const profile = UserProfiles.createNew({
-        userId: new UniqueEntityId(faker.number.int()),
-        profileImage: faker.image.avatar(),
-        phoneNumber: validPhoneNumber,
-        gender: Gender.MALE,
-      }).value as UserProfiles;
+    let profile: UserProfiles;
 
+    beforeEach(() => {
+      profile = UserProfiles.createNew(defaultNewProps).value as UserProfiles;
+    });
+
+    it("프로필 정보를 업데이트할 수 있다", () => {
       const newPhoneNumber = "01087654321";
       const newIntroduction = faker.lorem.paragraph();
 
@@ -104,49 +102,29 @@ describe("UserProfiles", () => {
     });
 
     it("유효하지 않은 전화번호로 업데이트하면 실패한다", () => {
-      const profile = UserProfiles.createNew({
-        userId: new UniqueEntityId(faker.number.int()),
-        profileImage: faker.image.avatar(),
-        phoneNumber: validPhoneNumber,
-        gender: Gender.MALE,
-      }).value as UserProfiles;
-
       const result = profile.updateProfile({
         phoneNumber: "invalid-phone",
       });
 
       expect(result.isFailure).toBe(true);
       expect(result.error).toContain("[UserProfiles] 유효하지 않은 전화번호 형식입니다");
-      expect(profile.phoneNumber).toBe(validPhoneNumber); // 원래 값 유지
+      expect(profile.phoneNumber).toBe(validPhoneNumber);
     });
 
     it("자기소개가 500자를 초과하면 업데이트에 실패한다", () => {
-      const profile = UserProfiles.createNew({
-        userId: new UniqueEntityId(faker.number.int()),
-        profileImage: faker.image.avatar(),
-        phoneNumber: validPhoneNumber,
-        gender: Gender.MALE,
-      }).value as UserProfiles;
-
-      const longIntroduction = "a".repeat(501);
       const result = profile.updateProfile({
-        introduction: longIntroduction,
+        introduction: "a".repeat(501),
       });
 
       expect(result.isFailure).toBe(true);
       expect(result.error).toContain("[UserProfiles] 자기소개는 500자를 초과할 수 없습니다");
-      expect(profile.introduction).toBeUndefined(); // 원래 값 유지
+      expect(profile.introduction).toBe(defaultNewProps.introduction);
     });
   });
 
   describe("delete/restore", () => {
     it("삭제하고 복구할 수 있다", () => {
-      const profile = UserProfiles.createNew({
-        userId: new UniqueEntityId(faker.number.int()),
-        profileImage: faker.image.avatar(),
-        phoneNumber: validPhoneNumber,
-        gender: Gender.MALE,
-      }).value as UserProfiles;
+      const profile = UserProfiles.createNew(defaultNewProps).value as UserProfiles;
 
       expect(profile.deletedAt).toBeNull();
 
@@ -162,13 +140,8 @@ describe("UserProfiles", () => {
     it("유효하지 않은 gender면 실패한다", () => {
       const result = UserProfiles.create(
         {
-          userId: new UniqueEntityId(faker.number.int()),
-          profileImage: faker.image.avatar(),
-          phoneNumber: validPhoneNumber,
-          gender: "INVALID_GENDER" as Gender,
-          createdAt: getNowDayjs(),
-          updatedAt: getNowDayjs(),
-          deletedAt: null,
+          ...defaultProps,
+          gender: "INVALID_GENDER" as unknown as Gender,
         },
         new UniqueEntityId(1),
       );

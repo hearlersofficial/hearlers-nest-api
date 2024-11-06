@@ -7,16 +7,15 @@ import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
+import { Gender } from "~/src/shared/enums/Gender.enum";
 
 interface UsersNewProps extends AggregateRootNewProps {
   nickname: string;
-  authChannel?: AuthChannel;
+  authChannel: AuthChannel;
 }
 
-interface UsersProps {
-  nickname: string;
-  authChannel: AuthChannel;
-  userProfile?: UserProfiles;
+interface UsersProps extends UsersNewProps {
+  userProfile: UserProfiles;
   userProgresses: UserProgresses[];
   userPrompts: UserPrompts[];
   createdAt: Dayjs;
@@ -83,6 +82,15 @@ export class Users extends AggregateRoot<UsersProps, UsersNewProps> {
     return {
       nickname: newProps.nickname,
       authChannel: newProps.authChannel || AuthChannel.NONE,
+      // 계정 생성 시 프로필 기본값
+      userProfile: UserProfiles.createNew({
+        userId: this.id,
+        profileImage: "",
+        phoneNumber: "",
+        gender: Gender.NONE,
+        birthday: getNowDayjs(),
+        introduction: "",
+      }).value,
       userProgresses: [],
       userPrompts: [],
       createdAt: getNowDayjs(),

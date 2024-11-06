@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, JoinColumn } from "typeorm";
+import { Column, Entity, ManyToOne, JoinColumn, RelationId } from "typeorm";
 import { CoreEntity } from "./Core.entity";
 import { UsersEntity } from "./Users.entity";
 import { PromptTemplatesEntity } from "./PromptTemplates.entity";
@@ -11,9 +11,25 @@ export class UserPromptsEntity extends CoreEntity {
   @JoinColumn({ name: "user_id" })
   user: UsersEntity;
 
+  @RelationId((userPrompts: UserPromptsEntity) => userPrompts.user)
+  @Column({
+    type: "int",
+    name: "user_id",
+    comment: "사용자 ID",
+  })
+  userId: number;
+
   @ManyToOne(() => PromptTemplatesEntity)
   @JoinColumn({ name: "template_id" })
   template: PromptTemplatesEntity;
+
+  @RelationId((userPrompts: UserPromptsEntity) => userPrompts.template)
+  @Column({
+    type: "int",
+    name: "template_id",
+    comment: "템플릿 ID",
+  })
+  templateId: number;
 
   @Column({
     type: "jsonb",

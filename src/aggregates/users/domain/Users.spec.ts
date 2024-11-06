@@ -9,6 +9,7 @@ import { Users } from "~/src/aggregates/users/domain/Users";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
+import { convertDayjs } from "~/src/shared/utils/Date.utils";
 
 describe("Users", () => {
   const validNickname = "테스트유저";
@@ -26,7 +27,7 @@ describe("Users", () => {
         const user = result.value;
         expect(user.nickname).toBe(validNickname);
         expect(user.authChannel).toBe(AuthChannel.KAKAO);
-        expect(user.userProfile).toBeUndefined();
+        expect(user.userProfile).toBeDefined();
         expect(user.userProgresses).toHaveLength(0);
         expect(user.userPrompts).toHaveLength(0);
         expect(user.isNew()).toBe(true);
@@ -74,6 +75,8 @@ describe("Users", () => {
         profileImage: faker.image.avatar(),
         phoneNumber: validPhoneNumber,
         gender: Gender.MALE,
+        birthday: convertDayjs("1990-01-01"),
+        introduction: faker.lorem.paragraph(),
       });
 
       expect(profileResult.isSuccess).toBe(true);
@@ -96,6 +99,8 @@ describe("Users", () => {
         profileImage: faker.image.avatar(),
         phoneNumber: validPhoneNumber,
         gender: Gender.MALE,
+        birthday: convertDayjs("1990-01-01"),
+        introduction: faker.lorem.paragraph(),
       });
 
       expect(profileResult.isSuccess).toBe(true);

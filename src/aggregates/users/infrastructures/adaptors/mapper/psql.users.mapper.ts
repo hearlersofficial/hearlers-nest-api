@@ -25,7 +25,6 @@ export class PsqlUsersMapper {
       updatedAt: convertDayjs(entity.updatedAt),
       deletedAt: entity.deletedAt ? convertDayjs(entity.deletedAt) : null,
     };
-
     const usersOrError: Result<Users> = Users.create(userProps, new UniqueEntityId(entity.id));
 
     if (usersOrError.isFailure) {

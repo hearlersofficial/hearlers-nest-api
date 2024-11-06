@@ -10,17 +10,11 @@ interface UserProfilesNewProps extends DomainEntityNewProps {
   profileImage: string;
   phoneNumber: string;
   gender: Gender;
-  birthday?: string;
-  introduction?: string;
+  birthday: Dayjs;
+  introduction: string;
 }
 
-interface UserProfilesProps {
-  userId: UniqueEntityId;
-  profileImage: string;
-  phoneNumber: string;
-  gender: Gender;
-  birthday?: string;
-  introduction?: string;
+interface UserProfilesProps extends UserProfilesNewProps {
   createdAt: Dayjs;
   updatedAt: Dayjs;
   deletedAt: Dayjs | null;
@@ -50,20 +44,18 @@ export class UserProfiles extends DomainEntity<UserProfilesProps, UserProfilesNe
     }
 
     // profileImage 검증
-    if (!this.props.profileImage) {
+    if (this.props.profileImage === null || this.props.profileImage === undefined) {
       return Result.fail<void>("[UserProfiles] 프로필 이미지는 필수입니다");
     }
 
     // phoneNumber 검증
-    if (!this.props.phoneNumber) {
-      return Result.fail<void>("[UserProfiles] 전화번호는 필수입니다");
+    if (this.props.phoneNumber) {
+      if (!this.validatePhoneNumber(this.props.phoneNumber)) {
+        return Result.fail<void>("[UserProfiles] 유효하지 않은 전화번호 형식입니다");
+      }
     }
-    if (!this.validatePhoneNumber(this.props.phoneNumber)) {
-      return Result.fail<void>("[UserProfiles] 유효하지 않은 전화번호 형식입니다");
-    }
-
     // gender 검증
-    if (!this.props.gender) {
+    if (this.props.gender === null || this.props.gender === undefined) {
       return Result.fail<void>("[UserProfiles] 성별은 필수입니다");
     }
     if (!Object.values(Gender).includes(this.props.gender)) {
@@ -123,11 +115,11 @@ export class UserProfiles extends DomainEntity<UserProfilesProps, UserProfilesNe
     return this.props.gender;
   }
 
-  get birthday(): string | undefined {
+  get birthday(): Dayjs {
     return this.props.birthday;
   }
 
-  get introduction(): string | undefined {
+  get introduction(): string {
     return this.props.introduction;
   }
 

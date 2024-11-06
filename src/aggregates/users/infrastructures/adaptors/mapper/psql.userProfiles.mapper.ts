@@ -12,11 +12,11 @@ export class PsqlUserProfilesMapper {
     }
 
     const userProfilesProps = {
-      userId: new UniqueEntityId(entity.user.id),
+      userId: new UniqueEntityId(entity.userId),
       profileImage: entity.profileImage,
       phoneNumber: entity.phoneNumber,
       gender: entity.gender,
-      birthday: entity.birthday,
+      birthday: convertDayjs(entity.birthday),
       introduction: entity.introduction,
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
@@ -41,11 +41,14 @@ export class PsqlUserProfilesMapper {
     if (!userProfiles.id.isNewIdentifier()) {
       entity.id = userProfiles.id.getNumber();
     }
+    if (!userProfiles.userId.isNewIdentifier()) {
+      entity.userId = userProfiles.userId.getNumber();
+    }
 
     entity.profileImage = userProfiles.profileImage;
     entity.phoneNumber = userProfiles.phoneNumber;
     entity.gender = userProfiles.gender;
-    entity.birthday = userProfiles.birthday;
+    entity.birthday = formatDayjs(userProfiles.birthday);
     entity.introduction = userProfiles.introduction;
     entity.createdAt = formatDayjs(userProfiles.createdAt);
     entity.updatedAt = formatDayjs(userProfiles.updatedAt);

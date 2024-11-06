@@ -8,7 +8,7 @@ import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
 import { Gender } from "~/src/shared/enums/Gender.enum";
 import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
-import { getNowDayjs, formatDayjs } from "~/src/shared/utils/Date.utils";
+import { getNowDayjs, formatDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
@@ -42,7 +42,7 @@ describe("PsqlUsersMapper", () => {
       // Profile 추가
       entity.userProfiles = {
         id: faker.number.int(),
-        user: entity,
+        userId: entity.id,
         profileImage: faker.image.avatar(),
         phoneNumber: "01012345678",
         gender: Gender.MALE,
@@ -56,7 +56,7 @@ describe("PsqlUsersMapper", () => {
         {
           id: faker.number.int(),
           status: ProgressStatus.IN_PROGRESS,
-          user: entity,
+          userId: entity.id,
           progressType: ProgressType.ONBOARDING,
           createdAt: formatDayjs(getNowDayjs()),
           updatedAt: formatDayjs(getNowDayjs()),
@@ -95,7 +95,7 @@ describe("PsqlUsersMapper", () => {
       const users = Users.createNew({
         nickname: faker.internet.userName().slice(0, 10),
         authChannel: AuthChannel.KAKAO,
-      }).value as Users;
+      }).value;
 
       // Profile 추가
       const profile = UserProfiles.createNew({
@@ -103,14 +103,16 @@ describe("PsqlUsersMapper", () => {
         profileImage: faker.image.avatar(),
         phoneNumber: "01012345678",
         gender: Gender.MALE,
-      }).value as UserProfiles;
+        birthday: convertDayjs("1990-01-01"),
+        introduction: faker.lorem.paragraph(),
+      }).value;
       users.setProfile(profile);
 
       // Progress 추가
       const progress = UserProgresses.createNew({
         userId: users.id,
         progressType: ProgressType.ONBOARDING,
-      }).value as UserProgresses;
+      }).value;
       users.addProgress(progress);
 
       const entity = PsqlUsersMapper.toEntity(users);

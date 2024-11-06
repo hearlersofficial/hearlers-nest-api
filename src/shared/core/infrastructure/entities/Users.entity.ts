@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, OneToMany, OneToOne, RelationId } from "typeorm";
 
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
@@ -38,9 +38,19 @@ export class UsersEntity extends CoreEntity {
   @OneToOne(() => UserProfilesEntity, (userProfiles) => userProfiles.user, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
+    cascade: true,
+    nullable: true,
   })
-  @JoinColumn({ name: "user_profiles_id" })
   userProfiles: UserProfilesEntity;
+
+  @RelationId((users: UsersEntity) => users.userProfiles)
+  @Column({
+    type: "int",
+    name: "user_profiles_id",
+    comment: "사용자 프로필 ID",
+    nullable: true,
+  })
+  userProfilesId: number;
 
   @OneToMany(() => UserProgressesEntity, (userProgress) => userProgress.user, {
     onDelete: "CASCADE",

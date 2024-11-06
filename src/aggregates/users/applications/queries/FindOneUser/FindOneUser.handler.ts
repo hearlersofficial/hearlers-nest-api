@@ -3,8 +3,8 @@ import { HttpStatus } from "@nestjs/common";
 import { IQueryHandler, QueryHandler } from "@nestjs/cqrs";
 
 import { FindOneUserQuery } from "~/src/aggregates/users/applications/queries/FindOneUser/FindOneUser.query";
+import { FindOneUserUseCase } from "~/src/aggregates/users/applications/useCases/FindOneUserUseCase/FindOneUserUseCase";
 
-import { FindOneUserUseCase } from "~/src/aggregates/users/applications/useCases/findOneUser/FindOneUserUseCase";
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 
@@ -13,7 +13,7 @@ export class FindOneUserHandler implements IQueryHandler<FindOneUserQuery> {
   constructor(private readonly findOneUserUseCase: FindOneUserUseCase) {}
 
   async execute(query: FindOneUserQuery): Promise<Users> {
-    const { userId } = query;
+    const { userId } = query.props;
 
     const { ok, error, user } = await this.findOneUserUseCase.execute({ userId });
     if (!ok) {

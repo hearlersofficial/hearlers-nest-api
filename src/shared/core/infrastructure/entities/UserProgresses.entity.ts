@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from "typeorm";
+import { Column, Entity, ManyToOne, RelationId } from "typeorm";
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
@@ -35,4 +35,12 @@ export class UserProgressesEntity extends CoreEntity {
     onUpdate: "CASCADE",
   })
   user: UsersEntity;
+
+  @RelationId((userProgresses: UserProgressesEntity) => userProgresses.user)
+  @Column({
+    type: "int",
+    name: "user_id",
+    comment: "사용자 ID",
+  })
+  userId: number;
 }

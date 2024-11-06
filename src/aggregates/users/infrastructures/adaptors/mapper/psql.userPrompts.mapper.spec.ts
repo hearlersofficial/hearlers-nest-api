@@ -1,4 +1,3 @@
-import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 import { faker } from "@faker-js/faker";
 import { formatDayjs, getNowDayjs } from "~/src/shared/utils/Date.utils";
 
@@ -6,28 +5,15 @@ import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/Use
 import { PsqlUserPromptsMapper } from "~/src/aggregates/users/infrastructures/adaptors/mapper/psql.userPrompts.mapper";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { PromptTemplatesEntity } from "~/src/shared/core/infrastructure/entities/PromptTemplates.entity";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
 import { EntityConversation } from "~/src/shared/types/prompts.types";
 
 describe("PsqlUserPromptsMapper", () => {
-  const createMockUserEntity = () => {
-    const user = new UsersEntity();
-    user.id = faker.number.int();
-    return user;
-  };
-
-  const createMockTemplateEntity = () => {
-    const template = new PromptTemplatesEntity();
-    template.id = faker.number.int();
-    return template;
-  };
-
   const createMockUserPromptsEntity = () => {
     const entity = new UserPromptsEntity();
     entity.id = faker.number.int();
-    entity.user = createMockUserEntity();
-    entity.template = createMockTemplateEntity();
+    entity.userId = faker.number.int();
+    entity.templateId = faker.number.int();
     entity.context = {
       emotionalState: EmotionalState.ANGRY,
       recentEvents: [faker.lorem.sentence()],
@@ -59,8 +45,8 @@ describe("PsqlUserPromptsMapper", () => {
 
       expect(domain).toBeDefined();
       expect(domain?.id.equals(new UniqueEntityId(entity.id))).toBe(true);
-      expect(domain?.userId.equals(new UniqueEntityId(entity.user.id))).toBe(true);
-      expect(domain?.templateId.equals(new UniqueEntityId(entity.template.id))).toBe(true);
+      expect(domain?.userId.equals(new UniqueEntityId(entity.userId))).toBe(true);
+      expect(domain?.templateId.equals(new UniqueEntityId(entity.templateId))).toBe(true);
       expect(domain?.context).toEqual(entity.context);
       expect(domain?.generatedPrompt).toBe(entity.generatedPrompt);
       expect(domain?.conversationHistory).toHaveLength(entity.conversationHistory.length);

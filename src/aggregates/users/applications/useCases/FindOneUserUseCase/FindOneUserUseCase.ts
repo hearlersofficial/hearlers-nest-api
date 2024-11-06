@@ -1,6 +1,6 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { FindOneUserUseCaseRequest } from "~/src/aggregates/users/applications/useCases/findOneUser/dto/FindOneUserUseCase.request";
-import { FindOneUserUseCaseResponse } from "~/src/aggregates/users/applications/useCases/findOneUser/dto/FindOneUserUseCase.response";
+import { FindOneUserUseCaseRequest } from "~/src/aggregates/users/applications/useCases/FindOneUserUseCase/dto/FindOneUserUseCase.request";
+import { FindOneUserUseCaseResponse } from "~/src/aggregates/users/applications/useCases/FindOneUserUseCase/dto/FindOneUserUseCase.response";
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { USER_REPOSITORY, UsersRepositoryPort } from "~/src/aggregates/users/infrastructures/users.repository.port";
 import { UseCase } from "~/src/shared/core/applications/UseCase";
@@ -12,8 +12,8 @@ export class FindOneUserUseCase implements UseCase<FindOneUserUseCaseRequest, Fi
     private readonly usersRepository: UsersRepositoryPort,
   ) {}
   async execute(request: FindOneUserUseCaseRequest): Promise<FindOneUserUseCaseResponse> {
-    const { userId } = request;
-    const user: Users = await this.usersRepository.findOne({ userId });
+    const { userId, nickname } = request;
+    const user: Users = await this.usersRepository.findOne({ userId, nickname });
     return {
       ok: true,
       user,

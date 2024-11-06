@@ -12,7 +12,7 @@ export class PsqlUserProgressesMapper {
     }
 
     const userProgressesProps = {
-      userId: new UniqueEntityId(entity.user.id),
+      userId: new UniqueEntityId(entity.userId),
       progressType: entity.progressType,
       status: entity.status,
       lastUpdated: convertDayjs(entity.lastUpdated),
@@ -38,6 +38,9 @@ export class PsqlUserProgressesMapper {
 
     if (!userProgresses.id.isNewIdentifier()) {
       entity.id = userProgresses.id.getNumber();
+    }
+    if (!userProgresses.userId.isNewIdentifier()) {
+      entity.userId = userProgresses.userId.getNumber();
     }
 
     entity.progressType = userProgresses.progressType;

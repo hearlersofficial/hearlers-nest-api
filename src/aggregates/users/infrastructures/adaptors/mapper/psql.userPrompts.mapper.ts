@@ -13,8 +13,8 @@ export class PsqlUserPromptsMapper {
     }
 
     const userPromptsProps = {
-      userId: new UniqueEntityId(entity.user.id),
-      templateId: new UniqueEntityId(entity.template.id),
+      userId: new UniqueEntityId(entity.userId),
+      templateId: new UniqueEntityId(entity.templateId),
       context: entity.context,
       generatedPrompt: entity.generatedPrompt,
       conversationHistory: entity.conversationHistory.map(toDomainConversation),
@@ -38,6 +38,12 @@ export class PsqlUserPromptsMapper {
 
     if (!userPrompts.id.isNewIdentifier()) {
       entity.id = userPrompts.id.getNumber();
+    }
+    if (!userPrompts.userId.isNewIdentifier()) {
+      entity.userId = userPrompts.userId.getNumber();
+    }
+    if (!userPrompts.templateId.isNewIdentifier()) {
+      entity.templateId = userPrompts.templateId.getNumber();
     }
 
     entity.context = userPrompts.context;

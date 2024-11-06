@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 
@@ -13,6 +13,7 @@ export class KakaoEntity extends CoreEntity {
   })
   uniqueID: string;
 
+  @RelationId((kakao: KakaoEntity) => kakao.user)
   @Column({
     name: "user_id",
   })

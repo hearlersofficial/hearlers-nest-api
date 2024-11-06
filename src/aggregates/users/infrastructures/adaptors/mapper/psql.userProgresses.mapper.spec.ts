@@ -2,7 +2,6 @@ import { fakerKO as faker } from "@faker-js/faker";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { PsqlUserProgressesMapper } from "./psql.userProgresses.mapper";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
-import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
 import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
@@ -10,16 +9,9 @@ import { getNowDayjs, formatDayjs } from "~/src/shared/utils/Date.utils";
 import { InternalServerErrorException } from "@nestjs/common";
 
 describe("PsqlUserProgressesMapper", () => {
-  const createMockUserEntity = () => {
-    const user = new UsersEntity();
-    user.id = faker.number.int();
-    return user;
-  };
-
   const createMockUserProgressesEntity = () => {
     const entity = new UserProgressesEntity();
     entity.id = faker.number.int();
-    entity.user = createMockUserEntity();
     entity.progressType = ProgressType.ONBOARDING;
     entity.status = ProgressStatus.IN_PROGRESS;
     entity.lastUpdated = formatDayjs(getNowDayjs());
@@ -37,7 +29,7 @@ describe("PsqlUserProgressesMapper", () => {
 
       expect(domain).toBeDefined();
       expect(domain?.id.equals(new UniqueEntityId(entity.id))).toBe(true);
-      expect(domain?.userId.equals(new UniqueEntityId(entity.user.id))).toBe(true);
+      expect(domain?.userId.equals(new UniqueEntityId(entity.userId))).toBe(true);
       expect(domain?.progressType).toBe(entity.progressType);
       expect(domain?.status).toBe(entity.status);
       expect(formatDayjs(domain?.lastUpdated)).toBe(entity.lastUpdated);
@@ -50,7 +42,7 @@ describe("PsqlUserProgressesMapper", () => {
 
     it("유효하지 않은 상태로 변환을 시도하면 에러를 던진다", () => {
       const entity = createMockUserProgressesEntity();
-      entity.status = "INVALID" as ProgressStatus;
+      entity.status = "INVALID" as unknown as ProgressStatus;
 
       expect(() => PsqlUserProgressesMapper.toDomain(entity)).toThrow(InternalServerErrorException);
     });

@@ -43,7 +43,7 @@ export class UserProgresses extends DomainEntity<UserProgressesProps, UserProgre
     }
 
     // progressType 검증
-    if (!this.props.progressType) {
+    if (this.props.progressType === null || this.props.progressType === undefined) {
       return Result.fail<void>("[UserProgresses] 진행 유형은 필수입니다");
     }
     if (!Object.values(ProgressType).includes(this.props.progressType)) {
@@ -51,7 +51,7 @@ export class UserProgresses extends DomainEntity<UserProgressesProps, UserProgre
     }
 
     // status 검증
-    if (!this.props.status) {
+    if (this.props.status === null || this.props.status === undefined) {
       return Result.fail<void>("[UserProgresses] 상태는 필수입니다");
     }
     if (!Object.values(ProgressStatus).includes(this.props.status)) {

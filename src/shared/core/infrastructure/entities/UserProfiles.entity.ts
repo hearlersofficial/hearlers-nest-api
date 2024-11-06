@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 
@@ -50,5 +50,14 @@ export class UserProfilesEntity extends CoreEntity {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
+  @JoinColumn({ name: "user_id" })
   user: UsersEntity;
+
+  @RelationId((userProfiles: UserProfilesEntity) => userProfiles.user)
+  @Column({
+    type: "int",
+    name: "user_id",
+    comment: "사용자 ID",
+  })
+  userId: number;
 }
