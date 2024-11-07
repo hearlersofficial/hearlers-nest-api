@@ -17,15 +17,11 @@ class TestAggregate extends AggregateRoot<TestAggregateProps, TestAggregateNewPr
     super(props, id);
   }
 
-  private static factory(props: TestAggregateProps, id: UniqueEntityId): TestAggregate {
-    return new TestAggregate(props, id);
+  protected static override passFactory() {
+    return (props: TestAggregateProps, id: UniqueEntityId): TestAggregate => new TestAggregate(props, id);
   }
 
-  public static createNew(newProps: TestAggregateNewProps): Result<TestAggregate> {
-    return AggregateRoot.createNewChild(newProps, TestAggregate.factory);
-  }
-
-  protected convertToEntityProps(newProps: TestAggregateNewProps): TestAggregateProps {
+  protected override initializeEntityProps(newProps: TestAggregateNewProps): TestAggregateProps {
     return {
       name: newProps.name,
     };

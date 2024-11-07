@@ -27,17 +27,28 @@ export class Users extends AggregateRoot<UsersProps, UsersNewProps> {
   private constructor(props: UsersProps, id: UniqueEntityId) {
     super(props, id);
   }
-
-  private static factory(props: UsersProps, id: UniqueEntityId): Users {
-    return new Users(props, id);
+  protected static override passFactory() {
+    return (props: UsersProps, id: UniqueEntityId): Users => new Users(props, id);
   }
 
-  public static create(props: UsersProps, id: UniqueEntityId): Result<Users> {
-    return AggregateRoot.createChild(props, id, Users.factory);
-  }
-
-  public static createNew(newProps: UsersNewProps): Result<Users> {
-    return AggregateRoot.createNewChild(newProps, Users.factory);
+  protected override initializeEntityProps(newProps: UsersNewProps): UsersProps {
+    return {
+      ...newProps,
+      // 계정 생성 시 프로필 기본값
+      userProfile: UserProfiles.createNew({
+        userId: this.id,
+        profileImage: "",
+        phoneNumber: "",
+        gender: Gender.NONE,
+        birthday: getNowDayjs(),
+        introduction: "",
+      }).value,
+      userProgresses: [],
+      userPrompts: [],
+      createdAt: getNowDayjs(),
+      updatedAt: getNowDayjs(),
+      deletedAt: null,
+    };
   }
 
   validateDomain(): Result<void> {
@@ -76,27 +87,6 @@ export class Users extends AggregateRoot<UsersProps, UsersNewProps> {
     }
 
     return Result.ok<void>();
-  }
-
-  protected convertToEntityProps(newProps: UsersNewProps): UsersProps {
-    return {
-      nickname: newProps.nickname,
-      authChannel: newProps.authChannel || AuthChannel.NONE,
-      // 계정 생성 시 프로필 기본값
-      userProfile: UserProfiles.createNew({
-        userId: this.id,
-        profileImage: "",
-        phoneNumber: "",
-        gender: Gender.NONE,
-        birthday: getNowDayjs(),
-        introduction: "",
-      }).value,
-      userProgresses: [],
-      userPrompts: [],
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
   }
 
   // Getters

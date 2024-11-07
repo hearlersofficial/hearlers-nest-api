@@ -28,20 +28,11 @@ class TestEntity extends DomainEntity<TestEntityProps, TestEntityNewProps> {
   private constructor(props: TestEntityProps, id: UniqueEntityId) {
     super(props, id);
   }
-
-  private static factory(props: TestEntityProps, id: UniqueEntityId): TestEntity {
-    return new TestEntity(props, id);
+  protected static override passFactory() {
+    return (props: TestEntityProps, id: UniqueEntityId): TestEntity => new TestEntity(props, id);
   }
 
-  public static createNew(newProps: TestEntityNewProps): Result<TestEntity> {
-    return DomainEntity.createNewChild(newProps, TestEntity.factory);
-  }
-
-  public static create(props: TestEntityProps, id: UniqueEntityId): Result<TestEntity> {
-    return DomainEntity.createChild(props, id, TestEntity.factory);
-  }
-
-  protected convertToEntityProps(newProps: TestEntityNewProps): TestEntityProps {
+  protected override initializeEntityProps(newProps: TestEntityNewProps): TestEntityProps {
     return {
       name: newProps.name,
       value: faker.number.int({ min: 1, max: 100 }),

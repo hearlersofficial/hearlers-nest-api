@@ -25,16 +25,17 @@ export class UserProfiles extends DomainEntity<UserProfilesProps, UserProfilesNe
     super(props, id);
   }
 
-  private static factory(props: UserProfilesProps, id: UniqueEntityId): UserProfiles {
-    return new UserProfiles(props, id);
+  protected override initializeEntityProps(newProps: UserProfilesNewProps): UserProfilesProps {
+    return {
+      ...newProps,
+      createdAt: getNowDayjs(),
+      updatedAt: getNowDayjs(),
+      deletedAt: null,
+    };
   }
 
-  public static create(props: UserProfilesProps, id: UniqueEntityId): Result<UserProfiles> {
-    return DomainEntity.createChild(props, id, UserProfiles.factory);
-  }
-
-  public static createNew(newProps: UserProfilesNewProps): Result<UserProfiles> {
-    return DomainEntity.createNewChild(newProps, UserProfiles.factory);
+  protected static override passFactory() {
+    return (props: UserProfilesProps, id: UniqueEntityId): UserProfiles => new UserProfiles(props, id);
   }
 
   validateDomain(): Result<void> {
@@ -76,20 +77,6 @@ export class UserProfiles extends DomainEntity<UserProfilesProps, UserProfilesNe
     }
 
     return Result.ok<void>();
-  }
-
-  protected convertToEntityProps(newProps: UserProfilesNewProps): UserProfilesProps {
-    return {
-      userId: newProps.userId,
-      profileImage: newProps.profileImage,
-      phoneNumber: newProps.phoneNumber,
-      gender: newProps.gender,
-      birthday: newProps.birthday,
-      introduction: newProps.introduction,
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
   }
 
   private validatePhoneNumber(phoneNumber: string): boolean {

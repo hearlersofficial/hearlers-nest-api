@@ -26,15 +26,19 @@ export class UserProgresses extends DomainEntity<UserProgressesProps, UserProgre
     super(props, id);
   }
 
-  private static factory(props: UserProgressesProps, id: UniqueEntityId): UserProgresses {
-    return new UserProgresses(props, id);
-  }
-  public static create(props: UserProgressesProps, id: UniqueEntityId): Result<UserProgresses> {
-    return DomainEntity.createChild(props, id, UserProgresses.factory);
+  protected static override passFactory() {
+    return (props: UserProgressesProps, id: UniqueEntityId): UserProgresses => new UserProgresses(props, id);
   }
 
-  public static createNew(newProps: UserProgressesNewProps): Result<UserProgresses> {
-    return DomainEntity.createNewChild(newProps, UserProgresses.factory);
+  protected override initializeEntityProps(newProps: UserProgressesNewProps): UserProgressesProps {
+    return {
+      ...newProps,
+      status: ProgressStatus.NOT_STARTED,
+      lastUpdated: getNowDayjs(),
+      createdAt: getNowDayjs(),
+      updatedAt: getNowDayjs(),
+      deletedAt: null,
+    };
   }
   validateDomain(): Result<void> {
     // userId 검증
@@ -70,18 +74,6 @@ export class UserProgresses extends DomainEntity<UserProgressesProps, UserProgre
     }
 
     return Result.ok<void>();
-  }
-
-  protected convertToEntityProps(newProps: UserProgressesNewProps): UserProgressesProps {
-    return {
-      userId: newProps.userId,
-      progressType: newProps.progressType,
-      status: ProgressStatus.NOT_STARTED,
-      lastUpdated: getNowDayjs(),
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
   }
 
   // Getters

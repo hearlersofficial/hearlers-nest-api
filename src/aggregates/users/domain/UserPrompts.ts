@@ -12,10 +12,7 @@ interface UserPromptsNewProps extends DomainEntityNewProps {
   context: Context;
 }
 
-interface UserPromptsProps {
-  userId: UniqueEntityId;
-  templateId: UniqueEntityId;
-  context: Context;
+interface UserPromptsProps extends UserPromptsNewProps {
   generatedPrompt: string;
   conversationHistory: DomainConversation[];
   analysis?: Analysis;
@@ -29,16 +26,19 @@ export class UserPrompts extends DomainEntity<UserPromptsProps, UserPromptsNewPr
     super(props, id);
   }
 
-  private static factory(props: UserPromptsProps, id: UniqueEntityId): UserPrompts {
-    return new UserPrompts(props, id);
+  protected static override passFactory() {
+    return (props: UserPromptsProps, id: UniqueEntityId): UserPrompts => new UserPrompts(props, id);
   }
 
-  public static create(props: UserPromptsProps, id: UniqueEntityId): Result<UserPrompts> {
-    return DomainEntity.createChild(props, id, UserPrompts.factory);
-  }
-
-  public static createNew(newProps: UserPromptsNewProps): Result<UserPrompts> {
-    return DomainEntity.createNewChild(newProps, UserPrompts.factory);
+  protected override initializeEntityProps(newProps: UserPromptsNewProps): UserPromptsProps {
+    return {
+      ...newProps,
+      generatedPrompt: "", // 초기에는 비어있음
+      conversationHistory: [],
+      createdAt: getNowDayjs(),
+      updatedAt: getNowDayjs(),
+      deletedAt: null,
+    };
   }
 
   validateDomain(): Result<void> {
@@ -80,19 +80,6 @@ export class UserPrompts extends DomainEntity<UserPromptsProps, UserPromptsNewPr
     }
 
     return Result.ok<void>();
-  }
-
-  protected convertToEntityProps(newProps: UserPromptsNewProps): UserPromptsProps {
-    return {
-      userId: newProps.userId,
-      templateId: newProps.templateId,
-      context: newProps.context,
-      generatedPrompt: "", // 초기에는 비어있음
-      conversationHistory: [],
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
   }
 
   // Getters
