@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/model/user.proto.
  */
 export const file_v1_model_user: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9tb2RlbC91c2VyLnByb3RvEhVjb20uaGVhcmxlcnMudjEubW9kZWwikgIKBFVzZXISCgoCaWQYASABKAUSEAoIbmlja25hbWUYAiABKAkSOAoMYXV0aF9jaGFubmVsGAMgASgOMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhDaGFubmVsEjgKDHVzZXJfcHJvZmlsZRgEIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZRI8Cg91c2VyX3Byb2dyZXNzZXMYBSADKAsyIy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlclByb2dyZXNzEhIKCmNyZWF0ZWRfYXQYBiABKAkSEgoKdXBkYXRlZF9hdBgHIAEoCRISCgpkZWxldGVkX2F0GAggASgJIs0BCgtVc2VyUHJvZmlsZRIVCg1wcm9maWxlX2ltYWdlGAEgASgJEhQKDHBob25lX251bWJlchgCIAEoCRItCgZnZW5kZXIYAyABKA4yHS5jb20uaGVhcmxlcnMudjEubW9kZWwuR2VuZGVyEhAKCGJpcnRoZGF5GAQgASgJEhQKDGludHJvZHVjdGlvbhgFIAEoCRISCgpjcmVhdGVkX2F0GAYgASgJEhIKCnVwZGF0ZWRfYXQYByABKAkSEgoKZGVsZXRlZF9hdBgIIAEoCSLwAQoMVXNlclByb2dyZXNzEgoKAmlkGAEgASgDEg8KB3VzZXJfaWQYAiABKAMSOgoNcHJvZ3Jlc3NfdHlwZRgDIAEoDjIjLmNvbS5oZWFybGVycy52MS5tb2RlbC5Qcm9ncmVzc1R5cGUSNQoGc3RhdHVzGAQgASgOMiUuY29tLmhlYXJsZXJzLnYxLm1vZGVsLlByb2dyZXNzU3RhdHVzEhQKDGxhc3RfdXBkYXRlZBgFIAEoCRISCgpjcmVhdGVkX2F0GAYgASgJEhIKCnVwZGF0ZWRfYXQYByABKAkSEgoKZGVsZXRlZF9hdBgIIAEoCSpUCgtBdXRoQ2hhbm5lbBIVChFBVVRIX0NIQU5ORUxfTk9ORRAAEhYKEkFVVEhfQ0hBTk5FTF9LQUtBTxABEhYKEkFVVEhfQ0hBTk5FTF9OQVZFUhACKj0KBkdlbmRlchIPCgtHRU5ERVJfTk9ORRAAEg8KC0dFTkRFUl9NQUxFEAESEQoNR0VOREVSX0ZFTUFMRRACKo4BCg5Qcm9ncmVzc1N0YXR1cxIfChtQUk9HUkVTU19TVEFUVVNfTk9UX1NUQVJURUQQABIfChtQUk9HUkVTU19TVEFUVVNfSU5fUFJPR1JFU1MQARIdChlQUk9HUkVTU19TVEFUVVNfQ09NUExFVEVEEAISGwoXUFJPR1JFU1NfU1RBVFVTX0JMT0NLRUQQAyrNAQoMUHJvZ3Jlc3NUeXBlEhwKGFBST0dSRVNTX1RZUEVfT05CT0FSRElORxAAEiQKIFBST0dSRVNTX1RZUEVfUFJPRklMRV9DT01QTEVUSU9OEAESHgoaUFJPR1JFU1NfVFlQRV9WRVJJRklDQVRJT04QAhIeChpQUk9HUkVTU19UWVBFX1NVQlNDUklQVElPThADEh8KG1BST0dSRVNTX1RZUEVfRklSU1RfU0VTU0lPThAEEhgKFFBST0dSRVNTX1RZUEVfUkVWSUVXEAVCngEKGWNvbS5jb20uaGVhcmxlcnMudjEubW9kZWxCCVVzZXJQcm90b1ABogIEQ0hWTaoCFUNvbS5IZWFybGVycy5WMS5Nb2RlbMoCFUNvbVxIZWFybGVyc1xWMVxNb2RlbOICIUNvbVxIZWFybGVyc1xWMVxNb2RlbFxHUEJNZXRhZGF0YeoCGENvbTo6SGVhcmxlcnM6OlYxOjpNb2RlbGIGcHJvdG8z");
+  fileDesc("ChN2MS9tb2RlbC91c2VyLnByb3RvEhVjb20uaGVhcmxlcnMudjEubW9kZWwikgIKBFVzZXISCgoCaWQYASABKAUSEAoIbmlja25hbWUYAiABKAkSOAoMYXV0aF9jaGFubmVsGAMgASgOMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhDaGFubmVsEjgKDHVzZXJfcHJvZmlsZRgEIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZRI8Cg91c2VyX3Byb2dyZXNzZXMYBSADKAsyIy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlclByb2dyZXNzEhIKCmNyZWF0ZWRfYXQYBiABKAkSEgoKdXBkYXRlZF9hdBgHIAEoCRISCgpkZWxldGVkX2F0GAggASgJIs0BCgtVc2VyUHJvZmlsZRIVCg1wcm9maWxlX2ltYWdlGAEgASgJEhQKDHBob25lX251bWJlchgCIAEoCRItCgZnZW5kZXIYAyABKA4yHS5jb20uaGVhcmxlcnMudjEubW9kZWwuR2VuZGVyEhAKCGJpcnRoZGF5GAQgASgJEhQKDGludHJvZHVjdGlvbhgFIAEoCRISCgpjcmVhdGVkX2F0GAYgASgJEhIKCnVwZGF0ZWRfYXQYByABKAkSEgoKZGVsZXRlZF9hdBgIIAEoCSLTAQoMVXNlclByb2dyZXNzEjoKDXByb2dyZXNzX3R5cGUYASABKA4yIy5jb20uaGVhcmxlcnMudjEubW9kZWwuUHJvZ3Jlc3NUeXBlEjUKBnN0YXR1cxgCIAEoDjIlLmNvbS5oZWFybGVycy52MS5tb2RlbC5Qcm9ncmVzc1N0YXR1cxIUCgxsYXN0X3VwZGF0ZWQYAyABKAkSEgoKY3JlYXRlZF9hdBgEIAEoCRISCgp1cGRhdGVkX2F0GAUgASgJEhIKCmRlbGV0ZWRfYXQYBiABKAkqVAoLQXV0aENoYW5uZWwSFQoRQVVUSF9DSEFOTkVMX05PTkUQABIWChJBVVRIX0NIQU5ORUxfS0FLQU8QARIWChJBVVRIX0NIQU5ORUxfTkFWRVIQAio9CgZHZW5kZXISDwoLR0VOREVSX05PTkUQABIPCgtHRU5ERVJfTUFMRRABEhEKDUdFTkRFUl9GRU1BTEUQAiqOAQoOUHJvZ3Jlc3NTdGF0dXMSHwobUFJPR1JFU1NfU1RBVFVTX05PVF9TVEFSVEVEEAASHwobUFJPR1JFU1NfU1RBVFVTX0lOX1BST0dSRVNTEAESHQoZUFJPR1JFU1NfU1RBVFVTX0NPTVBMRVRFRBACEhsKF1BST0dSRVNTX1NUQVRVU19CTE9DS0VEEAMqTAoMUHJvZ3Jlc3NUeXBlEhwKGFBST0dSRVNTX1RZUEVfT05CT0FSRElORxAAEh4KGlBST0dSRVNTX1RZUEVfVkVSSUZJQ0FUSU9OEAFCngEKGWNvbS5jb20uaGVhcmxlcnMudjEubW9kZWxCCVVzZXJQcm90b1ABogIEQ0hWTaoCFUNvbS5IZWFybGVycy5WMS5Nb2RlbMoCFUNvbVxIZWFybGVyc1xWMVxNb2RlbOICIUNvbVxIZWFybGVyc1xWMVxNb2RlbFxHUEJNZXRhZGF0YeoCGENvbTo6SGVhcmxlcnM6OlYxOjpNb2RlbGIGcHJvdG8z");
 
 /**
  * @generated from message com.hearlers.v1.model.User
@@ -121,42 +121,32 @@ export const UserProfileSchema: GenMessage<UserProfile> = /*@__PURE__*/
  */
 export type UserProgress = Message<"com.hearlers.v1.model.UserProgress"> & {
   /**
-   * @generated from field: int64 id = 1;
-   */
-  id: bigint;
-
-  /**
-   * @generated from field: int64 user_id = 2;
-   */
-  userId: bigint;
-
-  /**
-   * @generated from field: com.hearlers.v1.model.ProgressType progress_type = 3;
+   * @generated from field: com.hearlers.v1.model.ProgressType progress_type = 1;
    */
   progressType: ProgressType;
 
   /**
-   * @generated from field: com.hearlers.v1.model.ProgressStatus status = 4;
+   * @generated from field: com.hearlers.v1.model.ProgressStatus status = 2;
    */
   status: ProgressStatus;
 
   /**
-   * @generated from field: string last_updated = 5;
+   * @generated from field: string last_updated = 3;
    */
   lastUpdated: string;
 
   /**
-   * @generated from field: string created_at = 6;
+   * @generated from field: string created_at = 4;
    */
   createdAt: string;
 
   /**
-   * @generated from field: string updated_at = 7;
+   * @generated from field: string updated_at = 5;
    */
   updatedAt: string;
 
   /**
-   * @generated from field: string deleted_at = 8;
+   * @generated from field: string deleted_at = 6;
    */
   deletedAt: string;
 };
@@ -261,29 +251,9 @@ export enum ProgressType {
   ONBOARDING = 0,
 
   /**
-   * @generated from enum value: PROGRESS_TYPE_PROFILE_COMPLETION = 1;
+   * @generated from enum value: PROGRESS_TYPE_VERIFICATION = 1;
    */
-  PROFILE_COMPLETION = 1,
-
-  /**
-   * @generated from enum value: PROGRESS_TYPE_VERIFICATION = 2;
-   */
-  VERIFICATION = 2,
-
-  /**
-   * @generated from enum value: PROGRESS_TYPE_SUBSCRIPTION = 3;
-   */
-  SUBSCRIPTION = 3,
-
-  /**
-   * @generated from enum value: PROGRESS_TYPE_FIRST_SESSION = 4;
-   */
-  FIRST_SESSION = 4,
-
-  /**
-   * @generated from enum value: PROGRESS_TYPE_REVIEW = 5;
-   */
-  REVIEW = 5,
+  VERIFICATION = 1,
 }
 
 /**

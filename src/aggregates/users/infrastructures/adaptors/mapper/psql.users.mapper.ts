@@ -49,23 +49,19 @@ export class PsqlUsersMapper {
     // 관계 매핑
     if (users.userProfile) {
       entity.userProfiles = PsqlUserProfilesMapper.toEntity(users.userProfile);
-      entity.userProfiles.user = entity; // 양방향 관계 설정
     }
 
     if (users.kakao) {
       entity.kakao = PsqlKakaoMapper.toEntity(users.kakao);
-      entity.kakao.user = entity; // 양방향 관계 설정
     }
 
     entity.userProgresses = users.userProgresses.map((progress) => {
       const progressEntity = PsqlUserProgressesMapper.toEntity(progress);
-      progressEntity.user = entity; // 양방향 관계 설정
       return progressEntity;
     });
 
     entity.userPrompts = users.userPrompts.map((prompt) => {
       const promptEntity = PsqlUserPromptsMapper.toEntity(prompt);
-      promptEntity.user = entity; // 양방향 관계 설정
       return promptEntity;
     });
 

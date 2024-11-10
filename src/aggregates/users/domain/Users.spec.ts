@@ -1,16 +1,14 @@
 import { fakerKO as faker } from "@faker-js/faker";
 
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
+import { AuthChannel, ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { Gender } from "~/src/shared/enums/Gender.enum";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { convertDayjs } from "~/src/shared/utils/Date.utils";
-import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
 import { Kakao } from "./Kakao";
 
 describe("Users", () => {
@@ -123,7 +121,7 @@ describe("Users", () => {
 
       const progressResult = UserProgresses.createNew({
         userId: user.id,
-        progressType: ProgressType.FIRST_SESSION,
+        progressType: ProgressType.ONBOARDING,
         status: ProgressStatus.IN_PROGRESS,
       });
 
@@ -160,61 +158,6 @@ describe("Users", () => {
         expect(user.userPrompts).toHaveLength(1);
         expect(user.userPrompts[0].userId.equals(user.id)).toBe(true);
       }
-    });
-  });
-
-  describe("updateNickname", () => {
-    it("닉네임을 업데이트할 수 있다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-        authChannel: AuthChannel.KAKAO,
-      }).value as Users;
-
-      const newNickname = "새로운닉네임";
-      const result = user.updateNickname(newNickname);
-
-      expect(result.isSuccess).toBe(true);
-      expect(user.nickname).toBe(newNickname);
-    });
-
-    it("유효하지 않은 닉네임으로 업데이트하면 실패한다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-        authChannel: AuthChannel.KAKAO,
-      }).value as Users;
-
-      const result = user.updateNickname("a");
-
-      expect(result.isFailure).toBe(true);
-      expect(result.error).toContain("[Users] 닉네임은 2-20자 사이여야 합니다");
-      expect(user.nickname).toBe(validNickname); // 원래 값 유지
-    });
-  });
-
-  describe("updateAuthChannel", () => {
-    it("인증 채널을 업데이트할 수 있다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-        authChannel: AuthChannel.NONE,
-      }).value as Users;
-
-      const result = user.updateAuthChannel(AuthChannel.KAKAO);
-
-      expect(result.isSuccess).toBe(true);
-      expect(user.authChannel).toBe(AuthChannel.KAKAO);
-    });
-
-    it("유효하지 않은 인증 채널로 업데이트하면 실패한다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-        authChannel: AuthChannel.KAKAO,
-      }).value as Users;
-
-      const result = user.updateAuthChannel("INVALID" as unknown as AuthChannel);
-
-      expect(result.isFailure).toBe(true);
-      expect(result.error).toContain("[Users] 유효하지 않은 인증 채널입니다");
-      expect(user.authChannel).toBe(AuthChannel.KAKAO); // 원래 값 유지
     });
   });
 

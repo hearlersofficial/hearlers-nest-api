@@ -10,10 +10,9 @@ import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/Use
 import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { Kakao } from "~/src/aggregates/users/domain/Kakao";
-import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
+import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 import { Gender } from "~/src/shared/enums/Gender.enum";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
-import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
+import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { formatDayjs, getNowDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
 
@@ -229,7 +228,6 @@ describe("PsqlUsersRepositoryAdaptor", () => {
       const result = await adaptor.update(users);
 
       expect(repository.save).toHaveBeenCalled();
-      console.log(result);
       expect(result.kakao?.uniqueId).toBe("164425");
     });
   });

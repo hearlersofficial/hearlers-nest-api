@@ -1,8 +1,5 @@
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
+import { Users } from "~/src/aggregates/users/domain/Users";
 
 export interface UpdateUserUseCaseRequest {
-  userId: number;
-  nickname?: string;
-  authChannel?: AuthChannel;
-  uniqueId?: string;
+  toUpdateUser: Users;
 }

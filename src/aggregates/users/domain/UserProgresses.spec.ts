@@ -1,9 +1,8 @@
 import { fakerKO as faker } from "@faker-js/faker";
 import { UserProgresses } from "./UserProgresses";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
-import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 
 describe("UserProgresses", () => {
   describe("createNew", () => {
@@ -11,7 +10,7 @@ describe("UserProgresses", () => {
       const userId = new UniqueEntityId(faker.number.int());
       const result = UserProgresses.createNew({
         userId,
-        progressType: ProgressType.FIRST_SESSION,
+        progressType: ProgressType.ONBOARDING,
         status: ProgressStatus.NOT_STARTED,
       });
 
@@ -19,7 +18,7 @@ describe("UserProgresses", () => {
       if (result.isSuccess) {
         const progress = result.value;
         expect(progress.userId.equals(userId)).toBe(true);
-        expect(progress.progressType).toBe(ProgressType.FIRST_SESSION);
+        expect(progress.progressType).toBe(ProgressType.ONBOARDING);
         expect(progress.status).toBe(ProgressStatus.NOT_STARTED);
         expect(progress.isNew()).toBe(true);
       }
@@ -28,7 +27,7 @@ describe("UserProgresses", () => {
     it("필수 값이 없으면 생성에 실패한다", () => {
       const result = UserProgresses.createNew({
         userId: undefined as any,
-        progressType: ProgressType.FIRST_SESSION,
+        progressType: ProgressType.ONBOARDING,
         status: undefined as any,
       });
 
@@ -42,7 +41,7 @@ describe("UserProgresses", () => {
       const now = getNowDayjs();
       const props = {
         userId: new UniqueEntityId(faker.number.int()),
-        progressType: ProgressType.FIRST_SESSION,
+        progressType: ProgressType.ONBOARDING,
         status: ProgressStatus.IN_PROGRESS,
         lastUpdated: now,
         createdAt: now,
@@ -66,7 +65,7 @@ describe("UserProgresses", () => {
     it("상태를 업데이트할 수 있다", async () => {
       const progress = UserProgresses.createNew({
         userId: new UniqueEntityId(faker.number.int()),
-        progressType: ProgressType.FIRST_SESSION,
+        progressType: ProgressType.ONBOARDING,
         status: ProgressStatus.NOT_STARTED,
       }).value;
 
@@ -84,7 +83,7 @@ describe("UserProgresses", () => {
     it("삭제하고 복구할 수 있다", () => {
       const progress = UserProgresses.createNew({
         userId: new UniqueEntityId(faker.number.int()),
-        progressType: ProgressType.FIRST_SESSION,
+        progressType: ProgressType.ONBOARDING,
         status: ProgressStatus.NOT_STARTED,
       }).value;
 
@@ -121,7 +120,7 @@ describe("UserProgresses", () => {
       const result = UserProgresses.create(
         {
           userId: new UniqueEntityId(faker.number.int()),
-          progressType: ProgressType.FIRST_SESSION,
+          progressType: ProgressType.ONBOARDING,
           status: "INVALID_STATUS" as unknown as ProgressStatus,
           lastUpdated: getNowDayjs(),
           createdAt: getNowDayjs(),

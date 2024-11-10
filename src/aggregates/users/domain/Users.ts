@@ -3,7 +3,7 @@ import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
@@ -168,22 +168,8 @@ export class Users extends AggregateRoot<UsersProps> {
     return Result.ok<void>();
   }
 
-  public updateNickname(nickname: string): Result<void> {
-    if (!nickname || nickname.length < 2 || nickname.length > 20) {
-      return Result.fail<void>("[Users] 닉네임은 2-20자 사이여야 합니다");
-    }
-    this.props.nickname = nickname;
-    this.props.updatedAt = getNowDayjs();
-    return Result.ok<void>();
-  }
-
-  public updateAuthChannel(authChannel: AuthChannel): Result<void> {
-    if (!Object.values(AuthChannel).includes(authChannel)) {
-      return Result.fail<void>("[Users] 유효하지 않은 인증 채널입니다");
-    }
-    this.props.authChannel = authChannel;
-    this.props.updatedAt = getNowDayjs();
-    return Result.ok<void>();
+  public findProgress(type: ProgressType): UserProgresses | undefined {
+    return this.props.userProgresses.find((progress) => progress.progressType === type);
   }
 
   public delete(): void {
