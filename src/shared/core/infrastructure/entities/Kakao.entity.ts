@@ -11,7 +11,7 @@ export class KakaoEntity extends CoreEntity {
     name: "unique_id",
     comment: "고유 아이디",
   })
-  uniqueID: string;
+  uniqueId: string;
 
   @RelationId((kakao: KakaoEntity) => kakao.user)
   @Column({

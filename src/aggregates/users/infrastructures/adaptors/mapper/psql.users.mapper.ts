@@ -7,6 +7,7 @@ import { PsqlUserProfilesMapper } from "./psql.userProfiles.mapper";
 import { PsqlUserProgressesMapper } from "./psql.userProgresses.mapper";
 import { PsqlUserPromptsMapper } from "./psql.userPrompts.mapper";
 import { convertDayjs, formatDayjs } from "~/src/shared/utils/Date.utils";
+import { PsqlKakaoMapper } from "~/src/aggregates/users/infrastructures/adaptors/mapper/psql.kakao.mapper";
 
 export class PsqlUsersMapper {
   static toDomain(entity: UsersEntity): Users | null {
@@ -21,6 +22,7 @@ export class PsqlUsersMapper {
       userProgresses:
         entity.userProgresses?.map((progress) => PsqlUserProgressesMapper.toDomain(progress)).filter(Boolean) || [],
       userPrompts: entity.userPrompts?.map((prompt) => PsqlUserPromptsMapper.toDomain(prompt)).filter(Boolean) || [],
+      kakao: entity.kakao ? PsqlKakaoMapper.toDomain(entity.kakao) : undefined,
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
       deletedAt: entity.deletedAt ? convertDayjs(entity.deletedAt) : null,
@@ -48,6 +50,11 @@ export class PsqlUsersMapper {
     if (users.userProfile) {
       entity.userProfiles = PsqlUserProfilesMapper.toEntity(users.userProfile);
       entity.userProfiles.user = entity; // 양방향 관계 설정
+    }
+
+    if (users.kakao) {
+      entity.kakao = PsqlKakaoMapper.toEntity(users.kakao);
+      entity.kakao.user = entity; // 양방향 관계 설정
     }
 
     entity.userProgresses = users.userProgresses.map((progress) => {

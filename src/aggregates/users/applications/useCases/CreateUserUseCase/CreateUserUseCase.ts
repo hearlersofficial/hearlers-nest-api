@@ -4,7 +4,6 @@ import { CreateUserUseCaseResponse } from "~/src/aggregates/users/applications/u
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { USER_REPOSITORY, UsersRepositoryPort } from "~/src/aggregates/users/infrastructures/users.repository.port";
 import { UseCase } from "~/src/shared/core/applications/UseCase";
-import { Result } from "~/src/shared/core/domain/Result";
 
 @Injectable()
 export class CreateUserUseCase implements UseCase<CreateUserUseCaseRequest, CreateUserUseCaseResponse> {
@@ -15,15 +14,16 @@ export class CreateUserUseCase implements UseCase<CreateUserUseCaseRequest, Crea
 
   async execute(request: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
     const { nickname, authChannel } = request;
-    const userOrError: Result<Users> = Users.createNew({ nickname, authChannel });
-    if (userOrError.isFailure) {
+    const notLoggedInUserOrError = Users.createNew({ nickname, authChannel });
+    if (notLoggedInUserOrError.isFailure) {
       return {
         ok: false,
-        error: userOrError.error,
+        error: notLoggedInUserOrError.error,
       };
     }
-    const user: Users = userOrError.value;
-    const savedUser: Users = await this.usersRepository.create(user);
+    const user = notLoggedInUserOrError.value;
+
+    const savedUser = await this.usersRepository.create(user);
     return {
       ok: true,
       user: savedUser,

@@ -7,6 +7,7 @@ import {
   UsersRepositoryPort,
 } from "~/src/aggregates/users/infrastructures/users.repository.port";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
+import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 
 export class PsqlUsersRepositoryAdaptor implements UsersRepositoryPort {
   private readonly userFindOptionsRelation: FindOptionsRelations<UsersEntity> = {
@@ -24,22 +25,33 @@ export class PsqlUsersRepositoryAdaptor implements UsersRepositoryPort {
   }
 
   async findOne(props: FindOnePropsInUsersRepository): Promise<Users | null> {
-    const { userId, nickname } = props;
+    const { userId, nickname, authChannel, uniqueId } = props;
+    const findOptionsRelation = this.userFindOptionsRelation;
     const findOptionsWhere: FindOptionsWhere<UsersEntity> = {};
-    if (!userId && !nickname) {
-      throw new Error("userId 또는 nickname이 필요합니다.");
-    }
     if (userId) {
       findOptionsWhere.id = userId;
     }
     if (nickname) {
       findOptionsWhere.nickname = nickname;
     }
+    if (authChannel && authChannel === AuthChannel.KAKAO) {
+      findOptionsRelation.kakao = true;
+      findOptionsWhere.kakao = {
+        uniqueId,
+      };
+    }
+
     const findOneOptions: FindOneOptions<UsersEntity> = {
       where: findOptionsWhere,
-      relations: this.userFindOptionsRelation,
+      relations: findOptionsRelation,
     };
     const usersEntity: UsersEntity = await this.usersRepository.findOne(findOneOptions);
     return PsqlUsersMapper.toDomain(usersEntity);
+  }
+
+  async update(user: Users): Promise<Users> {
+    const usersEntity = PsqlUsersMapper.toEntity(user);
+    const updatedUsersEntity = await this.usersRepository.save(usersEntity);
+    return PsqlUsersMapper.toDomain(updatedUsersEntity);
   }
 }

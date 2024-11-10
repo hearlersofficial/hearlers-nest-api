@@ -3,21 +3,24 @@ import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
-import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
+import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { Gender } from "~/src/shared/enums/Gender.enum";
+import { Kakao } from "~/src/aggregates/users/domain/Kakao";
 
 interface UsersNewProps {
   nickname: string;
   authChannel: AuthChannel;
 }
 
-interface UsersProps extends UsersNewProps {
+export interface UsersProps extends UsersNewProps {
   userProfile: UserProfiles;
   userProgresses: UserProgresses[];
   userPrompts: UserPrompts[];
+  // 카카오 계정, 평시에는 join X
+  kakao?: Kakao;
   createdAt: Dayjs;
   updatedAt: Dayjs;
   deletedAt: Dayjs | null;
@@ -121,6 +124,10 @@ export class Users extends AggregateRoot<UsersProps> {
     return [...this.props.userPrompts];
   }
 
+  get kakao(): Kakao | undefined {
+    return this.props.kakao;
+  }
+
   get createdAt(): Dayjs {
     return this.props.createdAt;
   }
@@ -185,5 +192,17 @@ export class Users extends AggregateRoot<UsersProps> {
 
   public restore(): void {
     this.props.deletedAt = null;
+  }
+
+  public setKakao(kakao: Kakao): Result<void> {
+    if (!kakao.userId.equals(this.id)) {
+      return Result.fail<void>("[Users] Kakao 계정의 사용자 ID가 일치하지 않습니다");
+    }
+    if (this.props.authChannel !== AuthChannel.KAKAO) {
+      return Result.fail<void>("[Users] 인증 채널이 Kakao가 아닙니다");
+    }
+    this.props.kakao = kakao;
+    this.props.updatedAt = getNowDayjs();
+    return Result.ok<void>();
   }
 }
