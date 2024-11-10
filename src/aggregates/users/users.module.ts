@@ -1,9 +1,11 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CreateUserHandler } from "~/src/aggregates/users/applications/commands/CreateUser/CreateUser.handler";
+import { UpdateUserHandler } from "~/src/aggregates/users/applications/commands/UpdateUser/UpdateUser.handler";
 import { FindOneUserHandler } from "~/src/aggregates/users/applications/queries/FindOneUser/FindOneUser.handler";
 import { CreateUserUseCase } from "~/src/aggregates/users/applications/useCases/CreateUserUseCase/CreateUserUseCase";
 import { FindOneUserUseCase } from "~/src/aggregates/users/applications/useCases/FindOneUserUseCase/FindOneUserUseCase";
+import { UpdateUserUseCase } from "~/src/aggregates/users/applications/useCases/UpdateUserUseCase/UpdateUserUseCase";
 
 import { PsqlUsersRepositoryAdaptor } from "~/src/aggregates/users/infrastructures/adaptors/psql.users.repository.adaptor";
 import { USER_REPOSITORY } from "~/src/aggregates/users/infrastructures/users.repository.port";
@@ -19,6 +21,8 @@ import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.ent
     FindOneUserHandler,
     CreateUserUseCase,
     CreateUserHandler,
+    UpdateUserUseCase,
+    UpdateUserHandler,
     {
       provide: USER_REPOSITORY,
       useClass: PsqlUsersRepositoryAdaptor,

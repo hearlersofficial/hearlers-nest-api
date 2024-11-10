@@ -87,13 +87,7 @@ export class LoggingInterceptor implements NestInterceptor {
             this.logger.warn(`Failed to stringify response: ${error.message}`);
           }
         },
-        error: (error) => {
-          const duration = Date.now() - start;
-          this.logger.error(
-            `[GRPC Error] ${methodName} - Duration: ${duration}ms - Error: ${error.message}`,
-            error.stack,
-          );
-        },
+        error: () => {},
       }),
     );
   }

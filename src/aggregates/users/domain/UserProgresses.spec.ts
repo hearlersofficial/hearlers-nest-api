@@ -12,6 +12,7 @@ describe("UserProgresses", () => {
       const result = UserProgresses.createNew({
         userId,
         progressType: ProgressType.FIRST_SESSION,
+        status: ProgressStatus.NOT_STARTED,
       });
 
       expect(result.isSuccess).toBe(true);
@@ -28,6 +29,7 @@ describe("UserProgresses", () => {
       const result = UserProgresses.createNew({
         userId: undefined as any,
         progressType: ProgressType.FIRST_SESSION,
+        status: undefined as any,
       });
 
       expect(result.isFailure).toBe(true);
@@ -65,7 +67,8 @@ describe("UserProgresses", () => {
       const progress = UserProgresses.createNew({
         userId: new UniqueEntityId(faker.number.int()),
         progressType: ProgressType.FIRST_SESSION,
-      }).value as UserProgresses;
+        status: ProgressStatus.NOT_STARTED,
+      }).value;
 
       const beforeUpdate = progress.updatedAt;
       await new Promise((resolve) => setTimeout(resolve, 10));
@@ -82,7 +85,8 @@ describe("UserProgresses", () => {
       const progress = UserProgresses.createNew({
         userId: new UniqueEntityId(faker.number.int()),
         progressType: ProgressType.FIRST_SESSION,
-      }).value as UserProgresses;
+        status: ProgressStatus.NOT_STARTED,
+      }).value;
 
       expect(progress.deletedAt).toBeNull();
 

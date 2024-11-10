@@ -53,7 +53,8 @@ describe("PsqlUserProgressesMapper", () => {
       const userProgresses = UserProgresses.createNew({
         userId: new UniqueEntityId(faker.number.int()),
         progressType: ProgressType.ONBOARDING,
-      }).value as UserProgresses;
+        status: ProgressStatus.NOT_STARTED,
+      }).value;
 
       // 상태 업데이트
       userProgresses.updateStatus(ProgressStatus.IN_PROGRESS);
@@ -70,7 +71,8 @@ describe("PsqlUserProgressesMapper", () => {
       const userProgresses = UserProgresses.createNew({
         userId: new UniqueEntityId(faker.number.int()),
         progressType: ProgressType.ONBOARDING,
-      }).value as UserProgresses;
+        status: ProgressStatus.NOT_STARTED,
+      }).value;
 
       const entity = PsqlUserProgressesMapper.toEntity(userProgresses);
 

@@ -10,6 +10,8 @@ import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { convertDayjs } from "~/src/shared/utils/Date.utils";
+import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
+import { Kakao } from "./Kakao";
 
 describe("Users", () => {
   const validNickname = "테스트유저";
@@ -122,6 +124,7 @@ describe("Users", () => {
       const progressResult = UserProgresses.createNew({
         userId: user.id,
         progressType: ProgressType.FIRST_SESSION,
+        status: ProgressStatus.IN_PROGRESS,
       });
 
       expect(progressResult.isSuccess).toBe(true);
@@ -229,6 +232,66 @@ describe("Users", () => {
 
       user.restore();
       expect(user.deletedAt).toBeNull();
+    });
+  });
+
+  describe("setKakao", () => {
+    it("카카오 계정을 연동할 수 있다", () => {
+      const user = Users.createNew({
+        nickname: validNickname,
+        authChannel: AuthChannel.KAKAO,
+      }).value as Users;
+
+      const kakaoResult = Kakao.createNew({
+        userId: user.id,
+        uniqueId: faker.string.numeric(10),
+      });
+
+      expect(kakaoResult.isSuccess).toBe(true);
+      if (kakaoResult.isSuccess) {
+        const result = user.setKakao(kakaoResult.value);
+        expect(result.isSuccess).toBe(true);
+        expect(user.kakao).toBeDefined();
+        expect(user.kakao?.userId.equals(user.id)).toBe(true);
+      }
+    });
+
+    it("다른 사용자의 카카오 계정은 연동할 수 없다", () => {
+      const user = Users.createNew({
+        nickname: validNickname,
+        authChannel: AuthChannel.KAKAO,
+      }).value as Users;
+
+      const kakaoResult = Kakao.createNew({
+        userId: new UniqueEntityId(999),
+        uniqueId: faker.string.numeric(10),
+      });
+
+      expect(kakaoResult.isSuccess).toBe(true);
+      if (kakaoResult.isSuccess) {
+        const result = user.setKakao(kakaoResult.value);
+        expect(result.isFailure).toBe(true);
+        expect(result.error).toContain("[Users] Kakao 계정의 사용자 ID가 일치하지 않습니다");
+      }
+    });
+
+    it("인증 채널이 Kakao가 아닌 경우 연동할 수 없다", () => {
+      const user = Users.createNew({
+        nickname: validNickname,
+        authChannel: AuthChannel.NONE,
+      }).value as Users;
+
+      const kakaoResult = Kakao.createNew({
+        userId: user.id,
+        uniqueId: faker.string.numeric(10),
+      });
+
+      expect(kakaoResult.isSuccess).toBe(true);
+      if (kakaoResult.isSuccess) {
+        const result = user.setKakao(kakaoResult.value);
+        expect(result.isFailure).toBe(true);
+        expect(result.error).toContain("[Users] 인증 채널이 Kakao가 아닙니다");
+      }
     });
   });
 });
