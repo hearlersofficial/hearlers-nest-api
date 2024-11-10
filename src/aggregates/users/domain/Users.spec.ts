@@ -10,6 +10,7 @@ import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { convertDayjs } from "~/src/shared/utils/Date.utils";
+import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
 
 describe("Users", () => {
   const validNickname = "테스트유저";
@@ -122,6 +123,7 @@ describe("Users", () => {
       const progressResult = UserProgresses.createNew({
         userId: user.id,
         progressType: ProgressType.FIRST_SESSION,
+        status: ProgressStatus.IN_PROGRESS,
       });
 
       expect(progressResult.isSuccess).toBe(true);

@@ -1,11 +1,11 @@
-import { DomainEntity, DomainEntityNewProps } from "~/src/shared/core/domain/DomainEntity";
+import { DomainEntity } from "~/src/shared/core/domain/DomainEntity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Gender } from "~/src/shared/enums/Gender.enum";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 
-interface UserProfilesNewProps extends DomainEntityNewProps {
+interface UserProfilesNewProps {
   userId: UniqueEntityId;
   profileImage: string;
   phoneNumber: string;
@@ -20,22 +20,23 @@ interface UserProfilesProps extends UserProfilesNewProps {
   deletedAt: Dayjs | null;
 }
 
-export class UserProfiles extends DomainEntity<UserProfilesProps, UserProfilesNewProps> {
+export class UserProfiles extends DomainEntity<UserProfilesProps> {
   private constructor(props: UserProfilesProps, id: UniqueEntityId) {
     super(props, id);
   }
 
-  protected override initializeEntityProps(newProps: UserProfilesNewProps): UserProfilesProps {
-    return {
-      ...newProps,
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
+  public static create(props: UserProfilesProps, id: UniqueEntityId): Result<UserProfiles> {
+    const userProfiles = new UserProfiles(props, id);
+    const validateResult = userProfiles.validateDomain();
+    if (validateResult.isFailure) {
+      return Result.fail<UserProfiles>(validateResult.error);
+    }
+    return Result.ok<UserProfiles>(userProfiles);
   }
 
-  protected static override passFactory() {
-    return (props: UserProfilesProps, id: UniqueEntityId): UserProfiles => new UserProfiles(props, id);
+  public static createNew(newProps: UserProfilesNewProps): Result<UserProfiles> {
+    const now = getNowDayjs();
+    return this.create({ ...newProps, createdAt: now, updatedAt: now, deletedAt: null }, new UniqueEntityId());
   }
 
   validateDomain(): Result<void> {

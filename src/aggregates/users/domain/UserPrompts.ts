@@ -1,4 +1,4 @@
-import { DomainEntity, DomainEntityNewProps } from "~/src/shared/core/domain/DomainEntity";
+import { DomainEntity } from "~/src/shared/core/domain/DomainEntity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
@@ -6,7 +6,7 @@ import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 import { Context, Analysis, DomainConversation } from "~/src/shared/types/prompts.types";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
 
-interface UserPromptsNewProps extends DomainEntityNewProps {
+interface UserPromptsNewProps {
   userId: UniqueEntityId;
   templateId: UniqueEntityId;
   context: Context;
@@ -21,24 +21,33 @@ interface UserPromptsProps extends UserPromptsNewProps {
   deletedAt: Dayjs | null;
 }
 
-export class UserPrompts extends DomainEntity<UserPromptsProps, UserPromptsNewProps> {
+export class UserPrompts extends DomainEntity<UserPromptsProps> {
   private constructor(props: UserPromptsProps, id: UniqueEntityId) {
     super(props, id);
   }
 
-  protected static override passFactory() {
-    return (props: UserPromptsProps, id: UniqueEntityId): UserPrompts => new UserPrompts(props, id);
+  public static create(props: UserPromptsProps, id: UniqueEntityId): Result<UserPrompts> {
+    const userPrompts = new UserPrompts(props, id);
+    const validateResult = userPrompts.validateDomain();
+    if (validateResult.isFailure) {
+      return Result.fail<UserPrompts>(validateResult.error);
+    }
+    return Result.ok<UserPrompts>(userPrompts);
   }
 
-  protected override initializeEntityProps(newProps: UserPromptsNewProps): UserPromptsProps {
-    return {
-      ...newProps,
-      generatedPrompt: "", // 초기에는 비어있음
-      conversationHistory: [],
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
+  public static createNew(newProps: UserPromptsNewProps): Result<UserPrompts> {
+    const now = getNowDayjs();
+    return this.create(
+      {
+        ...newProps,
+        generatedPrompt: "", // 초기에는 비어있음
+        conversationHistory: [],
+        createdAt: now,
+        updatedAt: now,
+        deletedAt: null,
+      },
+      new UniqueEntityId(),
+    );
   }
 
   validateDomain(): Result<void> {

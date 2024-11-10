@@ -112,6 +112,7 @@ describe("PsqlUsersMapper", () => {
       const progress = UserProgresses.createNew({
         userId: users.id,
         progressType: ProgressType.ONBOARDING,
+        status: ProgressStatus.NOT_STARTED,
       }).value;
       users.addProgress(progress);
 

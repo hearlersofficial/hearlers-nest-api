@@ -1,30 +1,43 @@
 import { fakerKO as faker } from "@faker-js/faker";
 import { AggregateRoot } from "./AggregateRoot";
-import { DomainEntityNewProps } from "./DomainEntity";
 import { UniqueEntityId } from "./UniqueEntityId";
 import { Result } from "./Result";
+import { Dayjs } from "dayjs";
+import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 
-interface TestAggregateProps {
+interface TestAggregateNewProps {
   name: string;
 }
 
-interface TestAggregateNewProps extends DomainEntityNewProps {
-  name: string;
+interface TestAggregateProps extends TestAggregateNewProps {
+  createdAt: Dayjs;
+  updatedAt: Dayjs;
+  deletedAt: Dayjs | null;
 }
-
-class TestAggregate extends AggregateRoot<TestAggregateProps, TestAggregateNewProps> {
+class TestAggregate extends AggregateRoot<TestAggregateProps> {
   private constructor(props: TestAggregateProps, id: UniqueEntityId) {
     super(props, id);
   }
 
-  protected static override passFactory() {
-    return (props: TestAggregateProps, id: UniqueEntityId): TestAggregate => new TestAggregate(props, id);
+  public static create(props: TestAggregateProps, id: UniqueEntityId): Result<TestAggregate> {
+    const testAggregate = new TestAggregate(props, id);
+    const validateResult = testAggregate.validateDomain();
+    if (validateResult.isFailure) {
+      return Result.fail<TestAggregate>(validateResult.error);
+    }
+    return Result.ok<TestAggregate>(testAggregate);
   }
-
-  protected override initializeEntityProps(newProps: TestAggregateNewProps): TestAggregateProps {
-    return {
-      name: newProps.name,
-    };
+  public static createNew(newProps: TestAggregateNewProps): Result<TestAggregate> {
+    const now = getNowDayjs();
+    return this.create(
+      {
+        name: newProps.name,
+        createdAt: now,
+        updatedAt: now,
+        deletedAt: null,
+      },
+      new UniqueEntityId(),
+    );
   }
 
   protected validateDomain(): Result<void> {

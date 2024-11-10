@@ -1,4 +1,4 @@
-import { AggregateRoot, AggregateRootNewProps } from "~/src/shared/core/domain/AggregateRoot";
+import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
@@ -9,7 +9,7 @@ import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { Gender } from "~/src/shared/enums/Gender.enum";
 
-interface UsersNewProps extends AggregateRootNewProps {
+interface UsersNewProps {
   nickname: string;
   authChannel: AuthChannel;
 }
@@ -23,32 +23,43 @@ interface UsersProps extends UsersNewProps {
   deletedAt: Dayjs | null;
 }
 
-export class Users extends AggregateRoot<UsersProps, UsersNewProps> {
+export class Users extends AggregateRoot<UsersProps> {
   private constructor(props: UsersProps, id: UniqueEntityId) {
     super(props, id);
   }
-  protected static override passFactory() {
-    return (props: UsersProps, id: UniqueEntityId): Users => new Users(props, id);
+
+  public static create(props: UsersProps, id: UniqueEntityId): Result<Users> {
+    const users = new Users(props, id);
+    const validateResult = users.validateDomain();
+    if (validateResult.isFailure) {
+      return Result.fail<Users>(validateResult.error);
+    }
+    return Result.ok<Users>(users);
   }
 
-  protected override initializeEntityProps(newProps: UsersNewProps): UsersProps {
-    return {
-      ...newProps,
-      // 계정 생성 시 프로필 기본값
-      userProfile: UserProfiles.createNew({
-        userId: this.id,
-        profileImage: "",
-        phoneNumber: "",
-        gender: Gender.NONE,
-        birthday: getNowDayjs(),
-        introduction: "",
-      }).value,
-      userProgresses: [],
-      userPrompts: [],
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
+  public static createNew(newProps: UsersNewProps): Result<Users> {
+    const now = getNowDayjs();
+    const newId = new UniqueEntityId();
+    return this.create(
+      {
+        ...newProps,
+        // 계정 생성 시 프로필 기본값
+        userProfile: UserProfiles.createNew({
+          userId: newId,
+          profileImage: "",
+          phoneNumber: "",
+          gender: Gender.NONE,
+          birthday: getNowDayjs(),
+          introduction: "",
+        }).value,
+        userProgresses: [],
+        userPrompts: [],
+        createdAt: now,
+        updatedAt: now,
+        deletedAt: null,
+      },
+      newId,
+    );
   }
 
   validateDomain(): Result<void> {
