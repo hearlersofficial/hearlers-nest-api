@@ -3,8 +3,16 @@ import { Controller } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { GrpcMethod } from "@nestjs/microservices";
 import { CreateUserCommand } from "~/src/aggregates/users/applications/commands/CreateUser/CreateUser.command";
+import { UpdateUserCommand } from "~/src/aggregates/users/applications/commands/UpdateUser/UpdateUser.command";
 import { Users } from "~/src/aggregates/users/domain/Users";
-import { CreateUserRequest, CreateUserResult, CreateUserResultSchema } from "~/src/gen/v1/service/user_pb";
+import {
+  CreateUserRequest,
+  CreateUserResult,
+  CreateUserResultSchema,
+  UpdateUserRequest,
+  UpdateUserResult,
+  UpdateUserResultSchema,
+} from "~/src/gen/v1/service/user_pb";
 import { SchemaUsersMapper } from "~/src/services/users/presentations/grpc/schema.users.mapper";
 
 @Controller("user")
@@ -19,5 +27,18 @@ export class GrpcUserCommandController {
     });
     const user: Users = await this.commandBus.execute(command);
     return create(CreateUserResultSchema, { user: SchemaUsersMapper.toUserProto(user) });
+  }
+
+  @GrpcMethod("UserService", "update")
+  async updateUser(request: UpdateUserRequest): Promise<UpdateUserResult> {
+    const command: UpdateUserCommand = new UpdateUserCommand({
+      userId: request.userId,
+      nickname: request.nickname,
+      authChannel: request.authChannel,
+      uniqueId: request.uniqueId,
+    });
+
+    const user: Users = await this.commandBus.execute(command);
+    return create(UpdateUserResultSchema, { user: SchemaUsersMapper.toUserProto(user) });
   }
 }

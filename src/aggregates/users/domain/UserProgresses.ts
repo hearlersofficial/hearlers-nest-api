@@ -1,44 +1,51 @@
-import { DomainEntity, DomainEntityNewProps } from "~/src/shared/core/domain/DomainEntity";
+import { DomainEntity } from "~/src/shared/core/domain/DomainEntity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 import { Result } from "~/src/shared/core/domain/Result";
 import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 
-interface UserProgressesNewProps extends DomainEntityNewProps {
+interface UserProgressesNewProps {
   userId: UniqueEntityId;
+  status: ProgressStatus;
   progressType: ProgressType;
 }
 
-interface UserProgressesProps {
-  userId: UniqueEntityId;
-  progressType: ProgressType;
-  status: ProgressStatus;
+interface UserProgressesProps extends UserProgressesNewProps {
   lastUpdated: Dayjs;
   createdAt: Dayjs;
   updatedAt: Dayjs;
   deletedAt: Dayjs | null;
 }
 
-export class UserProgresses extends DomainEntity<UserProgressesProps, UserProgressesNewProps> {
+export class UserProgresses extends DomainEntity<UserProgressesProps> {
   private constructor(props: UserProgressesProps, id: UniqueEntityId) {
     super(props, id);
   }
 
-  protected static override passFactory() {
-    return (props: UserProgressesProps, id: UniqueEntityId): UserProgresses => new UserProgresses(props, id);
+  public static create(props: UserProgressesProps, id: UniqueEntityId): Result<UserProgresses> {
+    const userProgresses = new UserProgresses(props, id);
+    const validateResult = userProgresses.validateDomain();
+    if (validateResult.isFailure) {
+      return Result.fail<UserProgresses>(validateResult.error);
+    }
+    return Result.ok<UserProgresses>(userProgresses);
   }
 
-  protected override initializeEntityProps(newProps: UserProgressesNewProps): UserProgressesProps {
-    return {
-      ...newProps,
-      status: ProgressStatus.NOT_STARTED,
-      lastUpdated: getNowDayjs(),
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
+  public static createNew(newProps: UserProgressesNewProps): Result<UserProgresses> {
+    const now = getNowDayjs();
+    return this.create(
+      {
+        ...newProps,
+        lastUpdated: now,
+        createdAt: now,
+        updatedAt: now,
+        deletedAt: null,
+      },
+      new UniqueEntityId(),
+    );
   }
+
   validateDomain(): Result<void> {
     // userId 검증
     if (!this.props.userId) {

@@ -1,54 +1,68 @@
-import { AggregateRoot, AggregateRootNewProps } from "~/src/shared/core/domain/AggregateRoot";
+import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
-import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
+import { AuthChannel, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { Gender } from "~/src/shared/enums/Gender.enum";
+import { Kakao } from "~/src/aggregates/users/domain/Kakao";
 
-interface UsersNewProps extends AggregateRootNewProps {
+interface UsersNewProps {
   nickname: string;
   authChannel: AuthChannel;
 }
 
-interface UsersProps extends UsersNewProps {
+export interface UsersProps extends UsersNewProps {
   userProfile: UserProfiles;
   userProgresses: UserProgresses[];
   userPrompts: UserPrompts[];
+  // 카카오 계정, 평시에는 join X
+  kakao?: Kakao;
   createdAt: Dayjs;
   updatedAt: Dayjs;
   deletedAt: Dayjs | null;
 }
 
-export class Users extends AggregateRoot<UsersProps, UsersNewProps> {
+export class Users extends AggregateRoot<UsersProps> {
   private constructor(props: UsersProps, id: UniqueEntityId) {
     super(props, id);
   }
-  protected static override passFactory() {
-    return (props: UsersProps, id: UniqueEntityId): Users => new Users(props, id);
+
+  public static create(props: UsersProps, id: UniqueEntityId): Result<Users> {
+    const users = new Users(props, id);
+    const validateResult = users.validateDomain();
+    if (validateResult.isFailure) {
+      return Result.fail<Users>(validateResult.error);
+    }
+    return Result.ok<Users>(users);
   }
 
-  protected override initializeEntityProps(newProps: UsersNewProps): UsersProps {
-    return {
-      ...newProps,
-      // 계정 생성 시 프로필 기본값
-      userProfile: UserProfiles.createNew({
-        userId: this.id,
-        profileImage: "",
-        phoneNumber: "",
-        gender: Gender.NONE,
-        birthday: getNowDayjs(),
-        introduction: "",
-      }).value,
-      userProgresses: [],
-      userPrompts: [],
-      createdAt: getNowDayjs(),
-      updatedAt: getNowDayjs(),
-      deletedAt: null,
-    };
+  public static createNew(newProps: UsersNewProps): Result<Users> {
+    const now = getNowDayjs();
+    const newId = new UniqueEntityId();
+    return this.create(
+      {
+        ...newProps,
+        // 계정 생성 시 프로필 기본값
+        userProfile: UserProfiles.createNew({
+          userId: newId,
+          profileImage: "",
+          phoneNumber: "",
+          gender: Gender.NONE,
+          birthday: getNowDayjs(),
+          introduction: "",
+        }).value,
+        userProgresses: [],
+        userPrompts: [],
+        createdAt: now,
+        updatedAt: now,
+        deletedAt: null,
+      },
+      newId,
+    );
   }
 
   validateDomain(): Result<void> {
@@ -110,6 +124,10 @@ export class Users extends AggregateRoot<UsersProps, UsersNewProps> {
     return [...this.props.userPrompts];
   }
 
+  get kakao(): Kakao | undefined {
+    return this.props.kakao;
+  }
+
   get createdAt(): Dayjs {
     return this.props.createdAt;
   }
@@ -150,22 +168,8 @@ export class Users extends AggregateRoot<UsersProps, UsersNewProps> {
     return Result.ok<void>();
   }
 
-  public updateNickname(nickname: string): Result<void> {
-    if (!nickname || nickname.length < 2 || nickname.length > 20) {
-      return Result.fail<void>("[Users] 닉네임은 2-20자 사이여야 합니다");
-    }
-    this.props.nickname = nickname;
-    this.props.updatedAt = getNowDayjs();
-    return Result.ok<void>();
-  }
-
-  public updateAuthChannel(authChannel: AuthChannel): Result<void> {
-    if (!Object.values(AuthChannel).includes(authChannel)) {
-      return Result.fail<void>("[Users] 유효하지 않은 인증 채널입니다");
-    }
-    this.props.authChannel = authChannel;
-    this.props.updatedAt = getNowDayjs();
-    return Result.ok<void>();
+  public findProgress(type: ProgressType): UserProgresses | undefined {
+    return this.props.userProgresses.find((progress) => progress.progressType === type);
   }
 
   public delete(): void {
@@ -174,5 +178,17 @@ export class Users extends AggregateRoot<UsersProps, UsersNewProps> {
 
   public restore(): void {
     this.props.deletedAt = null;
+  }
+
+  public setKakao(kakao: Kakao): Result<void> {
+    if (!kakao.userId.equals(this.id)) {
+      return Result.fail<void>("[Users] Kakao 계정의 사용자 ID가 일치하지 않습니다");
+    }
+    if (this.props.authChannel !== AuthChannel.KAKAO) {
+      return Result.fail<void>("[Users] 인증 채널이 Kakao가 아닙니다");
+    }
+    this.props.kakao = kakao;
+    this.props.updatedAt = getNowDayjs();
+    return Result.ok<void>();
   }
 }

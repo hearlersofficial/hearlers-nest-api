@@ -7,10 +7,12 @@ import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.ent
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
+import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
 import { Users } from "~/src/aggregates/users/domain/Users";
-import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
+import { Kakao } from "~/src/aggregates/users/domain/Kakao";
+import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 import { Gender } from "~/src/shared/enums/Gender.enum";
-import { ProgressType, ProgressStatus } from "~/src/gen/v1/model/user_pb";
+import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { formatDayjs, getNowDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
 
@@ -111,7 +113,7 @@ describe("PsqlUsersRepositoryAdaptor", () => {
   });
 
   describe("findOne", () => {
-    it("ID로 사용자와 모든 관계를 조회할 수 있다", async () => {
+    it("ID로 사용자의 기본 관계들을 조회할 수 있다", async () => {
       const mockUserWithRelations = createMockUserWithRelations();
       jest.spyOn(repository, "findOne").mockResolvedValue(mockUserWithRelations);
 
@@ -129,9 +131,39 @@ describe("PsqlUsersRepositoryAdaptor", () => {
       expect(result).toBeDefined();
       expect(result?.id.getNumber()).toBe(mockUserWithRelations.id);
       expect(result?.nickname).toBe(mockUserWithRelations.nickname);
-      expect(result?.userProfile).toBeDefined();
-      expect(result?.userProgresses).toHaveLength(1);
-      expect(result?.userPrompts).toHaveLength(1);
+    });
+
+    it("카카오 uniqueId로 사용자를 조회할 때 kakao relation이 추가된다", async () => {
+      const mockUser = createMockUserEntity();
+      const kakao = new KakaoEntity();
+      kakao.id = faker.number.int();
+      kakao.userId = mockUser.id;
+      kakao.uniqueId = faker.string.numeric(10);
+      mockUser.kakao = kakao;
+
+      jest.spyOn(repository, "findOne").mockResolvedValue(mockUser);
+
+      const result = await adaptor.findOne({
+        authChannel: AuthChannel.KAKAO,
+        uniqueId: kakao.uniqueId,
+      });
+
+      expect(repository.findOne).toHaveBeenCalledWith({
+        where: {
+          kakao: {
+            uniqueId: kakao.uniqueId,
+          },
+        },
+        relations: {
+          userProfiles: true,
+          userProgresses: true,
+          userPrompts: true,
+          kakao: true,
+        },
+      });
+
+      expect(result).toBeDefined();
+      expect(result?.kakao?.uniqueId).toBe(kakao.uniqueId);
     });
 
     it("존재하지 않는 사용자를 조회하면 null을 반환한다", async () => {
@@ -142,21 +174,61 @@ describe("PsqlUsersRepositoryAdaptor", () => {
   });
 
   describe("create", () => {
-    it("모든 관계가 포함된 사용자를 생성할 수 있다", async () => {
-      const mockUserWithRelations = createMockUserWithRelations();
-      jest.spyOn(repository, "save").mockResolvedValue(mockUserWithRelations);
+    it("카카오 계정이 연동된 사용자를 생성할 수 있다", async () => {
+      const mockUser = createMockUserEntity();
+      const kakao = new KakaoEntity();
+      kakao.id = faker.number.int();
+      kakao.userId = mockUser.id;
+      kakao.uniqueId = faker.string.numeric(10);
+      mockUser.kakao = kakao;
+
+      jest.spyOn(repository, "save").mockResolvedValue(mockUser);
 
       const users = Users.createNew({
-        nickname: mockUserWithRelations.nickname,
-        authChannel: mockUserWithRelations.authChannel,
+        nickname: mockUser.nickname,
+        authChannel: AuthChannel.KAKAO,
       }).value as Users;
+
+      const kakaoResult = Kakao.createNew({
+        userId: users.id,
+        uniqueId: kakao.uniqueId,
+      });
+      users.setKakao(kakaoResult.value);
 
       const result = await adaptor.create(users);
 
       expect(repository.save).toHaveBeenCalled();
       expect(result).toBeDefined();
-      expect(result.nickname).toBe(mockUserWithRelations.nickname);
-      expect(result.authChannel).toBe(mockUserWithRelations.authChannel);
+      expect(result.kakao?.uniqueId).toBe(kakao.uniqueId);
+    });
+  });
+
+  describe("update", () => {
+    it("카카오 계정 정보를 설정할 수 있다", async () => {
+      const mockUser = createMockUserEntity();
+      const kakao = new KakaoEntity();
+      kakao.id = faker.number.int();
+      kakao.userId = mockUser.id;
+      kakao.uniqueId = "164425";
+      mockUser.kakao = kakao;
+
+      jest.spyOn(repository, "save").mockResolvedValue(mockUser);
+
+      const users = Users.createNew({
+        nickname: mockUser.nickname,
+        authChannel: AuthChannel.KAKAO,
+      }).value as Users;
+
+      const kakaoResult = Kakao.createNew({
+        userId: users.id,
+        uniqueId: "164425",
+      });
+      users.setKakao(kakaoResult.value);
+
+      const result = await adaptor.update(users);
+
+      expect(repository.save).toHaveBeenCalled();
+      expect(result.kakao?.uniqueId).toBe("164425");
     });
   });
 });

@@ -1,4 +1,4 @@
-import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
+import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 
 export interface CreateUserUseCaseRequest {
   nickname: string;

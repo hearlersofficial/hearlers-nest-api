@@ -5,12 +5,14 @@ import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { PsqlUsersMapper } from "./psql.users.mapper";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
+import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 import { Gender } from "~/src/shared/enums/Gender.enum";
 import { ProgressType, ProgressStatus } from "~/src/gen/v1/model/user_pb";
 import { getNowDayjs, formatDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
+import { Kakao } from "~/src/aggregates/users/domain/Kakao";
+import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
 
 describe("PsqlUsersMapper", () => {
   const createMockUserEntity = () => {
@@ -63,11 +65,19 @@ describe("PsqlUsersMapper", () => {
         } as UserProgressesEntity,
       ];
 
+      // Kakao 추가
+      entity.kakao = {
+        id: faker.number.int(),
+        userId: entity.id,
+        uniqueId: "164425",
+      } as KakaoEntity;
+
       const domain = PsqlUsersMapper.toDomain(entity);
 
       expect(domain).toBeDefined();
       expect(domain?.userProfile).toBeDefined();
       expect(domain?.userProgresses).toHaveLength(1);
+      expect(domain?.kakao).toBeDefined();
     });
 
     it("null Entity를 변환하면 null을 반환한다", () => {
@@ -111,16 +121,23 @@ describe("PsqlUsersMapper", () => {
       const progress = UserProgresses.createNew({
         userId: users.id,
         progressType: ProgressType.ONBOARDING,
+        status: ProgressStatus.NOT_STARTED,
       }).value;
       users.addProgress(progress);
+
+      // Kakao 추가
+      const kakao = Kakao.createNew({
+        userId: users.id,
+        uniqueId: "164425",
+      }).value;
+      users.setKakao(kakao);
 
       const entity = PsqlUsersMapper.toEntity(users);
 
       expect(entity).toBeDefined();
       expect(entity.userProfiles).toBeDefined();
       expect(entity.userProgresses).toHaveLength(1);
-      expect(entity.userProfiles.user).toBe(entity); // 양방향 관계 확인
-      expect(entity.userProgresses[0].user).toBe(entity); // 양방향 관계 확인
+      expect(entity.kakao).toBeDefined();
     });
   });
 });

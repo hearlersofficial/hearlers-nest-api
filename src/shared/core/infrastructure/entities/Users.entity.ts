@@ -6,7 +6,7 @@ import { UserActivitiesEntity } from "~/src/shared/core/infrastructure/entities/
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
-import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
+import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 
 @Entity({
   name: "users",
@@ -30,14 +30,11 @@ export class UsersEntity extends CoreEntity {
   authChannel: AuthChannel;
 
   @OneToOne(() => KakaoEntity, (kakao) => kakao.user, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true,
   })
   kakao: KakaoEntity;
 
   @OneToOne(() => UserProfilesEntity, (userProfiles) => userProfiles.user, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
     cascade: true,
     nullable: true,
   })
@@ -53,20 +50,17 @@ export class UsersEntity extends CoreEntity {
   userProfilesId: number;
 
   @OneToMany(() => UserProgressesEntity, (userProgress) => userProgress.user, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true,
   })
   userProgresses: UserProgressesEntity[];
 
   @OneToMany(() => UserPromptsEntity, (userPrompt) => userPrompt.user, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true,
   })
   userPrompts: UserPromptsEntity[];
 
   @OneToMany(() => UserActivitiesEntity, (userActivity) => userActivity.user, {
-    onDelete: "CASCADE",
-    onUpdate: "CASCADE",
+    cascade: true,
   })
   userActivities: UserActivitiesEntity[];
 }

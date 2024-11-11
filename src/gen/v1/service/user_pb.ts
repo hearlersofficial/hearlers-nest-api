@@ -13,8 +13,12 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file v1/service/user.proto.
  */
-export const file_v1_service_user: GenFile = /*@__PURE__*/
-  fileDesc("ChV2MS9zZXJ2aWNlL3VzZXIucHJvdG8SF2NvbS5oZWFybGVycy52MS5zZXJ2aWNlIl8KEUNyZWF0ZVVzZXJSZXF1ZXN0EhAKCG5pY2tuYW1lGAEgASgJEjgKDGF1dGhfY2hhbm5lbBgCIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbCI9ChBDcmVhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciLQAQoSRmluZE9uZVVzZXJSZXF1ZXN0EhQKB3VzZXJfaWQYASABKAVIAIgBARIVCghuaWNrbmFtZRgCIAEoCUgBiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgCiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgDiAEBQgoKCF91c2VyX2lkQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWQiPgoRRmluZE9uZVVzZXJSZXN1bHQSKQoEdXNlchgBIAEoCzIbLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyIk0KE0ZpbmRNYW55VXNlclJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLmNvbS5oZWFybGVycy52MS5jb21tb24uUGFnaW5hdGlvbiJAChJGaW5kTWFueVVzZXJSZXN1bHQSKgoFdXNlcnMYASADKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciKOAgoRVXBkYXRlVXNlclJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoBRIVCghuaWNrbmFtZRgCIAEoCUgAiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgBiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgCiAEBEj0KDHVzZXJfcHJvZmlsZRgFIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZUgDiAEBQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWRCDwoNX3VzZXJfcHJvZmlsZSI9ChBVcGRhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlcjKaAwoLVXNlclNlcnZpY2USXwoGY3JlYXRlEiouY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuQ3JlYXRlVXNlclJlcXVlc3QaKS5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVVc2VyUmVzdWx0EmIKB2ZpbmRPbmUSKy5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lVXNlclJlcXVlc3QaKi5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lVXNlclJlc3VsdBJlCghmaW5kTWFueRIsLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkZpbmRNYW55VXNlclJlcXVlc3QaKy5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kTWFueVVzZXJSZXN1bHQSXwoGdXBkYXRlEiouY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuVXBkYXRlVXNlclJlcXVlc3QaKS5jb20uaGVhcmxlcnMudjEuc2VydmljZS5VcGRhdGVVc2VyUmVzdWx0QqgBChtjb20uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2VCCVVzZXJQcm90b1ABogIEQ0hWU6oCF0NvbS5IZWFybGVycy5WMS5TZXJ2aWNlygIXQ29tXEhlYXJsZXJzXFYxXFNlcnZpY2XiAiNDb21cSGVhcmxlcnNcVjFcU2VydmljZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpTZXJ2aWNlYgZwcm90bzM", [file_v1_model_user, file_v1_common_pagination]);
+export const file_v1_service_user: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    "ChV2MS9zZXJ2aWNlL3VzZXIucHJvdG8SF2NvbS5oZWFybGVycy52MS5zZXJ2aWNlIl8KEUNyZWF0ZVVzZXJSZXF1ZXN0EhAKCG5pY2tuYW1lGAEgASgJEjgKDGF1dGhfY2hhbm5lbBgCIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbCI9ChBDcmVhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciLQAQoSRmluZE9uZVVzZXJSZXF1ZXN0EhQKB3VzZXJfaWQYASABKAVIAIgBARIVCghuaWNrbmFtZRgCIAEoCUgBiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgCiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgDiAEBQgoKCF91c2VyX2lkQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWQiPgoRRmluZE9uZVVzZXJSZXN1bHQSKQoEdXNlchgBIAEoCzIbLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyIk0KE0ZpbmRNYW55VXNlclJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLmNvbS5oZWFybGVycy52MS5jb21tb24uUGFnaW5hdGlvbiJAChJGaW5kTWFueVVzZXJSZXN1bHQSKgoFdXNlcnMYASADKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciKOAgoRVXBkYXRlVXNlclJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoBRIVCghuaWNrbmFtZRgCIAEoCUgAiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgBiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgCiAEBEj0KDHVzZXJfcHJvZmlsZRgFIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZUgDiAEBQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWRCDwoNX3VzZXJfcHJvZmlsZSI9ChBVcGRhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlcjKaAwoLVXNlclNlcnZpY2USXwoGY3JlYXRlEiouY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuQ3JlYXRlVXNlclJlcXVlc3QaKS5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVVc2VyUmVzdWx0EmIKB2ZpbmRPbmUSKy5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lVXNlclJlcXVlc3QaKi5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lVXNlclJlc3VsdBJlCghmaW5kTWFueRIsLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkZpbmRNYW55VXNlclJlcXVlc3QaKy5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kTWFueVVzZXJSZXN1bHQSXwoGdXBkYXRlEiouY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuVXBkYXRlVXNlclJlcXVlc3QaKS5jb20uaGVhcmxlcnMudjEuc2VydmljZS5VcGRhdGVVc2VyUmVzdWx0QqgBChtjb20uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2VCCVVzZXJQcm90b1ABogIEQ0hWU6oCF0NvbS5IZWFybGVycy5WMS5TZXJ2aWNlygIXQ29tXEhlYXJsZXJzXFYxXFNlcnZpY2XiAiNDb21cSGVhcmxlcnNcVjFcU2VydmljZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpTZXJ2aWNlYgZwcm90bzM",
+    [file_v1_model_user, file_v1_common_pagination],
+  );
 
 /**
  * @generated from message com.hearlers.v1.service.CreateUserRequest
@@ -35,7 +39,8 @@ export type CreateUserRequest = Message<"com.hearlers.v1.service.CreateUserReque
  * Describes the message com.hearlers.v1.service.CreateUserRequest.
  * Use `create(CreateUserRequestSchema)` to create a new message.
  */
-export const CreateUserRequestSchema: GenMessage<CreateUserRequest> = /*@__PURE__*/
+export const CreateUserRequestSchema: GenMessage<CreateUserRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_service_user, 0);
 
 /**
@@ -52,8 +57,7 @@ export type CreateUserResult = Message<"com.hearlers.v1.service.CreateUserResult
  * Describes the message com.hearlers.v1.service.CreateUserResult.
  * Use `create(CreateUserResultSchema)` to create a new message.
  */
-export const CreateUserResultSchema: GenMessage<CreateUserResult> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 1);
+export const CreateUserResultSchema: GenMessage<CreateUserResult> = /*@__PURE__*/ messageDesc(file_v1_service_user, 1);
 
 /**
  * @generated from message com.hearlers.v1.service.FindOneUserRequest
@@ -61,7 +65,24 @@ export const CreateUserResultSchema: GenMessage<CreateUserResult> = /*@__PURE__*
 export type FindOneUserRequest = Message<"com.hearlers.v1.service.FindOneUserRequest"> & {
   /**
    * @generated from field: optional int32 user_id = 1;
+   * @generated from field: optional int32 user_id = 1;
    */
+  userId?: number;
+
+  /**
+   * @generated from field: optional string nickname = 2;
+   */
+  nickname?: string;
+
+  /**
+   * @generated from field: optional com.hearlers.v1.model.AuthChannel auth_channel = 3;
+   */
+  authChannel?: AuthChannel;
+
+  /**
+   * @generated from field: optional string unique_id = 4;
+   */
+  uniqueId?: string;
   userId?: number;
 
   /**
@@ -84,7 +105,8 @@ export type FindOneUserRequest = Message<"com.hearlers.v1.service.FindOneUserReq
  * Describes the message com.hearlers.v1.service.FindOneUserRequest.
  * Use `create(FindOneUserRequestSchema)` to create a new message.
  */
-export const FindOneUserRequestSchema: GenMessage<FindOneUserRequest> = /*@__PURE__*/
+export const FindOneUserRequestSchema: GenMessage<FindOneUserRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_service_user, 2);
 
 /**
@@ -103,7 +125,8 @@ export type FindOneUserResult = Message<"com.hearlers.v1.service.FindOneUserResu
  * Describes the message com.hearlers.v1.service.FindOneUserResult.
  * Use `create(FindOneUserResultSchema)` to create a new message.
  */
-export const FindOneUserResultSchema: GenMessage<FindOneUserResult> = /*@__PURE__*/
+export const FindOneUserResultSchema: GenMessage<FindOneUserResult> =
+  /*@__PURE__*/
   messageDesc(file_v1_service_user, 3);
 
 /**
@@ -120,7 +143,8 @@ export type FindManyUserRequest = Message<"com.hearlers.v1.service.FindManyUserR
  * Describes the message com.hearlers.v1.service.FindManyUserRequest.
  * Use `create(FindManyUserRequestSchema)` to create a new message.
  */
-export const FindManyUserRequestSchema: GenMessage<FindManyUserRequest> = /*@__PURE__*/
+export const FindManyUserRequestSchema: GenMessage<FindManyUserRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_service_user, 4);
 
 /**
@@ -137,7 +161,8 @@ export type FindManyUserResult = Message<"com.hearlers.v1.service.FindManyUserRe
  * Describes the message com.hearlers.v1.service.FindManyUserResult.
  * Use `create(FindManyUserResultSchema)` to create a new message.
  */
-export const FindManyUserResultSchema: GenMessage<FindManyUserResult> = /*@__PURE__*/
+export const FindManyUserResultSchema: GenMessage<FindManyUserResult> =
+  /*@__PURE__*/
   messageDesc(file_v1_service_user, 5);
 
 /**
@@ -174,7 +199,8 @@ export type UpdateUserRequest = Message<"com.hearlers.v1.service.UpdateUserReque
  * Describes the message com.hearlers.v1.service.UpdateUserRequest.
  * Use `create(UpdateUserRequestSchema)` to create a new message.
  */
-export const UpdateUserRequestSchema: GenMessage<UpdateUserRequest> = /*@__PURE__*/
+export const UpdateUserRequestSchema: GenMessage<UpdateUserRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_service_user, 6);
 
 /**
@@ -191,8 +217,7 @@ export type UpdateUserResult = Message<"com.hearlers.v1.service.UpdateUserResult
  * Describes the message com.hearlers.v1.service.UpdateUserResult.
  * Use `create(UpdateUserResultSchema)` to create a new message.
  */
-export const UpdateUserResultSchema: GenMessage<UpdateUserResult> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 7);
+export const UpdateUserResultSchema: GenMessage<UpdateUserResult> = /*@__PURE__*/ messageDesc(file_v1_service_user, 7);
 
 /**
  * @generated from service com.hearlers.v1.service.UserService
@@ -205,7 +230,7 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof CreateUserRequestSchema;
     output: typeof CreateUserResultSchema;
-  },
+  };
   /**
    * @generated from rpc com.hearlers.v1.service.UserService.findOne
    */
@@ -213,7 +238,7 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof FindOneUserRequestSchema;
     output: typeof FindOneUserResultSchema;
-  },
+  };
   /**
    * @generated from rpc com.hearlers.v1.service.UserService.findMany
    */
@@ -221,7 +246,7 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof FindManyUserRequestSchema;
     output: typeof FindManyUserResultSchema;
-  },
+  };
   /**
    * @generated from rpc com.hearlers.v1.service.UserService.update
    */
@@ -229,7 +254,5 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof UpdateUserRequestSchema;
     output: typeof UpdateUserResultSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_v1_service_user, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_v1_service_user, 0);

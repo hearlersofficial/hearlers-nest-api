@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne, RelationId } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, RelationId } from "typeorm";
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
-import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
+import { ProgressStatus } from "~/src/gen/v1/model/user_pb";
+import { ProgressType } from "~/src/gen/v1/model/user_pb";
 
 @Entity({ name: "user_progresses" })
 export class UserProgressesEntity extends CoreEntity {
@@ -33,6 +34,7 @@ export class UserProgressesEntity extends CoreEntity {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
+  @JoinColumn({ name: "user_id" })
   user: UsersEntity;
 
   @RelationId((userProgresses: UserProgressesEntity) => userProgresses.user)

@@ -1,17 +1,21 @@
 import { fakerKO as faker } from "@faker-js/faker";
-import { DomainEntity, DomainEntityNewProps } from "./DomainEntity";
+import { DomainEntity } from "./DomainEntity";
 import { UniqueEntityId } from "./UniqueEntityId";
 import { Result } from "./Result";
 import { DomainEvent } from "./events/DomainEvent";
+import { Dayjs } from "dayjs";
+import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 
-// 테스트를 위한 인터페이스 정의
-interface TestEntityProps {
+interface TestEntityNewProps {
   name: string;
   value: number;
 }
 
-interface TestEntityNewProps extends DomainEntityNewProps {
-  name: string;
+// 테스트를 위한 인터페이스 정의
+interface TestEntityProps extends TestEntityNewProps {
+  createdAt: Dayjs;
+  updatedAt: Dayjs;
+  deletedAt: Dayjs | null;
 }
 
 // 테스트용 도메인 이벤트 추가
@@ -24,19 +28,23 @@ class TestCreatedEvent implements DomainEvent {
 }
 
 // 테스트용 구현체
-class TestEntity extends DomainEntity<TestEntityProps, TestEntityNewProps> {
+class TestEntity extends DomainEntity<TestEntityProps> {
   private constructor(props: TestEntityProps, id: UniqueEntityId) {
     super(props, id);
   }
-  protected static override passFactory() {
-    return (props: TestEntityProps, id: UniqueEntityId): TestEntity => new TestEntity(props, id);
+
+  public static create(props: TestEntityProps, id: UniqueEntityId): Result<TestEntity> {
+    const testEntity = new TestEntity(props, id);
+    const validateResult = testEntity.validateDomain();
+    if (validateResult.isFailure) {
+      return Result.fail<TestEntity>(validateResult.error);
+    }
+    return Result.ok<TestEntity>(testEntity);
   }
 
-  protected override initializeEntityProps(newProps: TestEntityNewProps): TestEntityProps {
-    return {
-      name: newProps.name,
-      value: faker.number.int({ min: 1, max: 100 }),
-    };
+  public static createNew(newProps: TestEntityNewProps): Result<TestEntity> {
+    const now = getNowDayjs();
+    return this.create({ ...newProps, createdAt: now, updatedAt: now, deletedAt: null }, new UniqueEntityId());
   }
 
   protected validateDomain(): Result<void> {
@@ -67,7 +75,7 @@ describe("DomainEntity", () => {
   describe("createNew", () => {
     it("새로운 엔티티를 생성할 수 있다", () => {
       const name = faker.person.firstName();
-      const result = TestEntity.createNew({ name });
+      const result = TestEntity.createNew({ name, value: faker.number.int({ min: 1, max: 100 }) });
 
       expect(result.isSuccess).toBe(true);
       expect(result.value).toBeDefined();
@@ -79,7 +87,7 @@ describe("DomainEntity", () => {
     });
 
     it("유효하지 않은 데이터로 생성 시 실패한다", () => {
-      const result = TestEntity.createNew({ name: "" });
+      const result = TestEntity.createNew({ name: "", value: 0 });
 
       expect(result.isSuccess).toBe(false);
       expect(result.error).toBe("이름은 필수입니다");
@@ -91,6 +99,9 @@ describe("DomainEntity", () => {
       const props = {
         name: faker.person.firstName(),
         value: faker.number.int({ min: 1, max: 100 }),
+        createdAt: getNowDayjs(),
+        updatedAt: getNowDayjs(),
+        deletedAt: null,
       };
       const id = new UniqueEntityId(faker.number.int({ min: 1, max: 100 }));
 
@@ -104,18 +115,6 @@ describe("DomainEntity", () => {
         expect(result.value.id.equals(id)).toBe(true);
       }
     });
-
-    it("ID가 없으면 생성에 실패한다", () => {
-      const props = {
-        name: faker.person.firstName(),
-        value: faker.number.int({ min: 1, max: 100 }),
-      };
-
-      const result = TestEntity.create(props, null as any);
-
-      expect(result.isSuccess).toBe(false);
-      expect(result.error).toBe("ID는 필수입니다");
-    });
   });
 
   describe("equals", () => {
@@ -124,6 +123,9 @@ describe("DomainEntity", () => {
       const props = {
         name: faker.person.firstName(),
         value: faker.number.int({ min: 1, max: 100 }),
+        createdAt: getNowDayjs(),
+        updatedAt: getNowDayjs(),
+        deletedAt: null,
       };
 
       const entity1 = TestEntity.create(props, id).value as TestEntity;
@@ -136,6 +138,9 @@ describe("DomainEntity", () => {
       const props = {
         name: faker.person.firstName(),
         value: faker.number.int({ min: 1, max: 100 }),
+        createdAt: getNowDayjs(),
+        updatedAt: getNowDayjs(),
+        deletedAt: null,
       };
 
       const entity1 = TestEntity.create(props, new UniqueEntityId(1)).value as TestEntity;
@@ -148,7 +153,7 @@ describe("DomainEntity", () => {
   describe("도메인 이벤트", () => {
     it("도메인 이벤트를 추가하고 조회할 수 있다", () => {
       const name = faker.person.firstName();
-      const entity = TestEntity.createNew({ name }).value as TestEntity;
+      const entity = TestEntity.createNew({ name, value: faker.number.int({ min: 1, max: 100 }) }).value as TestEntity;
 
       entity.addTestEvent();
 
@@ -159,7 +164,7 @@ describe("DomainEntity", () => {
 
     it("이벤트를 초기화할 수 있다", () => {
       const name = faker.person.firstName();
-      const entity = TestEntity.createNew({ name }).value as TestEntity;
+      const entity = TestEntity.createNew({ name, value: faker.number.int({ min: 1, max: 100 }) }).value as TestEntity;
 
       entity.addTestEvent();
       expect(entity.domainEvents).toHaveLength(1);
@@ -170,7 +175,7 @@ describe("DomainEntity", () => {
 
     it("여러 이벤트를 순서대로 추가할 수 있다", () => {
       const name = faker.person.firstName();
-      const entity = TestEntity.createNew({ name }).value as TestEntity;
+      const entity = TestEntity.createNew({ name, value: faker.number.int({ min: 1, max: 100 }) }).value as TestEntity;
 
       entity.addTestEvent();
       entity.addTestEvent();

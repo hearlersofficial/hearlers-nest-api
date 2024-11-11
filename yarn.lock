@@ -4641,6 +4641,11 @@ jest-config@^29.7.0:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
+jest-date-mock@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.npmjs.org/jest-date-mock/-/jest-date-mock-1.0.10.tgz#eba83935971aa1ce9de979a693b3feb81c18ebc8"
+  integrity sha512-g0CM7mJHppz8SCayrtJ0Wm2ge8T0SiKCR9bmVLeflipqWjZ8hieNk6vBF0t3dJFc5jlsjvzTbRud8kPjoD0VgA==
+
 jest-diff@^29.7.0:
   version "29.7.0"
   resolved "https://registry.npmjs.org/jest-diff/-/jest-diff-29.7.0.tgz#017934a66ebb7ecf6f205e84699be10afd70458a"
