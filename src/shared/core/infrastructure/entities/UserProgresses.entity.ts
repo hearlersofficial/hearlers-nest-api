@@ -1,8 +1,7 @@
 import { Column, Entity, ManyToOne, RelationId } from "typeorm";
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
-import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
+import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 
 @Entity({ name: "user_progresses" })
 export class UserProgressesEntity extends CoreEntity {

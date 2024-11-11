@@ -1,10 +1,9 @@
 import { DomainEntity, DomainEntityNewProps } from "~/src/shared/core/domain/DomainEntity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 import { Result } from "~/src/shared/core/domain/Result";
+import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 
 interface UserProgressesNewProps extends DomainEntityNewProps {
   userId: UniqueEntityId;

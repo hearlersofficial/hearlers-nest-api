@@ -10,8 +10,7 @@ import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/Use
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
 import { Gender } from "~/src/shared/enums/Gender.enum";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
-import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
+import { ProgressType, ProgressStatus } from "~/src/gen/v1/model/user_pb";
 import { formatDayjs, getNowDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
 

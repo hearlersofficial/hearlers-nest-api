@@ -3,8 +3,7 @@ import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { PsqlUserProgressesMapper } from "./psql.userProgresses.mapper";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
-import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
+import { ProgressType, ProgressStatus } from "~/src/gen/v1/model/user_pb";
 import { getNowDayjs, formatDayjs } from "~/src/shared/utils/Date.utils";
 import { InternalServerErrorException } from "@nestjs/common";
 

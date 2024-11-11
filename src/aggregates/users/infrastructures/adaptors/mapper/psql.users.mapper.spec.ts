@@ -7,9 +7,8 @@ import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.ent
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
 import { Gender } from "~/src/shared/enums/Gender.enum";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
+import { ProgressType, ProgressStatus } from "~/src/gen/v1/model/user_pb";
 import { getNowDayjs, formatDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
-import { ProgressStatus } from "~/src/shared/enums/ProgressStatus.enum";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
 

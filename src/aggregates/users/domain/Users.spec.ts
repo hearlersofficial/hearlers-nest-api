@@ -3,13 +3,13 @@ import { fakerKO as faker } from "@faker-js/faker";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { AuthChannel } from "~/src/shared/enums/AuthChannel.enum";
 import { Gender } from "~/src/shared/enums/Gender.enum";
-import { ProgressType } from "~/src/shared/enums/ProgressType.enum";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { convertDayjs } from "~/src/shared/utils/Date.utils";
+import { ProgressType } from "~/src/gen/v1/model/user_pb";
 
 describe("Users", () => {
   const validNickname = "테스트유저";
@@ -121,7 +121,7 @@ describe("Users", () => {
 
       const progressResult = UserProgresses.createNew({
         userId: user.id,
-        progressType: ProgressType.FIRST_SESSION,
+        progressType: ProgressType.ONBOARDING,
       });
 
       expect(progressResult.isSuccess).toBe(true);
