@@ -6,15 +6,13 @@ import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
 import type { SortOrder } from "./sort_order_pb";
 import { file_v1_common_sort_order } from "./sort_order_pb";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/common/pagination.proto.
  */
 export const file_v1_common_pagination: GenFile = /*@__PURE__*/
-  fileDesc("Chp2MS9jb21tb24vcGFnaW5hdGlvbi5wcm90bxIWY29tLmhlYXJsZXJzLnYxLmNvbW1vbiJ9CgpQYWdpbmF0aW9uEjUKCnNvcnRfb3JkZXIYASABKA4yIS5jb20uaGVhcmxlcnMudjEuY29tbW9uLlNvcnRPcmRlchIpCgVzaW5jZRgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDQoFbGltaXQYAyABKAVCqQEKGmNvbS5jb20uaGVhcmxlcnMudjEuY29tbW9uQg9QYWdpbmF0aW9uUHJvdG9QAaICBENIVkOqAhZDb20uSGVhcmxlcnMuVjEuQ29tbW9uygIWQ29tXEhlYXJsZXJzXFYxXENvbW1vbuICIkNvbVxIZWFybGVyc1xWMVxDb21tb25cR1BCTWV0YWRhdGHqAhlDb206OkhlYXJsZXJzOjpWMTo6Q29tbW9uYgZwcm90bzM", [file_v1_common_sort_order, file_google_protobuf_timestamp]);
+  fileDesc("Chp2MS9jb21tb24vcGFnaW5hdGlvbi5wcm90bxIWY29tLmhlYXJsZXJzLnYxLmNvbW1vbiJhCgpQYWdpbmF0aW9uEjUKCnNvcnRfb3JkZXIYASABKA4yIS5jb20uaGVhcmxlcnMudjEuY29tbW9uLlNvcnRPcmRlchINCgVzaW5jZRgCIAEoCRINCgVsaW1pdBgDIAEoBUKpAQoaY29tLmNvbS5oZWFybGVycy52MS5jb21tb25CD1BhZ2luYXRpb25Qcm90b1ABogIEQ0hWQ6oCFkNvbS5IZWFybGVycy5WMS5Db21tb27KAhZDb21cSGVhcmxlcnNcVjFcQ29tbW9u4gIiQ29tXEhlYXJsZXJzXFYxXENvbW1vblxHUEJNZXRhZGF0YeoCGUNvbTo6SGVhcmxlcnM6OlYxOjpDb21tb25iBnByb3RvMw", [file_v1_common_sort_order]);
 
 /**
  * @generated from message com.hearlers.v1.common.Pagination
@@ -26,9 +24,9 @@ export type Pagination = Message<"com.hearlers.v1.common.Pagination"> & {
   sortOrder: SortOrder;
 
   /**
-   * @generated from field: google.protobuf.Timestamp since = 2;
+   * @generated from field: string since = 2;
    */
-  since?: Timestamp;
+  since: string;
 
   /**
    * @generated from field: int32 limit = 3;

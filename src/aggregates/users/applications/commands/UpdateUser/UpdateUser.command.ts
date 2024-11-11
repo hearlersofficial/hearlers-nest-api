@@ -1,5 +1,5 @@
 import { HttpStatus } from "@nestjs/common";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel, UserProfile } from "~/src/gen/v1/model/user_pb";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 
 export class UpdateUserCommand {
@@ -22,4 +22,5 @@ interface UpdateUserCommandProps {
   nickname?: string;
   authChannel?: AuthChannel;
   uniqueId?: string;
+  userProfile?: UserProfile;
 }

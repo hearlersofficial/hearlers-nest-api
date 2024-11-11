@@ -5,9 +5,11 @@ import { FindOneUserUseCase } from "../../useCases/FindOneUserUseCase/FindOneUse
 import { UpdateUserUseCase } from "../../useCases/UpdateUserUseCase/UpdateUserUseCase";
 import { Kakao } from "~/src/aggregates/users/domain/Kakao";
 import { Users, UsersProps } from "~/src/aggregates/users/domain/Users";
-import { AuthChannel, ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel, ProgressStatus, ProgressType, UserProfile } from "~/src/gen/v1/model/user_pb";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { Result } from "~/src/shared/core/domain/Result";
+import { UserProfiles, UserProfilesProps } from "~/src/aggregates/users/domain/UserProfiles";
+import { TimestampUtils } from "~/src/shared/utils/Date.utils";
 
 @CommandHandler(UpdateUserCommand)
 export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
@@ -17,7 +19,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   ) {}
 
   async execute(command: UpdateUserCommand): Promise<Users> {
-    const { userId, authChannel, uniqueId } = command.props;
+    const { userId, authChannel, uniqueId, userProfile } = command.props;
 
     // 기존 사용자 조회
     const findOneUserUseCaseResponse = await this.findOneUserUseCase.execute({ userId });
@@ -41,6 +43,18 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
         throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, authResult.error);
       }
     }
+    // 프로필 업데이트
+    if (userProfile) {
+      const updatedUserProfileProps = this.getUpdatedUserProfileProps(userProfile, originalUser);
+      const updatedUserProfileOrError = UserProfiles.create(updatedUserProfileProps, originalUser.id);
+      if (updatedUserProfileOrError.isFailure) {
+        throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, updatedUserProfileOrError.error);
+      }
+      const updateResult = toUpdateUser.setProfile(updatedUserProfileOrError.value);
+      if (updateResult.isFailure) {
+        throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, updateResult.error);
+      }
+    }
 
     // 사용자 업데이트
     const updateUserUseCaseResponse = await this.updateUserUseCase.execute({ toUpdateUser });
@@ -55,10 +69,25 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     const props = originalUser.propsValue;
     if (nickname) props.nickname = nickname;
     if (authChannel) props.authChannel = authChannel;
+
+    return props;
+  }
+
+  private getUpdatedUserProfileProps(userProfile: UserProfile, originalUser: Users): UserProfilesProps {
+    const { profileImage, phoneNumber, gender, birthday, introduction } = userProfile;
+    const props = originalUser.userProfile.propsValue;
+    if (profileImage) props.profileImage = profileImage;
+    if (phoneNumber) props.phoneNumber = phoneNumber;
+    if (gender) props.gender = gender;
+    if (birthday) props.birthday = TimestampUtils.timestampToDayjs(birthday);
+    if (introduction) props.introduction = introduction;
     return props;
   }
 
   private handleKakaoAuth(user: Users, uniqueId: string): Result<void> {
+    if (user.authChannel === AuthChannel.KAKAO) {
+      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "이미 카카오 인증된 사용자입니다.");
+    }
     const kakaoOrError = Kakao.createNew({ userId: user.id, uniqueId });
     if (kakaoOrError.isFailure) {
       return Result.fail(kakaoOrError.error);

@@ -11,12 +11,8 @@ import type { Message } from "@bufbuild/protobuf";
 /**
  * Describes the file v1/model/user.proto.
  */
-export const file_v1_model_user: GenFile =
-  /*@__PURE__*/
-  fileDesc(
-    "ChN2MS9tb2RlbC91c2VyLnByb3RvEhVjb20uaGVhcmxlcnMudjEubW9kZWwi5gIKBFVzZXISCgoCaWQYASABKAUSEAoIbmlja25hbWUYAiABKAkSOAoMYXV0aF9jaGFubmVsGAMgASgOMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhDaGFubmVsEjgKDHVzZXJfcHJvZmlsZRgEIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZRI8Cg91c2VyX3Byb2dyZXNzZXMYBSADKAsyIy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlclByb2dyZXNzEi4KCmNyZWF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmRlbGV0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIr0CCgtVc2VyUHJvZmlsZRIVCg1wcm9maWxlX2ltYWdlGAEgASgJEhQKDHBob25lX251bWJlchgCIAEoCRItCgZnZW5kZXIYAyABKA4yHS5jb20uaGVhcmxlcnMudjEubW9kZWwuR2VuZGVyEiwKCGJpcnRoZGF5GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIUCgxpbnRyb2R1Y3Rpb24YBSABKAkSLgoKY3JlYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZGVsZXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiwwIKDFVzZXJQcm9ncmVzcxI6Cg1wcm9ncmVzc190eXBlGAEgASgOMiMuY29tLmhlYXJsZXJzLnYxLm1vZGVsLlByb2dyZXNzVHlwZRI1CgZzdGF0dXMYAiABKA4yJS5jb20uaGVhcmxlcnMudjEubW9kZWwuUHJvZ3Jlc3NTdGF0dXMSMAoMbGFzdF91cGRhdGVkGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpkZWxldGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCpUCgtBdXRoQ2hhbm5lbBIVChFBVVRIX0NIQU5ORUxfTk9ORRAAEhYKEkFVVEhfQ0hBTk5FTF9LQUtBTxABEhYKEkFVVEhfQ0hBTk5FTF9OQVZFUhACKj0KBkdlbmRlchIPCgtHRU5ERVJfTk9ORRAAEg8KC0dFTkRFUl9NQUxFEAESEQoNR0VOREVSX0ZFTUFMRRACKo4BCg5Qcm9ncmVzc1N0YXR1cxIfChtQUk9HUkVTU19TVEFUVVNfTk9UX1NUQVJURUQQABIfChtQUk9HUkVTU19TVEFUVVNfSU5fUFJPR1JFU1MQARIdChlQUk9HUkVTU19TVEFUVVNfQ09NUExFVEVEEAISGwoXUFJPR1JFU1NfU1RBVFVTX0JMT0NLRUQQAypMCgxQcm9ncmVzc1R5cGUSHAoYUFJPR1JFU1NfVFlQRV9PTkJPQVJESU5HEAASHgoaUFJPR1JFU1NfVFlQRV9WRVJJRklDQVRJT04QAUKeAQoZY29tLmNvbS5oZWFybGVycy52MS5tb2RlbEIJVXNlclByb3RvUAGiAgRDSFZNqgIVQ29tLkhlYXJsZXJzLlYxLk1vZGVsygIVQ29tXEhlYXJsZXJzXFYxXE1vZGVs4gIhQ29tXEhlYXJsZXJzXFYxXE1vZGVsXEdQQk1ldGFkYXRh6gIYQ29tOjpIZWFybGVyczo6VjE6Ok1vZGVsYgZwcm90bzM",
-    [file_google_protobuf_timestamp],
-  );
+export const file_v1_model_user: GenFile = /*@__PURE__*/
+  fileDesc("ChN2MS9tb2RlbC91c2VyLnByb3RvEhVjb20uaGVhcmxlcnMudjEubW9kZWwi5gIKBFVzZXISCgoCaWQYASABKAUSEAoIbmlja25hbWUYAiABKAkSOAoMYXV0aF9jaGFubmVsGAMgASgOMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhDaGFubmVsEjgKDHVzZXJfcHJvZmlsZRgEIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZRI8Cg91c2VyX3Byb2dyZXNzZXMYBSADKAsyIy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlclByb2dyZXNzEi4KCmNyZWF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmRlbGV0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIr0CCgtVc2VyUHJvZmlsZRIVCg1wcm9maWxlX2ltYWdlGAEgASgJEhQKDHBob25lX251bWJlchgCIAEoCRItCgZnZW5kZXIYAyABKA4yHS5jb20uaGVhcmxlcnMudjEubW9kZWwuR2VuZGVyEiwKCGJpcnRoZGF5GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIUCgxpbnRyb2R1Y3Rpb24YBSABKAkSLgoKY3JlYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZGVsZXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiwwIKDFVzZXJQcm9ncmVzcxI6Cg1wcm9ncmVzc190eXBlGAEgASgOMiMuY29tLmhlYXJsZXJzLnYxLm1vZGVsLlByb2dyZXNzVHlwZRI1CgZzdGF0dXMYAiABKA4yJS5jb20uaGVhcmxlcnMudjEubW9kZWwuUHJvZ3Jlc3NTdGF0dXMSMAoMbGFzdF91cGRhdGVkGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpkZWxldGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCpUCgtBdXRoQ2hhbm5lbBIVChFBVVRIX0NIQU5ORUxfTk9ORRAAEhYKEkFVVEhfQ0hBTk5FTF9LQUtBTxABEhYKEkFVVEhfQ0hBTk5FTF9OQVZFUhACKj0KBkdlbmRlchIPCgtHRU5ERVJfTk9ORRAAEg8KC0dFTkRFUl9NQUxFEAESEQoNR0VOREVSX0ZFTUFMRRACKo4BCg5Qcm9ncmVzc1N0YXR1cxIfChtQUk9HUkVTU19TVEFUVVNfTk9UX1NUQVJURUQQABIfChtQUk9HUkVTU19TVEFUVVNfSU5fUFJPR1JFU1MQARIdChlQUk9HUkVTU19TVEFUVVNfQ09NUExFVEVEEAISGwoXUFJPR1JFU1NfU1RBVFVTX0JMT0NLRUQQAypMCgxQcm9ncmVzc1R5cGUSHAoYUFJPR1JFU1NfVFlQRV9PTkJPQVJESU5HEAASHgoaUFJPR1JFU1NfVFlQRV9WRVJJRklDQVRJT04QAUKeAQoZY29tLmNvbS5oZWFybGVycy52MS5tb2RlbEIJVXNlclByb3RvUAGiAgRDSFZNqgIVQ29tLkhlYXJsZXJzLlYxLk1vZGVsygIVQ29tXEhlYXJsZXJzXFYxXE1vZGVs4gIhQ29tXEhlYXJsZXJzXFYxXE1vZGVsXEdQQk1ldGFkYXRh6gIYQ29tOjpIZWFybGVyczo6VjE6Ok1vZGVsYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message com.hearlers.v1.model.User
@@ -67,7 +63,8 @@ export type User = Message<"com.hearlers.v1.model.User"> & {
  * Describes the message com.hearlers.v1.model.User.
  * Use `create(UserSchema)` to create a new message.
  */
-export const UserSchema: GenMessage<User> = /*@__PURE__*/ messageDesc(file_v1_model_user, 0);
+export const UserSchema: GenMessage<User> = /*@__PURE__*/
+  messageDesc(file_v1_model_user, 0);
 
 /**
  * @generated from message com.hearlers.v1.model.UserProfile
@@ -118,7 +115,8 @@ export type UserProfile = Message<"com.hearlers.v1.model.UserProfile"> & {
  * Describes the message com.hearlers.v1.model.UserProfile.
  * Use `create(UserProfileSchema)` to create a new message.
  */
-export const UserProfileSchema: GenMessage<UserProfile> = /*@__PURE__*/ messageDesc(file_v1_model_user, 1);
+export const UserProfileSchema: GenMessage<UserProfile> = /*@__PURE__*/
+  messageDesc(file_v1_model_user, 1);
 
 /**
  * @generated from message com.hearlers.v1.model.UserProgress
@@ -126,12 +124,10 @@ export const UserProfileSchema: GenMessage<UserProfile> = /*@__PURE__*/ messageD
 export type UserProgress = Message<"com.hearlers.v1.model.UserProgress"> & {
   /**
    * @generated from field: com.hearlers.v1.model.ProgressType progress_type = 1;
-   * @generated from field: com.hearlers.v1.model.ProgressType progress_type = 1;
    */
   progressType: ProgressType;
 
   /**
-   * @generated from field: com.hearlers.v1.model.ProgressStatus status = 2;
    * @generated from field: com.hearlers.v1.model.ProgressStatus status = 2;
    */
   status: ProgressStatus;
@@ -161,7 +157,8 @@ export type UserProgress = Message<"com.hearlers.v1.model.UserProgress"> & {
  * Describes the message com.hearlers.v1.model.UserProgress.
  * Use `create(UserProgressSchema)` to create a new message.
  */
-export const UserProgressSchema: GenMessage<UserProgress> = /*@__PURE__*/ messageDesc(file_v1_model_user, 2);
+export const UserProgressSchema: GenMessage<UserProgress> = /*@__PURE__*/
+  messageDesc(file_v1_model_user, 2);
 
 /**
  * @generated from enum com.hearlers.v1.model.AuthChannel
@@ -186,7 +183,8 @@ export enum AuthChannel {
 /**
  * Describes the enum com.hearlers.v1.model.AuthChannel.
  */
-export const AuthChannelSchema: GenEnum<AuthChannel> = /*@__PURE__*/ enumDesc(file_v1_model_user, 0);
+export const AuthChannelSchema: GenEnum<AuthChannel> = /*@__PURE__*/
+  enumDesc(file_v1_model_user, 0);
 
 /**
  * @generated from enum com.hearlers.v1.model.Gender
@@ -211,7 +209,8 @@ export enum Gender {
 /**
  * Describes the enum com.hearlers.v1.model.Gender.
  */
-export const GenderSchema: GenEnum<Gender> = /*@__PURE__*/ enumDesc(file_v1_model_user, 1);
+export const GenderSchema: GenEnum<Gender> = /*@__PURE__*/
+  enumDesc(file_v1_model_user, 1);
 
 /**
  * @generated from enum com.hearlers.v1.model.ProgressStatus
@@ -241,7 +240,8 @@ export enum ProgressStatus {
 /**
  * Describes the enum com.hearlers.v1.model.ProgressStatus.
  */
-export const ProgressStatusSchema: GenEnum<ProgressStatus> = /*@__PURE__*/ enumDesc(file_v1_model_user, 2);
+export const ProgressStatusSchema: GenEnum<ProgressStatus> = /*@__PURE__*/
+  enumDesc(file_v1_model_user, 2);
 
 /**
  * @generated from enum com.hearlers.v1.model.ProgressType
@@ -254,13 +254,13 @@ export enum ProgressType {
 
   /**
    * @generated from enum value: PROGRESS_TYPE_VERIFICATION = 1;
-   * @generated from enum value: PROGRESS_TYPE_VERIFICATION = 1;
    */
-  VERIFICATION = 1,
   VERIFICATION = 1,
 }
 
 /**
  * Describes the enum com.hearlers.v1.model.ProgressType.
  */
-export const ProgressTypeSchema: GenEnum<ProgressType> = /*@__PURE__*/ enumDesc(file_v1_model_user, 3);
+export const ProgressTypeSchema: GenEnum<ProgressType> = /*@__PURE__*/
+  enumDesc(file_v1_model_user, 3);
+

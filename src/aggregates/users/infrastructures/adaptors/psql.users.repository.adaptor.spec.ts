@@ -99,6 +99,7 @@ describe("PsqlUsersRepositoryAdaptor", () => {
           useValue: {
             findOne: jest.fn(),
             save: jest.fn(),
+            create: jest.fn(),
           },
         },
       ],
@@ -181,7 +182,7 @@ describe("PsqlUsersRepositoryAdaptor", () => {
       kakao.userId = mockUser.id;
       kakao.uniqueId = faker.string.numeric(10);
       mockUser.kakao = kakao;
-
+      jest.spyOn(repository, "create").mockReturnValue(mockUser);
       jest.spyOn(repository, "save").mockResolvedValue(mockUser);
 
       const users = Users.createNew({
@@ -194,7 +195,6 @@ describe("PsqlUsersRepositoryAdaptor", () => {
         uniqueId: kakao.uniqueId,
       });
       users.setKakao(kakaoResult.value);
-
       const result = await adaptor.create(users);
 
       expect(repository.save).toHaveBeenCalled();

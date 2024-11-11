@@ -14,7 +14,7 @@ interface UserProfilesNewProps {
   introduction: string;
 }
 
-interface UserProfilesProps extends UserProfilesNewProps {
+export interface UserProfilesProps extends UserProfilesNewProps {
   createdAt: Dayjs;
   updatedAt: Dayjs;
   deletedAt: Dayjs | null;
