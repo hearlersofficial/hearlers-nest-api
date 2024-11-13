@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import { CounselsServiceModule } from "~/src/services/counselings/counsels.service.module";
 import { UsersServiceModule } from "~/src/services/users/users.service.module";
 dotenv.config({ path: [".env", ".env.dev"] });
 
@@ -6,7 +7,7 @@ import { createGrpcMicroservice, serviceConfigs, ServiceType } from "~/src/share
 
 const moduleMap = {
   [ServiceType.USERS]: UsersServiceModule,
-  // [ServiceType.COUNSELINGS]: CounselingsModule,
+  [ServiceType.COUNSELINGS]: CounselsServiceModule,
 };
 
 async function bootstrap(): Promise<void> {

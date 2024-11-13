@@ -3,12 +3,15 @@ import { ConfigModule } from "@nestjs/config";
 import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { CqrsModule } from "@nestjs/cqrs";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { CounselsModule } from "~/src/aggregates/counsels/counsels.module";
+import { GrpcCounselCommandController } from "~/src/services/counselings/presentations/grpc/command/counsels.command.controller";
 import { TypeOrmConfigs } from "~/src/shared/core/infrastructure/Config";
 import { AllExceptionFilter } from "~/src/shared/filters/GrpcExceptionFilter";
 import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor";
 
 @Module({
   imports: [
+    CounselsModule,
     CqrsModule,
     ConfigModule.forRoot({
       envFilePath: [".env", ".env.dev"],
@@ -18,7 +21,7 @@ import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor
       useClass: TypeOrmConfigs,
     }),
   ],
-  controllers: [],
+  controllers: [GrpcCounselCommandController],
   providers: [
     {
       provide: APP_FILTER,
@@ -30,8 +33,8 @@ import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor
     },
   ],
 })
-export class CounselingsServiceModule implements OnModuleInit {
-  private readonly logger = new Logger(CounselingsServiceModule.name);
+export class CounselsServiceModule implements OnModuleInit {
+  private readonly logger = new Logger(CounselsServiceModule.name);
 
   async onModuleInit() {
     this.logger.log("Counselings Service Module has been initialized");
