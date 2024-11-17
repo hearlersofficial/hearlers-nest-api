@@ -1,8 +1,8 @@
 import { fakerKO as faker } from "@faker-js/faker";
 
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { AuthChannel, ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
-import { Gender } from "~/src/shared/enums/Gender.enum";
+import { AuthChannel, Mbti, ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
+import { Gender } from "~/src/gen/v1/model/user_pb";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
@@ -75,6 +75,7 @@ describe("Users", () => {
         profileImage: faker.image.avatar(),
         phoneNumber: validPhoneNumber,
         gender: Gender.MALE,
+        mbti: Mbti.ENFP,
         birthday: convertDayjs("1990-01-01"),
         introduction: faker.lorem.paragraph(),
       });
@@ -99,6 +100,7 @@ describe("Users", () => {
         profileImage: faker.image.avatar(),
         phoneNumber: validPhoneNumber,
         gender: Gender.MALE,
+        mbti: Mbti.ENFP,
         birthday: convertDayjs("1990-01-01"),
         introduction: faker.lorem.paragraph(),
       });

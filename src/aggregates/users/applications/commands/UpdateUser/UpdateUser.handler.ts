@@ -74,13 +74,14 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   }
 
   private getUpdatedUserProfileProps(userProfile: UserProfile, originalUser: Users): UserProfilesProps {
-    const { profileImage, phoneNumber, gender, birthday, introduction } = userProfile;
+    const { profileImage, phoneNumber, gender, birthday, introduction, mbti } = userProfile;
     const props = originalUser.userProfile.propsValue;
     if (profileImage) props.profileImage = profileImage;
     if (phoneNumber) props.phoneNumber = phoneNumber;
     if (gender) props.gender = gender;
     if (birthday) props.birthday = TimestampUtils.timestampToDayjs(birthday);
     if (introduction) props.introduction = introduction;
+    if (mbti) props.mbti = mbti;
     return props;
   }
 

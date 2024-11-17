@@ -4,17 +4,18 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
-import type { AuthChannel, User, UserProfile } from "../model/user_pb";
+import type { ActivityType, AuthChannel, DevicePlatform, User, UserActivity, UserProfile } from "../model/user_pb";
 import { file_v1_model_user } from "../model/user_pb";
 import type { Pagination } from "../common/pagination_pb";
 import { file_v1_common_pagination } from "../common/pagination_pb";
-import type { Message } from "@bufbuild/protobuf";
+import { file_google_protobuf_struct } from "@bufbuild/protobuf/wkt";
+import type { JsonObject, Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/service/user.proto.
  */
 export const file_v1_service_user: GenFile = /*@__PURE__*/
-  fileDesc("ChV2MS9zZXJ2aWNlL3VzZXIucHJvdG8SF2NvbS5oZWFybGVycy52MS5zZXJ2aWNlIl8KEUNyZWF0ZVVzZXJSZXF1ZXN0EhAKCG5pY2tuYW1lGAEgASgJEjgKDGF1dGhfY2hhbm5lbBgCIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbCI9ChBDcmVhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciLQAQoSRmluZE9uZVVzZXJSZXF1ZXN0EhQKB3VzZXJfaWQYASABKAVIAIgBARIVCghuaWNrbmFtZRgCIAEoCUgBiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgCiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgDiAEBQgoKCF91c2VyX2lkQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWQiPgoRRmluZE9uZVVzZXJSZXN1bHQSKQoEdXNlchgBIAEoCzIbLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyIk0KE0ZpbmRNYW55VXNlclJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLmNvbS5oZWFybGVycy52MS5jb21tb24uUGFnaW5hdGlvbiJAChJGaW5kTWFueVVzZXJSZXN1bHQSKgoFdXNlcnMYASADKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciKOAgoRVXBkYXRlVXNlclJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoBRIVCghuaWNrbmFtZRgCIAEoCUgAiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgBiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgCiAEBEj0KDHVzZXJfcHJvZmlsZRgFIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZUgDiAEBQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWRCDwoNX3VzZXJfcHJvZmlsZSI9ChBVcGRhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlcjKzAgoLVXNlclNlcnZpY2USXwoGY3JlYXRlEiouY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuQ3JlYXRlVXNlclJlcXVlc3QaKS5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVVc2VyUmVzdWx0EmIKB2ZpbmRPbmUSKy5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lVXNlclJlcXVlc3QaKi5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lVXNlclJlc3VsdBJfCgZ1cGRhdGUSKi5jb20uaGVhcmxlcnMudjEuc2VydmljZS5VcGRhdGVVc2VyUmVxdWVzdBopLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLlVwZGF0ZVVzZXJSZXN1bHRCqAEKG2NvbS5jb20uaGVhcmxlcnMudjEuc2VydmljZUIJVXNlclByb3RvUAGiAgRDSFZTqgIXQ29tLkhlYXJsZXJzLlYxLlNlcnZpY2XKAhdDb21cSGVhcmxlcnNcVjFcU2VydmljZeICI0NvbVxIZWFybGVyc1xWMVxTZXJ2aWNlXEdQQk1ldGFkYXRh6gIaQ29tOjpIZWFybGVyczo6VjE6OlNlcnZpY2ViBnByb3RvMw", [file_v1_model_user, file_v1_common_pagination]);
+  fileDesc("ChV2MS9zZXJ2aWNlL3VzZXIucHJvdG8SF2NvbS5oZWFybGVycy52MS5zZXJ2aWNlIl8KEUNyZWF0ZVVzZXJSZXF1ZXN0EhAKCG5pY2tuYW1lGAEgASgJEjgKDGF1dGhfY2hhbm5lbBgCIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbCI9ChBDcmVhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciLQAQoSRmluZE9uZVVzZXJSZXF1ZXN0EhQKB3VzZXJfaWQYASABKAVIAIgBARIVCghuaWNrbmFtZRgCIAEoCUgBiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgCiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgDiAEBQgoKCF91c2VyX2lkQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWQiPgoRRmluZE9uZVVzZXJSZXN1bHQSKQoEdXNlchgBIAEoCzIbLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyIk0KE0ZpbmRNYW55VXNlclJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLmNvbS5oZWFybGVycy52MS5jb21tb24uUGFnaW5hdGlvbiJAChJGaW5kTWFueVVzZXJSZXN1bHQSKgoFdXNlcnMYASADKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciKOAgoRVXBkYXRlVXNlclJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoBRIVCghuaWNrbmFtZRgCIAEoCUgAiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgBiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgCiAEBEj0KDHVzZXJfcHJvZmlsZRgFIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZUgDiAEBQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWRCDwoNX3VzZXJfcHJvZmlsZSI9ChBVcGRhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciL+AQoVQ3JlYXRlQWN0aXZpdHlSZXF1ZXN0EjoKDWFjdGl2aXR5X3R5cGUYASABKA4yIy5jb20uaGVhcmxlcnMudjEubW9kZWwuQWN0aXZpdHlUeXBlEi4KDWFjdGl2aXR5X2RhdGEYAiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0EjcKCHBsYXRmb3JtGAMgASgOMiUuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkRldmljZVBsYXRmb3JtEhIKCmlwX2FkZHJlc3MYBCABKAkSEgoKdXNlcl9hZ2VudBgFIAEoCRIYChBkdXJhdGlvbl9zZWNvbmRzGAYgASgFIlIKFENyZWF0ZUFjdGl2aXR5UmVzdWx0EjoKDXVzZXJfYWN0aXZpdHkYASABKAsyIy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlckFjdGl2aXR5MqQDCgtVc2VyU2VydmljZRJfCgZjcmVhdGUSKi5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVVc2VyUmVxdWVzdBopLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkNyZWF0ZVVzZXJSZXN1bHQSYgoHZmluZE9uZRIrLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkZpbmRPbmVVc2VyUmVxdWVzdBoqLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkZpbmRPbmVVc2VyUmVzdWx0El8KBnVwZGF0ZRIqLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLlVwZGF0ZVVzZXJSZXF1ZXN0GikuY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuVXBkYXRlVXNlclJlc3VsdBJvCg5jcmVhdGVBY3Rpdml0eRIuLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkNyZWF0ZUFjdGl2aXR5UmVxdWVzdBotLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkNyZWF0ZUFjdGl2aXR5UmVzdWx0QqgBChtjb20uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2VCCVVzZXJQcm90b1ABogIEQ0hWU6oCF0NvbS5IZWFybGVycy5WMS5TZXJ2aWNlygIXQ29tXEhlYXJsZXJzXFYxXFNlcnZpY2XiAiNDb21cSGVhcmxlcnNcVjFcU2VydmljZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpTZXJ2aWNlYgZwcm90bzM", [file_v1_model_user, file_v1_common_pagination, file_google_protobuf_struct]);
 
 /**
  * @generated from message com.hearlers.v1.service.CreateUserRequest
@@ -195,6 +196,65 @@ export const UpdateUserResultSchema: GenMessage<UpdateUserResult> = /*@__PURE__*
   messageDesc(file_v1_service_user, 7);
 
 /**
+ * @generated from message com.hearlers.v1.service.CreateActivityRequest
+ */
+export type CreateActivityRequest = Message<"com.hearlers.v1.service.CreateActivityRequest"> & {
+  /**
+   * @generated from field: com.hearlers.v1.model.ActivityType activity_type = 1;
+   */
+  activityType: ActivityType;
+
+  /**
+   * @generated from field: google.protobuf.Struct activity_data = 2;
+   */
+  activityData?: JsonObject;
+
+  /**
+   * @generated from field: com.hearlers.v1.model.DevicePlatform platform = 3;
+   */
+  platform: DevicePlatform;
+
+  /**
+   * @generated from field: string ip_address = 4;
+   */
+  ipAddress: string;
+
+  /**
+   * @generated from field: string user_agent = 5;
+   */
+  userAgent: string;
+
+  /**
+   * @generated from field: int32 duration_seconds = 6;
+   */
+  durationSeconds: number;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.CreateActivityRequest.
+ * Use `create(CreateActivityRequestSchema)` to create a new message.
+ */
+export const CreateActivityRequestSchema: GenMessage<CreateActivityRequest> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 8);
+
+/**
+ * @generated from message com.hearlers.v1.service.CreateActivityResult
+ */
+export type CreateActivityResult = Message<"com.hearlers.v1.service.CreateActivityResult"> & {
+  /**
+   * @generated from field: com.hearlers.v1.model.UserActivity user_activity = 1;
+   */
+  userActivity?: UserActivity;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.CreateActivityResult.
+ * Use `create(CreateActivityResultSchema)` to create a new message.
+ */
+export const CreateActivityResultSchema: GenMessage<CreateActivityResult> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 9);
+
+/**
  * @generated from service com.hearlers.v1.service.UserService
  */
 export const UserService: GenService<{
@@ -223,6 +283,14 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof UpdateUserRequestSchema;
     output: typeof UpdateUserResultSchema;
+  },
+  /**
+   * @generated from rpc com.hearlers.v1.service.UserService.createActivity
+   */
+  createActivity: {
+    methodKind: "unary";
+    input: typeof CreateActivityRequestSchema;
+    output: typeof CreateActivityResultSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_v1_service_user, 0);

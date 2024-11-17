@@ -3,11 +3,10 @@ import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
-import { AuthChannel, ProgressType } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel, Gender, Mbti, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
-import { Gender } from "~/src/shared/enums/Gender.enum";
 import { Kakao } from "~/src/aggregates/users/domain/Kakao";
 
 interface UsersNewProps {
@@ -52,6 +51,7 @@ export class Users extends AggregateRoot<UsersProps> {
           profileImage: "",
           phoneNumber: "",
           gender: Gender.NONE,
+          mbti: Mbti.NONE,
           birthday: getNowDayjs(),
           introduction: "",
         }).value,

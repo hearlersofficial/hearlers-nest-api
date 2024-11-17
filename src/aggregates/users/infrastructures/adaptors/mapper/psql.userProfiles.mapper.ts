@@ -18,6 +18,7 @@ export class PsqlUserProfilesMapper {
       gender: entity.gender,
       birthday: convertDayjs(entity.birthday),
       introduction: entity.introduction,
+      mbti: entity.mbti,
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
       deletedAt: entity.deletedAt ? convertDayjs(entity.deletedAt) : null,
@@ -50,6 +51,7 @@ export class PsqlUserProfilesMapper {
     entity.gender = userProfiles.gender;
     entity.birthday = formatDayjs(userProfiles.birthday);
     entity.introduction = userProfiles.introduction;
+    entity.mbti = userProfiles.mbti;
     entity.createdAt = formatDayjs(userProfiles.createdAt);
     entity.updatedAt = formatDayjs(userProfiles.updatedAt);
     entity.deletedAt = userProfiles.deletedAt ? formatDayjs(userProfiles.deletedAt) : null;

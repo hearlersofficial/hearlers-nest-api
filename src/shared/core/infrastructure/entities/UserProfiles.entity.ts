@@ -1,8 +1,7 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
-
-import { Gender } from "~/src/shared/enums/Gender.enum";
 
 @Entity({ name: "user_profiles" })
 export class UserProfilesEntity extends CoreEntity {
@@ -19,6 +18,15 @@ export class UserProfilesEntity extends CoreEntity {
     comment: "전화번호",
   })
   phoneNumber: string;
+
+  @Column({
+    type: "enum",
+    name: "mbti",
+    enum: Mbti,
+    nullable: true,
+    comment: "MBTI",
+  })
+  mbti: Mbti;
 
   @Column({
     type: "enum",
