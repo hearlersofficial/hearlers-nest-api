@@ -14,7 +14,8 @@ interface CounselsNewProps {
 
 interface CounselsProps extends CounselsNewProps {
   counselStage: CounselStage;
-  counselMessages: CounselMessages[];
+  lastChatedAt: Dayjs | null;
+  lastMessage: string | null;
   createdAt: Dayjs;
   updatedAt: Dayjs;
   deletedAt: Dayjs | null;
@@ -40,8 +41,9 @@ export class Counsels extends AggregateRoot<CounselsProps> {
     return this.create(
       {
         ...newProps,
-        counselMessages: [],
         counselStage: CounselStage.SMALL_TALK,
+        lastChatedAt: null,
+        lastMessage: null,
         createdAt: now,
         updatedAt: now,
         deletedAt: null,
@@ -69,13 +71,6 @@ export class Counsels extends AggregateRoot<CounselsProps> {
       return Result.fail<void>("[Counsels] 유효하지 않은 상담 단계입니다");
     }
 
-    // counselMessages 검증
-    for (const counselMessage of this.props.counselMessages) {
-      if (!counselMessage.counselId.equals(this.id)) {
-        return Result.fail<void>("[Counsels] 메시지의 상담 ID가 일치하지 않습니다");
-      }
-    }
-
     // 날짜 검증
     if (!this.props.createdAt) {
       return Result.fail<void>("[Counsels] 생성 시간은 필수입니다");
@@ -100,8 +95,12 @@ export class Counsels extends AggregateRoot<CounselsProps> {
     return this.props.counselStage;
   }
 
-  get counselMessages(): CounselMessages[] {
-    return this.props.counselMessages;
+  get lastChatedAt(): Dayjs | null {
+    return this.props.lastChatedAt;
+  }
+
+  get lastMessage(): string | null {
+    return this.props.lastMessage;
   }
 
   get createdAt(): Dayjs {
@@ -123,12 +122,12 @@ export class Counsels extends AggregateRoot<CounselsProps> {
     return Result.ok<void>();
   }
 
-  public addMessage(counselMessage: CounselMessages): Result<void> {
+  public saveLastMessage(counselMessage: CounselMessages): Result<void> {
     if (!counselMessage.counselId.equals(this.id)) {
       return Result.fail<void>("[Counsels] 메시지의 상담 ID가 일치하지 않습니다");
     }
-    this.props.counselMessages.push(counselMessage);
-    this.props.updatedAt = getNowDayjs();
+    this.props.lastMessage = counselMessage.message;
+    this.props.lastChatedAt = counselMessage.createdAt;
     return Result.ok<void>();
   }
 

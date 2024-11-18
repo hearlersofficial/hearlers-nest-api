@@ -33,6 +33,22 @@ export class CounselsEntity extends CoreEntity {
   })
   counselStage: CounselStage;
 
+  @Column({
+    name: "last_chated_at",
+    type: "timestamp",
+    nullable: true,
+    comment: "마지막 채팅일시 (한국시간)",
+  })
+  lastChatedAt: string | null;
+
+  @Column({
+    name: "last_message",
+    type: "varchar",
+    nullable: true,
+    comment: "마지막 메시지",
+  })
+  lastMessage: string | null;
+
   @OneToMany(() => CounselMessagesEntity, (counselMessage) => counselMessage.counsel, {
     onDelete: "CASCADE",
     onUpdate: "CASCADE",

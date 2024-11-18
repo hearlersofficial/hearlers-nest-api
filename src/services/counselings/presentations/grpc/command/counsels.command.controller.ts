@@ -2,8 +2,7 @@ import { create } from "@bufbuild/protobuf";
 import { Controller } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { GrpcMethod } from "@nestjs/microservices";
-import { CreateCounselCommand } from "~/src/aggregates/counsels/applications/commands/CreateCounsel/CreateCounsel.command";
-import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
+import { CreateCounselCommand, CreateCounselCommandResult } from "~/src/aggregates/counsels/applications/commands/CreateCounsel/CreateCounsel.command";
 import { CreateCounselRequest, CreateCounselResult, CreateCounselResultSchema } from "~/src/gen/v1/service/counsel_pb";
 import { SchemaCounselsMapper } from "~/src/services/counselings/presentations/grpc/schema.counsels.mapper";
 
@@ -17,7 +16,11 @@ export class GrpcCounselCommandController {
       userId: request.userId,
       counselorType: request.counselorType,
     });
-    const counsel: Counsels = await this.commandBus.execute(command);
-    return create(CreateCounselResultSchema, { counsel: SchemaCounselsMapper.toCounselProto(counsel) });
+    const { counsel, counselMessages }: CreateCounselCommandResult = await this.commandBus.execute(command);
+
+    return create(CreateCounselResultSchema, {
+      counsel: SchemaCounselsMapper.toCounselProto(counsel),
+      counselMessages: counselMessages.map((counselMessage) => SchemaCounselsMapper.toCounselMessageProto(counselMessage)),
+    });
   }
 }

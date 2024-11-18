@@ -10,10 +10,11 @@ export class SchemaCounselsMapper {
       id: counsel.id.getNumber(),
       userId: counsel.userId,
       counselorType: counsel.counselorType,
-      messages: counsel.counselMessages ? counsel.counselMessages.map(this.toCounselMessageProto) : null,
+      lastMessage: counsel.lastMessage,
+      lastChatedAt: counsel.lastChatedAt ? TimestampUtils.dayjsToTimestamp(counsel.lastChatedAt) : null,
       createdAt: TimestampUtils.dayjsToTimestamp(counsel.createdAt),
       updatedAt: TimestampUtils.dayjsToTimestamp(counsel.updatedAt),
-      deletedAt: TimestampUtils.dayjsToTimestamp(counsel.deletedAt),
+      deletedAt: counsel.deletedAt ? TimestampUtils.dayjsToTimestamp(counsel.deletedAt) : null,
     });
   }
 

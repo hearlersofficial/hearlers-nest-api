@@ -8,6 +8,7 @@ import { GrpcCounselCommandController } from "~/src/services/counselings/present
 import { TypeOrmConfigs } from "~/src/shared/core/infrastructure/Config";
 import { AllExceptionFilter } from "~/src/shared/filters/GrpcExceptionFilter";
 import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor";
+import { GrpcCounselQueryController } from "./presentations/grpc/query/counsels.query.controller";
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor
       useClass: TypeOrmConfigs,
     }),
   ],
-  controllers: [GrpcCounselCommandController],
+  controllers: [GrpcCounselCommandController, GrpcCounselQueryController],
   providers: [
     {
       provide: APP_FILTER,

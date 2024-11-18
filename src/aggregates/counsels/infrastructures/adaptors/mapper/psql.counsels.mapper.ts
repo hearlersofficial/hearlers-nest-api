@@ -4,7 +4,6 @@ import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { convertDayjs, formatDayjs } from "~/src/shared/utils/Date.utils";
 import { CounselsEntity } from "~/src/shared/core/infrastructure/entities/Counsels.entity";
 import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
-import { PsqlCounselMessagesMapper } from "~/src/aggregates/counsels/infrastructures/adaptors/mapper/psql.counselMessages.mapper";
 
 export class PsqlCounselsMapper {
   static toDomain(entity: CounselsEntity): Counsels | null {
@@ -16,7 +15,8 @@ export class PsqlCounselsMapper {
       counselorType: entity.counselorType,
       userId: entity.userId,
       counselStage: entity.counselStage,
-      counselMessages: entity.counselMessages?.map((message) => PsqlCounselMessagesMapper.toDomain(message)).filter(Boolean) || [],
+      lastMessage: entity.lastMessage,
+      lastChatedAt: entity.lastChatedAt ? convertDayjs(entity.lastChatedAt) : null,
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
       deletedAt: entity.deletedAt ? convertDayjs(entity.deletedAt) : null,
@@ -40,6 +40,9 @@ export class PsqlCounselsMapper {
     entity.counselorType = counsels.counselorType;
     entity.userId = counsels.userId;
     entity.counselStage = counsels.counselStage;
+
+    entity.lastMessage = counsels.lastMessage;
+    entity.lastChatedAt = counsels.lastChatedAt ? formatDayjs(counsels.lastChatedAt) : null;
 
     entity.createdAt = formatDayjs(counsels.createdAt);
     entity.updatedAt = formatDayjs(counsels.updatedAt);

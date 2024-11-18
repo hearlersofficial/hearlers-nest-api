@@ -10,13 +10,19 @@ import { CreateCounselUseCase } from "~/src/aggregates/counsels/applications/use
 import { PsqlCounselMessagesRepositoryAdaptor } from "~/src/aggregates/counsels/infrastructures/adaptors/psql.counselMessages.repository.adaptor";
 import { COUNSEL_MESSAGE_REPOSITORY } from "~/src/aggregates/counsels/infrastructures/counselMessages.repository.port";
 import { CreateCounselMessageUseCase } from "~/src/aggregates/counsels/applications/useCases/CreateCounselMessageUseCase/CreateCounselMessageUseCase";
+import { GetCounselListUseCase } from "./applications/useCases/GetCounselListUseCase/GetCounselListUseCase";
+import { GetCounselListHandler } from "./applications/queries/GetCounselList/GetCounselList.handler";
+import { GetCounselUseCase } from "./applications/useCases/GetCounselUseCase/GetCounselUseCase";
 
 @Module({
   imports: [TypeOrmModule.forFeature([CounselsEntity, CounselMessagesEntity])],
   providers: [
     CreateCounselUseCase,
     CreateCounselHandler,
+    GetCounselListUseCase,
+    GetCounselListHandler,
     CreateCounselMessageUseCase,
+    GetCounselUseCase,
     {
       provide: COUNSEL_REPOSITORY,
       useClass: PsqlCounselsRepositoryAdaptor,
