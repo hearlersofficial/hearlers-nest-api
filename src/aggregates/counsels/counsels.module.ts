@@ -13,16 +13,27 @@ import { CreateCounselMessageUseCase } from "~/src/aggregates/counsels/applicati
 import { GetCounselListUseCase } from "./applications/useCases/GetCounselListUseCase/GetCounselListUseCase";
 import { GetCounselListHandler } from "./applications/queries/GetCounselList/GetCounselList.handler";
 import { GetCounselUseCase } from "./applications/useCases/GetCounselUseCase/GetCounselUseCase";
+import { GetCounselPromptUseCase } from "./applications/useCases/GetCounselPromptUseCase/GetCounselPromptUseCase";
+import { PsqlCounselPromptsRepositoryAdaptor } from "./infrastructures/adaptors/psql.counselPrompts.repository.adaptor";
+import { COUNSEL_PROMPT_REPOSITORY } from "./infrastructures/counselPrompts.repository.port";
+import { GetCounselMessageListUseCase } from "./applications/useCases/GetCounselMessageListUseCase/GetCounselMessageListUseCase";
+import { UpdateCounselUseCase } from "./applications/useCases/updateCounselUseCase/updateCounselUseCase";
+import { CounselPromptsEntity } from "~/src/shared/core/infrastructure/entities/CounselPrompts.entity";
+import { CreateMessageHandler } from "./applications/commands/CreateMessage/CreateMessage.handler";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CounselsEntity, CounselMessagesEntity])],
+  imports: [TypeOrmModule.forFeature([CounselsEntity, CounselMessagesEntity, CounselPromptsEntity])],
   providers: [
     CreateCounselUseCase,
-    CreateCounselHandler,
     GetCounselListUseCase,
-    GetCounselListHandler,
     CreateCounselMessageUseCase,
     GetCounselUseCase,
+    GetCounselPromptUseCase,
+    GetCounselMessageListUseCase,
+    UpdateCounselUseCase,
+    CreateCounselHandler,
+    GetCounselListHandler,
+    CreateMessageHandler,
     {
       provide: COUNSEL_REPOSITORY,
       useClass: PsqlCounselsRepositoryAdaptor,
@@ -30,6 +41,10 @@ import { GetCounselUseCase } from "./applications/useCases/GetCounselUseCase/Get
     {
       provide: COUNSEL_MESSAGE_REPOSITORY,
       useClass: PsqlCounselMessagesRepositoryAdaptor,
+    },
+    {
+      provide: COUNSEL_PROMPT_REPOSITORY,
+      useClass: PsqlCounselPromptsRepositoryAdaptor,
     },
   ],
   exports: [],

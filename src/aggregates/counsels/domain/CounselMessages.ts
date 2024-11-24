@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { ChatCompletionAssistantMessageParam, ChatCompletionUserMessageParam } from "openai/resources";
 import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
@@ -54,7 +55,8 @@ export class CounselMessages extends AggregateRoot<CounselMessagesProps> {
     if (this.props.message === null || this.props.message === undefined) {
       return Result.fail<void>("[CounselMessages] 메시지 내용은 필수입니다");
     }
-    if (this.props.message && this.props.message.length > 80) {
+    // gpt 응답은 80자 초과 가능
+    if (this.props.message && this.props.message.length > 80 && this.props.isUserMessage) {
       return Result.fail<void>("[CounselMessages] 메시지 내용은 80를 초과할 수 없습니다");
     }
 
@@ -106,5 +108,12 @@ export class CounselMessages extends AggregateRoot<CounselMessagesProps> {
 
   public restore(): void {
     this.props.deletedAt = null;
+  }
+
+  public makePrompt(): ChatCompletionUserMessageParam | ChatCompletionAssistantMessageParam {
+    return {
+      role: this.props.isUserMessage ? "user" : "assistant",
+      content: this.props.message,
+    };
   }
 }

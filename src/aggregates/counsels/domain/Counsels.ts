@@ -57,6 +57,9 @@ export class Counsels extends AggregateRoot<CounselsProps> {
     if (this.props.counselorType === null || this.props.counselorType === undefined) {
       return Result.fail<void>("[Counsels] 상담사 타입은 필수입니다");
     }
+    if (!Object.values(CounselorType).includes(this.props.counselorType)) {
+      return Result.fail<void>("[Counsels] 유효하지 않은 상담사 타입입니다");
+    }
 
     // userId 검증
     if (this.props.userId === null || this.props.userId === undefined) {
