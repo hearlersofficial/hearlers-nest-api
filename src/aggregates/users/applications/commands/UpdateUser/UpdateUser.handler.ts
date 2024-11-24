@@ -61,6 +61,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     if (!updateUserUseCaseResponse.ok) {
       throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, updateUserUseCaseResponse.error);
     }
+
     return updateUserUseCaseResponse.user;
   }
 

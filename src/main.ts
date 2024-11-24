@@ -1,12 +1,13 @@
 import * as dotenv from "dotenv";
+import { CounselingsServiceModule } from "~/src/services/counselings/counselings.service.module";
 import { UsersServiceModule } from "~/src/services/users/users.service.module";
 dotenv.config({ path: [".env", ".env.dev"] });
 
-import { createGrpcMicroservice, serviceConfigs, ServiceType } from "~/src/shared/core/presentations/Config";
+import { createMicroservices, serviceConfigs, ServiceType } from "~/src/shared/core/presentations/Config";
 
 const moduleMap = {
   [ServiceType.USERS]: UsersServiceModule,
-  // [ServiceType.COUNSELINGS]: CounselingsModule,
+  [ServiceType.COUNSELINGS]: CounselingsServiceModule,
 };
 
 async function bootstrap(): Promise<void> {
@@ -19,9 +20,9 @@ async function bootstrap(): Promise<void> {
   const config = serviceConfigs[serviceType];
   const module = moduleMap[serviceType];
 
-  const grpcApp = await createGrpcMicroservice(module, serviceType, config);
-
-  await grpcApp.listen();
+  const app = await createMicroservices(module, serviceType, config);
+  await app.init();
+  await app.startAllMicroservices();
 }
 
 bootstrap();

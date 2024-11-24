@@ -5,6 +5,7 @@ import { Result } from "./Result";
 import { DomainEvent } from "./events/DomainEvent";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { Message } from "@bufbuild/protobuf";
 
 interface TestEntityNewProps {
   name: string;
@@ -19,12 +20,23 @@ interface TestEntityProps extends TestEntityNewProps {
 }
 
 // 테스트용 도메인 이벤트 추가
-class TestCreatedEvent implements DomainEvent {
-  constructor(public readonly name: string) {}
-  getAggregateId(): UniqueEntityId {
-    return new UniqueEntityId(1);
+class TestCreatedPayload implements Message {
+  constructor(name: string) {
+    this.name = name;
   }
-  dateTimeOccurred: Date = new Date();
+  name: string;
+  $typeName: string = "TestCreatedPayload";
+}
+
+class TestCreatedEvent implements DomainEvent {
+  constructor(payload: TestCreatedPayload) {
+    this.topic = "test.created";
+    this.payload = payload;
+    this.binary = new Uint8Array(10);
+  }
+  topic: string;
+  payload: TestCreatedPayload;
+  binary: Uint8Array;
 }
 
 // 테스트용 구현체
@@ -67,7 +79,7 @@ class TestEntity extends DomainEntity<TestEntityProps> {
   }
 
   public addTestEvent(): void {
-    this.addDomainEvent(new TestCreatedEvent(this.name));
+    this.addDomainEvent(new TestCreatedEvent(new TestCreatedPayload(this.name)));
   }
 }
 
@@ -159,7 +171,7 @@ describe("DomainEntity", () => {
 
       expect(entity.domainEvents).toHaveLength(1);
       expect(entity.domainEvents[0]).toBeInstanceOf(TestCreatedEvent);
-      expect((entity.domainEvents[0] as TestCreatedEvent).name).toBe(name);
+      expect((entity.domainEvents[0] as TestCreatedEvent).payload.name).toBe(name);
     });
 
     it("이벤트를 초기화할 수 있다", () => {
@@ -184,7 +196,7 @@ describe("DomainEntity", () => {
       expect(entity.domainEvents).toHaveLength(3);
       entity.domainEvents.forEach((event) => {
         expect(event).toBeInstanceOf(TestCreatedEvent);
-        expect((event as TestCreatedEvent).name).toBe(name);
+        expect((event as TestCreatedEvent).payload.name).toBe(name);
       });
     });
   });

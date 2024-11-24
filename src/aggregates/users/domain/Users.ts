@@ -2,12 +2,15 @@ import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
-import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { getNowDayjs, TimestampUtils } from "~/src/shared/utils/Date.utils";
 import { AuthChannel, Gender, Mbti, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { Kakao } from "~/src/aggregates/users/domain/Kakao";
+import { create } from "@bufbuild/protobuf";
+import { UserUpdatedPayloadSchema } from "~/src/gen/v1/message/user_pb";
+import { UserUpdatedEvent } from "~/src/aggregates/users/domain/events/UserUpdatedEvents";
 
 interface UsersNewProps {
   nickname: string;
@@ -147,6 +150,13 @@ export class Users extends AggregateRoot<UsersProps> {
     }
     this.props.userProfile = profile;
     this.props.updatedAt = getNowDayjs();
+    const userUpdated = create(UserUpdatedPayloadSchema, {
+      userId: this.id.getNumber(),
+      authChannel: this.props.authChannel,
+      updatedAt: TimestampUtils.now(),
+    });
+
+    this.addDomainEvent(new UserUpdatedEvent(userUpdated));
     return Result.ok<void>();
   }
 

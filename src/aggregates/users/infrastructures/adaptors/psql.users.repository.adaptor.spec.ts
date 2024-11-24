@@ -42,6 +42,7 @@ describe("PsqlUsersRepositoryAdaptor", () => {
     profile.profileImage = faker.image.avatar();
     profile.phoneNumber = "01012345678";
     profile.gender = Gender.MALE;
+    profile.mbti = Mbti.ENFP;
     profile.birthday = formatDayjs(convertDayjs("1990-01-01"));
     profile.introduction = faker.lorem.paragraph();
     profile.createdAt = formatDayjs(getNowDayjs());

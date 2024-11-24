@@ -1,20 +1,12 @@
-import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
+import { Message } from "@bufbuild/protobuf";
 
-export interface DomainEvent {
-  dateTimeOccurred: Date;
-  getAggregateId(): UniqueEntityId;
-}
+export abstract class DomainEvent {
+  static readonly topic: string;
+  abstract readonly payload: Message;
+  abstract readonly binary: Uint8Array;
+  readonly topic: string;
 
-export abstract class BaseDomainEvent implements DomainEvent {
-  public dateTimeOccurred: Date;
-  protected aggregateId: UniqueEntityId;
-
-  constructor(aggregateId: UniqueEntityId) {
-    this.dateTimeOccurred = new Date();
-    this.aggregateId = aggregateId;
-  }
-
-  getAggregateId(): UniqueEntityId {
-    return this.aggregateId;
+  constructor() {
+    this.topic = (this.constructor as typeof DomainEvent).topic;
   }
 }

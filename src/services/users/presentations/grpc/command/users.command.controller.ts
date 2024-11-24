@@ -31,7 +31,6 @@ export class GrpcUserCommandController {
 
   @GrpcMethod("UserService", "update")
   async updateUser(request: UpdateUserRequest): Promise<UpdateUserResult> {
-    console.log(request);
     const command: UpdateUserCommand = new UpdateUserCommand({
       userId: request.userId,
       nickname: request.nickname,
@@ -39,9 +38,7 @@ export class GrpcUserCommandController {
       uniqueId: request.uniqueId,
       userProfile: request.userProfile,
     });
-    console.log(command);
-
-    const user: Users = await this.commandBus.execute(command);
-    return create(UpdateUserResultSchema, { user: SchemaUsersMapper.toUserProto(user) });
+    const updatedUser: Users = await this.commandBus.execute(command);
+    return create(UpdateUserResultSchema, { user: SchemaUsersMapper.toUserProto(updatedUser) });
   }
 }
