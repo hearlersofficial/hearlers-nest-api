@@ -2,16 +2,16 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { APP_FILTER, APP_PIPE } from "@nestjs/core";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { CounselingsServiceModule } from "~/src/services/counselings/counselings.service.module";
 import { UsersServiceModule } from "~/src/services/users/users.service.module";
 import { TypeOrmConfigs } from "~/src/shared/core/infrastructure/Config";
 import { AllExceptionFilter } from "~/src/shared/filters/GrpcExceptionFilter";
 import { GrpcValidationPipe } from "~/src/shared/pipes/GrpcValidationPipe";
+import { CounselsServiceModule } from "./services/counselings/counsels.service.module";
 
 @Module({
   imports: [
     UsersServiceModule,
-    CounselingsServiceModule,
+    CounselsServiceModule,
     ConfigModule.forRoot({
       envFilePath: [".env", ".env.dev"],
       isGlobal: true,
