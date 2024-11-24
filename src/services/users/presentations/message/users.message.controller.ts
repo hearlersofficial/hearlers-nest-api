@@ -12,10 +12,11 @@ export class UsersMessageController implements OnModuleInit {
   async onModuleInit() {}
 
   @EventPattern(UserUpdatedEvent.topic)
-  handleUserUpdated(@Payload() message: Uint8Array, @Ctx() context: KafkaContext): void {
-    console.log(message);
-    // const convertedPayload: UserUpdatedPayload = fromBinary(UserUpdatedPayloadSchema, message);
-    // console.log(convertedPayload);
+  handleUserUpdated(@Payload() message, @Ctx() context: KafkaContext): void {
+    const numberArray = message.split(",").map(Number);
+    const uint8Array = new Uint8Array(numberArray);
+    const convertedPayload: UserUpdatedPayload = fromBinary(UserUpdatedPayloadSchema, uint8Array);
+    console.log(convertedPayload);
     console.log(context);
   }
 }
