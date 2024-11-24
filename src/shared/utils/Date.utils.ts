@@ -46,12 +46,12 @@ export class TimestampUtils {
   }
 
   // ISO 문자열 -> Timestamp
-  static fromISOString(isoString: string): Timestamp {
-    return this.dateToTimestamp(new Date(isoString));
+  static stringToTimestamp(string: string): Timestamp {
+    return this.dateToTimestamp(new Date(string));
   }
 
   // Timestamp -> ISO 문자열
-  static toISOString(timestamp: Timestamp): string {
+  static timestampToString(timestamp: Timestamp): string {
     return this.timestampToDate(timestamp).toISOString();
   }
 

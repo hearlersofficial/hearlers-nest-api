@@ -1,6 +1,6 @@
 import { DomainEntity } from "~/src/shared/core/domain/DomainEntity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { Gender } from "~/src/shared/enums/Gender.enum";
+import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
@@ -10,6 +10,7 @@ interface UserProfilesNewProps {
   profileImage: string;
   phoneNumber: string;
   gender: Gender;
+  mbti: Mbti;
   birthday: Dayjs;
   introduction: string;
 }
@@ -105,6 +106,10 @@ export class UserProfiles extends DomainEntity<UserProfilesProps> {
 
   get birthday(): Dayjs {
     return this.props.birthday;
+  }
+
+  get mbti(): Mbti {
+    return this.props.mbti;
   }
 
   get introduction(): string {

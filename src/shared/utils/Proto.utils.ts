@@ -1,5 +1,9 @@
+import { create } from "@bufbuild/protobuf";
+import { KafkaContext } from "@nestjs/microservices";
 import { readdirSync, existsSync } from "fs";
 import { join } from "path";
+import { Message, MessageSchema } from "~/src/gen/v1/common/message_pb";
+import { TimestampUtils } from "~/src/shared/utils/Date.utils";
 
 export const findProtoFiles = (dir: string): string[] => {
   let files: string[] = [];
@@ -26,3 +30,13 @@ export const findProtoFiles = (dir: string): string[] => {
 
   return files;
 };
+
+export function toProtoMessage(context: KafkaContext): Message {
+  return create(MessageSchema, {
+    name: context.getTopic(),
+    id: context.getMessage().key.toString(),
+    correlationId: context.getMessage().offset.toString(),
+    parentId: context.getPartition().toString(),
+    createdAt: TimestampUtils.stringToTimestamp(context.getMessage().timestamp),
+  });
+}

@@ -11,7 +11,7 @@ import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.ent
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { Kakao } from "~/src/aggregates/users/domain/Kakao";
 import { AuthChannel } from "~/src/gen/v1/model/user_pb";
-import { Gender } from "~/src/shared/enums/Gender.enum";
+import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { formatDayjs, getNowDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
@@ -42,6 +42,7 @@ describe("PsqlUsersRepositoryAdaptor", () => {
     profile.profileImage = faker.image.avatar();
     profile.phoneNumber = "01012345678";
     profile.gender = Gender.MALE;
+    profile.mbti = Mbti.ENFP;
     profile.birthday = formatDayjs(convertDayjs("1990-01-01"));
     profile.introduction = faker.lorem.paragraph();
     profile.createdAt = formatDayjs(getNowDayjs());

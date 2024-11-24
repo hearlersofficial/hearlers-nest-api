@@ -1,6 +1,6 @@
 import { GrpcOptions, Transport } from "@nestjs/microservices";
 import { ReflectionService } from "@grpc/reflection";
-import { INestMicroservice } from "@nestjs/common";
+import { INestApplication } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { findProtoFiles } from "~/src/shared/utils/Proto.utils";
 
@@ -50,12 +50,24 @@ export const createGrpcOptions = (serviceName: string, config: GrpcServiceConfig
   };
 };
 
-export async function createGrpcMicroservice(
+export async function createMicroservices(
   module: any,
   serviceName: string,
   config: GrpcServiceConfig,
-): Promise<INestMicroservice> {
-  const app = await NestFactory.createMicroservice(module, createGrpcOptions(serviceName, config));
-
+): Promise<INestApplication> {
+  const app = await NestFactory.create(module);
+  app.connectMicroservice(createGrpcOptions(serviceName, config));
+  app.connectMicroservice({
+    transport: Transport.KAFKA,
+    options: {
+      client: {
+        brokers: [process.env.KAFKA_BOOTSTRAP_SERVERS],
+        clientId: process.env.KAFKA_CLIENT_ID,
+      },
+      consumer: {
+        groupId: process.env.KAFKA_GROUP_ID,
+      },
+    },
+  });
   return app;
 }

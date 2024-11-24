@@ -10,7 +10,6 @@ import {
   UserProgressSchema,
   UserSchema,
 } from "~/src/gen/v1/model/user_pb";
-import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { TimestampUtils } from "~/src/shared/utils/Date.utils";
 
 export class SchemaUsersMapper {

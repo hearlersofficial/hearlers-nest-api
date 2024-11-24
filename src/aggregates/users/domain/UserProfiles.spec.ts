@@ -1,8 +1,8 @@
 import { fakerKO as faker } from "@faker-js/faker";
 import { UserProfiles } from "./UserProfiles";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { Gender } from "~/src/shared/enums/Gender.enum";
 import { convertDayjs, getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 
 describe("UserProfiles", () => {
   const validPhoneNumber = "01012345678";
@@ -19,6 +19,7 @@ describe("UserProfiles", () => {
       profileImage: faker.image.avatar(),
       phoneNumber: validPhoneNumber,
       gender: Gender.MALE,
+      mbti: Mbti.ENTP,
       birthday: convertDayjs("1990-01-01"),
       introduction: faker.lorem.paragraph(),
     };

@@ -3,7 +3,7 @@ import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { PsqlUserProfilesMapper } from "./psql.userProfiles.mapper";
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { Gender } from "~/src/shared/enums/Gender.enum";
+import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 import { getNowDayjs, formatDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { InternalServerErrorException } from "@nestjs/common";
 
@@ -15,6 +15,7 @@ describe("PsqlUserProfilesMapper", () => {
     entity.profileImage = faker.image.avatar();
     entity.phoneNumber = "01012345678";
     entity.gender = Gender.MALE;
+    entity.mbti = Mbti.ENFP;
     entity.birthday = formatDayjs(convertDayjs("1990-01-01"));
     entity.introduction = faker.lorem.paragraph();
     entity.createdAt = formatDayjs(getNowDayjs());
@@ -34,6 +35,7 @@ describe("PsqlUserProfilesMapper", () => {
       expect(domain?.profileImage).toBe(entity.profileImage);
       expect(domain?.phoneNumber).toBe(entity.phoneNumber);
       expect(domain?.gender).toBe(entity.gender);
+      expect(domain?.mbti).toBe(entity.mbti);
       expect(domain?.birthday).toEqual(convertDayjs(entity.birthday));
       expect(domain?.introduction).toBe(entity.introduction);
     });
@@ -58,6 +60,7 @@ describe("PsqlUserProfilesMapper", () => {
         profileImage: faker.image.avatar(),
         phoneNumber: "01012345678",
         gender: Gender.MALE,
+        mbti: Mbti.ENFP,
         birthday: convertDayjs("1990-01-01"),
         introduction: faker.lorem.paragraph(),
       }).value as UserProfiles;
@@ -68,6 +71,7 @@ describe("PsqlUserProfilesMapper", () => {
       expect(entity.profileImage).toBe(userProfiles.profileImage);
       expect(entity.phoneNumber).toBe(userProfiles.phoneNumber);
       expect(entity.gender).toBe(userProfiles.gender);
+      expect(entity.mbti).toBe(userProfiles.mbti);
       expect(entity.birthday).toEqual(formatDayjs(userProfiles.birthday));
       expect(entity.introduction).toBe(userProfiles.introduction);
     });

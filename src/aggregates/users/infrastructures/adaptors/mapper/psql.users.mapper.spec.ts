@@ -6,7 +6,7 @@ import { PsqlUsersMapper } from "./psql.users.mapper";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { AuthChannel } from "~/src/gen/v1/model/user_pb";
-import { Gender } from "~/src/shared/enums/Gender.enum";
+import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 import { ProgressType, ProgressStatus } from "~/src/gen/v1/model/user_pb";
 import { getNowDayjs, formatDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
@@ -112,6 +112,7 @@ describe("PsqlUsersMapper", () => {
         profileImage: faker.image.avatar(),
         phoneNumber: "01012345678",
         gender: Gender.MALE,
+        mbti: Mbti.ENFP,
         birthday: convertDayjs("1990-01-01"),
         introduction: faker.lorem.paragraph(),
       }).value;
