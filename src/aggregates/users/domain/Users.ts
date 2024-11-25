@@ -153,7 +153,7 @@ export class Users extends AggregateRoot<UsersProps> {
     const userUpdated = create(UserUpdatedPayloadSchema, {
       userId: this.id.getNumber(),
       authChannel: this.props.authChannel,
-      updatedAt: TimestampUtils.now(),
+      occurredAt: TimestampUtils.now(),
     });
 
     this.addDomainEvent(new UserUpdatedEvent(userUpdated));

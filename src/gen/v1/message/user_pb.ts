@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/message/user.proto.
  */
 export const file_v1_message_user: GenFile = /*@__PURE__*/
-  fileDesc("ChV2MS9tZXNzYWdlL3VzZXIucHJvdG8SF2NvbS5oZWFybGVycy52MS5tZXNzYWdlIo8BChJVc2VyVXBkYXRlZFBheWxvYWQSDwoHdXNlcl9pZBgBIAEoBRI4CgxhdXRoX2NoYW5uZWwYAiABKA4yIi5jb20uaGVhcmxlcnMudjEubW9kZWwuQXV0aENoYW5uZWwSLgoKdXBkYXRlZF9hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCqAEKG2NvbS5jb20uaGVhcmxlcnMudjEubWVzc2FnZUIJVXNlclByb3RvUAGiAgRDSFZNqgIXQ29tLkhlYXJsZXJzLlYxLk1lc3NhZ2XKAhdDb21cSGVhcmxlcnNcVjFcTWVzc2FnZeICI0NvbVxIZWFybGVyc1xWMVxNZXNzYWdlXEdQQk1ldGFkYXRh6gIaQ29tOjpIZWFybGVyczo6VjE6Ok1lc3NhZ2ViBnByb3RvMw", [file_google_protobuf_timestamp, file_v1_model_user]);
+  fileDesc("ChV2MS9tZXNzYWdlL3VzZXIucHJvdG8SF2NvbS5oZWFybGVycy52MS5tZXNzYWdlIpABChJVc2VyVXBkYXRlZFBheWxvYWQSDwoHdXNlcl9pZBgBIAEoBRI4CgxhdXRoX2NoYW5uZWwYAiABKA4yIi5jb20uaGVhcmxlcnMudjEubW9kZWwuQXV0aENoYW5uZWwSLwoLb2NjdXJyZWRfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQqgBChtjb20uY29tLmhlYXJsZXJzLnYxLm1lc3NhZ2VCCVVzZXJQcm90b1ABogIEQ0hWTaoCF0NvbS5IZWFybGVycy5WMS5NZXNzYWdlygIXQ29tXEhlYXJsZXJzXFYxXE1lc3NhZ2XiAiNDb21cSGVhcmxlcnNcVjFcTWVzc2FnZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpNZXNzYWdlYgZwcm90bzM", [file_google_protobuf_timestamp, file_v1_model_user]);
 
 /**
  * topic: user.updated
@@ -33,9 +33,9 @@ export type UserUpdatedPayload = Message<"com.hearlers.v1.message.UserUpdatedPay
   authChannel: AuthChannel;
 
   /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 3;
+   * @generated from field: google.protobuf.Timestamp occurred_at = 3;
    */
-  updatedAt?: Timestamp;
+  occurredAt?: Timestamp;
 };
 
 /**

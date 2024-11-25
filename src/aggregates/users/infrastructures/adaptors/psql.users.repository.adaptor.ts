@@ -63,7 +63,9 @@ export class PsqlUsersRepositoryAdaptor implements UsersRepositoryPort {
     };
     const usersEntity: UsersEntity = await this.usersRepository.findOne(findOneOptions);
     const user = PsqlUsersMapper.toDomain(usersEntity);
-    await this.publishDomainEvents(user);
+    if (user) {
+      await this.publishDomainEvents(user);
+    }
     return user;
   }
 

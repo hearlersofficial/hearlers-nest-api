@@ -1,4 +1,5 @@
-import { create } from "@bufbuild/protobuf";
+import { create, DescMessage, fromBinary } from "@bufbuild/protobuf";
+import { GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { KafkaContext } from "@nestjs/microservices";
 import { readdirSync, existsSync } from "fs";
 import { join } from "path";
@@ -39,4 +40,11 @@ export function toProtoMessage(context: KafkaContext): Message {
     parentId: context.getPartition().toString(),
     createdAt: TimestampUtils.stringToTimestamp(context.getMessage().timestamp),
   });
+}
+
+export function kafkaPayloadToProtoMessage(payload: string, schema: DescMessage) {
+  const numberArray = payload.split(",").map(Number);
+  const uint8Array = new Uint8Array(numberArray);
+  const convertedPayload = fromBinary(schema, uint8Array);
+  return convertedPayload;
 }

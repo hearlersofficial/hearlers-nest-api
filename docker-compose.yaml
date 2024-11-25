@@ -35,12 +35,12 @@ services:
       timeout: 10s
       retries: 4
 
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    environment:
-      KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 34.47.88.194:9092 # Kafka UI도 퍼블릭 IP를 사용해 통신
-    ports:
-      - "8080:8080" # Kafka UI는 외부에 노출
-    depends_on:
-      - kafka
+  # kafka-ui:
+  #   image: provectuslabs/kafka-ui:latest
+  #   environment:
+  #     KAFKA_CLUSTERS_0_NAME: local
+  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 34.47.88.194:9092 # Kafka UI도 퍼블릭 IP를 사용해 통신
+  #   ports:
+  #     - "8080:8080" # Kafka UI는 외부에 노출
+  #   depends_on:
+  #     - kafka

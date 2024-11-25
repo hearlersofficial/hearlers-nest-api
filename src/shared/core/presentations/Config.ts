@@ -66,6 +66,12 @@ export async function createMicroservices(
       },
       consumer: {
         groupId: process.env.KAFKA_GROUP_ID,
+        allowAutoTopicCreation: true,
+        retry: {
+          retries: 3,
+          initialRetryTime: 100,
+          multiplier: 2,
+        },
       },
     },
   });

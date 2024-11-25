@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/service/counsel.proto.
  */
 export const file_v1_service_counsel: GenFile = /*@__PURE__*/
-  fileDesc("Chh2MS9zZXJ2aWNlL2NvdW5zZWwucHJvdG8SF2NvbS5oZWFybGVycy52MS5zZXJ2aWNlImUKFENyZWF0ZUNvdW5zZWxSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAUSPAoOY291bnNlbG9yX3R5cGUYAiABKA4yJC5jb20uaGVhcmxlcnMudjEubW9kZWwuQ291bnNlbG9yVHlwZSKHAQoTQ3JlYXRlQ291bnNlbFJlc3VsdBIvCgdjb3Vuc2VsGAEgASgLMh4uY29tLmhlYXJsZXJzLnYxLm1vZGVsLkNvdW5zZWwSPwoQY291bnNlbF9tZXNzYWdlcxgCIAMoCzIlLmNvbS5oZWFybGVycy52MS5tb2RlbC5Db3Vuc2VsTWVzc2FnZSIoChVHZXRDb3Vuc2VsTGlzdFJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoBSJMChRHZXRDb3Vuc2VsTGlzdFJlc3VsdBI0Cgxjb3Vuc2VsX2xpc3QYASADKAsyHi5jb20uaGVhcmxlcnMudjEubW9kZWwuQ291bnNlbCI9ChZHZW5lcmF0ZU1lc3NhZ2VSZXF1ZXN0EhIKCmNvdW5zZWxfaWQYASABKAUSDwoHbWVzc2FnZRgCIAEoCSJXChVHZW5lcmF0ZU1lc3NhZ2VSZXN1bHQSPgoPY291bnNlbF9tZXNzYWdlGAEgASgLMiUuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkNvdW5zZWxNZXNzYWdlMuMCCg5Db3Vuc2VsU2VydmljZRJsCg1DcmVhdGVDb3Vuc2VsEi0uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuQ3JlYXRlQ291bnNlbFJlcXVlc3QaLC5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVDb3Vuc2VsUmVzdWx0Em8KDkdldENvdW5zZWxMaXN0Ei4uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuR2V0Q291bnNlbExpc3RSZXF1ZXN0Gi0uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuR2V0Q291bnNlbExpc3RSZXN1bHQScgoPR2VuZXJhdGVNZXNzYWdlEi8uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuR2VuZXJhdGVNZXNzYWdlUmVxdWVzdBouLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkdlbmVyYXRlTWVzc2FnZVJlc3VsdEKrAQobY29tLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlQgxDb3Vuc2VsUHJvdG9QAaICBENIVlOqAhdDb20uSGVhcmxlcnMuVjEuU2VydmljZcoCF0NvbVxIZWFybGVyc1xWMVxTZXJ2aWNl4gIjQ29tXEhlYXJsZXJzXFYxXFNlcnZpY2VcR1BCTWV0YWRhdGHqAhpDb206OkhlYXJsZXJzOjpWMTo6U2VydmljZWIGcHJvdG8z", [file_v1_model_counsel]);
+  fileDesc("Chh2MS9zZXJ2aWNlL2NvdW5zZWwucHJvdG8SF2NvbS5oZWFybGVycy52MS5zZXJ2aWNlImUKFENyZWF0ZUNvdW5zZWxSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAUSPAoOY291bnNlbG9yX3R5cGUYAiABKA4yJC5jb20uaGVhcmxlcnMudjEubW9kZWwuQ291bnNlbG9yVHlwZSKHAQoTQ3JlYXRlQ291bnNlbFJlc3VsdBIvCgdjb3Vuc2VsGAEgASgLMh4uY29tLmhlYXJsZXJzLnYxLm1vZGVsLkNvdW5zZWwSPwoQY291bnNlbF9tZXNzYWdlcxgCIAMoCzIlLmNvbS5oZWFybGVycy52MS5tb2RlbC5Db3Vuc2VsTWVzc2FnZSIoChVHZXRDb3Vuc2VsTGlzdFJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoBSJMChRHZXRDb3Vuc2VsTGlzdFJlc3VsdBI0Cgxjb3Vuc2VsX2xpc3QYASADKAsyHi5jb20uaGVhcmxlcnMudjEubW9kZWwuQ291bnNlbCI7ChRDcmVhdGVNZXNzYWdlUmVxdWVzdBISCgpjb3Vuc2VsX2lkGAEgASgFEg8KB21lc3NhZ2UYAiABKAkiVQoTQ3JlYXRlTWVzc2FnZVJlc3VsdBI+Cg9jb3Vuc2VsX21lc3NhZ2UYASABKAsyJS5jb20uaGVhcmxlcnMudjEubW9kZWwuQ291bnNlbE1lc3NhZ2UiKwoVR2V0TWVzc2FnZUxpc3RSZXF1ZXN0EhIKCmNvdW5zZWxfaWQYASABKAUiUwoUR2V0TWVzc2FnZUxpc3RSZXN1bHQSOwoMbWVzc2FnZV9saXN0GAEgAygLMiUuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkNvdW5zZWxNZXNzYWdlMs4DCg5Db3Vuc2VsU2VydmljZRJsCg1DcmVhdGVDb3Vuc2VsEi0uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuQ3JlYXRlQ291bnNlbFJlcXVlc3QaLC5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVDb3Vuc2VsUmVzdWx0Em8KDkdldENvdW5zZWxMaXN0Ei4uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuR2V0Q291bnNlbExpc3RSZXF1ZXN0Gi0uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuR2V0Q291bnNlbExpc3RSZXN1bHQSbAoNQ3JlYXRlTWVzc2FnZRItLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkNyZWF0ZU1lc3NhZ2VSZXF1ZXN0GiwuY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuQ3JlYXRlTWVzc2FnZVJlc3VsdBJvCg5HZXRNZXNzYWdlTGlzdBIuLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkdldE1lc3NhZ2VMaXN0UmVxdWVzdBotLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkdldE1lc3NhZ2VMaXN0UmVzdWx0QqsBChtjb20uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2VCDENvdW5zZWxQcm90b1ABogIEQ0hWU6oCF0NvbS5IZWFybGVycy5WMS5TZXJ2aWNlygIXQ29tXEhlYXJsZXJzXFYxXFNlcnZpY2XiAiNDb21cSGVhcmxlcnNcVjFcU2VydmljZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpTZXJ2aWNlYgZwcm90bzM", [file_v1_model_counsel]);
 
 /**
  * @generated from message com.hearlers.v1.service.CreateCounselRequest
@@ -93,9 +93,9 @@ export const GetCounselListResultSchema: GenMessage<GetCounselListResult> = /*@_
   messageDesc(file_v1_service_counsel, 3);
 
 /**
- * @generated from message com.hearlers.v1.service.GenerateMessageRequest
+ * @generated from message com.hearlers.v1.service.CreateMessageRequest
  */
-export type GenerateMessageRequest = Message<"com.hearlers.v1.service.GenerateMessageRequest"> & {
+export type CreateMessageRequest = Message<"com.hearlers.v1.service.CreateMessageRequest"> & {
   /**
    * @generated from field: int32 counsel_id = 1;
    */
@@ -108,16 +108,16 @@ export type GenerateMessageRequest = Message<"com.hearlers.v1.service.GenerateMe
 };
 
 /**
- * Describes the message com.hearlers.v1.service.GenerateMessageRequest.
- * Use `create(GenerateMessageRequestSchema)` to create a new message.
+ * Describes the message com.hearlers.v1.service.CreateMessageRequest.
+ * Use `create(CreateMessageRequestSchema)` to create a new message.
  */
-export const GenerateMessageRequestSchema: GenMessage<GenerateMessageRequest> = /*@__PURE__*/
+export const CreateMessageRequestSchema: GenMessage<CreateMessageRequest> = /*@__PURE__*/
   messageDesc(file_v1_service_counsel, 4);
 
 /**
- * @generated from message com.hearlers.v1.service.GenerateMessageResult
+ * @generated from message com.hearlers.v1.service.CreateMessageResult
  */
-export type GenerateMessageResult = Message<"com.hearlers.v1.service.GenerateMessageResult"> & {
+export type CreateMessageResult = Message<"com.hearlers.v1.service.CreateMessageResult"> & {
   /**
    * @generated from field: com.hearlers.v1.model.CounselMessage counsel_message = 1;
    */
@@ -125,11 +125,45 @@ export type GenerateMessageResult = Message<"com.hearlers.v1.service.GenerateMes
 };
 
 /**
- * Describes the message com.hearlers.v1.service.GenerateMessageResult.
- * Use `create(GenerateMessageResultSchema)` to create a new message.
+ * Describes the message com.hearlers.v1.service.CreateMessageResult.
+ * Use `create(CreateMessageResultSchema)` to create a new message.
  */
-export const GenerateMessageResultSchema: GenMessage<GenerateMessageResult> = /*@__PURE__*/
+export const CreateMessageResultSchema: GenMessage<CreateMessageResult> = /*@__PURE__*/
   messageDesc(file_v1_service_counsel, 5);
+
+/**
+ * @generated from message com.hearlers.v1.service.GetMessageListRequest
+ */
+export type GetMessageListRequest = Message<"com.hearlers.v1.service.GetMessageListRequest"> & {
+  /**
+   * @generated from field: int32 counsel_id = 1;
+   */
+  counselId: number;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.GetMessageListRequest.
+ * Use `create(GetMessageListRequestSchema)` to create a new message.
+ */
+export const GetMessageListRequestSchema: GenMessage<GetMessageListRequest> = /*@__PURE__*/
+  messageDesc(file_v1_service_counsel, 6);
+
+/**
+ * @generated from message com.hearlers.v1.service.GetMessageListResult
+ */
+export type GetMessageListResult = Message<"com.hearlers.v1.service.GetMessageListResult"> & {
+  /**
+   * @generated from field: repeated com.hearlers.v1.model.CounselMessage message_list = 1;
+   */
+  messageList: CounselMessage[];
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.GetMessageListResult.
+ * Use `create(GetMessageListResultSchema)` to create a new message.
+ */
+export const GetMessageListResultSchema: GenMessage<GetMessageListResult> = /*@__PURE__*/
+  messageDesc(file_v1_service_counsel, 7);
 
 /**
  * @generated from service com.hearlers.v1.service.CounselService
@@ -152,12 +186,20 @@ export const CounselService: GenService<{
     output: typeof GetCounselListResultSchema;
   },
   /**
-   * @generated from rpc com.hearlers.v1.service.CounselService.GenerateMessage
+   * @generated from rpc com.hearlers.v1.service.CounselService.CreateMessage
    */
-  generateMessage: {
+  createMessage: {
     methodKind: "unary";
-    input: typeof GenerateMessageRequestSchema;
-    output: typeof GenerateMessageResultSchema;
+    input: typeof CreateMessageRequestSchema;
+    output: typeof CreateMessageResultSchema;
+  },
+  /**
+   * @generated from rpc com.hearlers.v1.service.CounselService.GetMessageList
+   */
+  getMessageList: {
+    methodKind: "unary";
+    input: typeof GetMessageListRequestSchema;
+    output: typeof GetMessageListResultSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_v1_service_counsel, 0);

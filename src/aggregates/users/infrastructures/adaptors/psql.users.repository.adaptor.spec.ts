@@ -2,6 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { fakerKO as faker } from "@faker-js/faker";
 import { Repository } from "typeorm";
+import { ClientKafka } from "@nestjs/microservices";
 import { PsqlUsersRepositoryAdaptor } from "./psql.users.repository.adaptor";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
@@ -15,11 +16,13 @@ import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { formatDayjs, getNowDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
+import { KAFKA_CLIENT } from "~/src/shared/core/infrastructure/Config";
 
 describe("PsqlUsersRepositoryAdaptor", () => {
   let module: TestingModule;
   let repository: Repository<UsersEntity>;
   let adaptor: PsqlUsersRepositoryAdaptor;
+  let kafkaProducer: ClientKafka;
 
   const createMockUserEntity = () => {
     const user = new UsersEntity();
@@ -92,6 +95,10 @@ describe("PsqlUsersRepositoryAdaptor", () => {
   };
 
   beforeEach(async () => {
+    const mockKafkaProducer = {
+      emit: jest.fn(),
+    };
+
     module = await Test.createTestingModule({
       providers: [
         PsqlUsersRepositoryAdaptor,
@@ -103,10 +110,15 @@ describe("PsqlUsersRepositoryAdaptor", () => {
             create: jest.fn(),
           },
         },
+        {
+          provide: KAFKA_CLIENT,
+          useValue: mockKafkaProducer,
+        },
       ],
     }).compile();
 
     repository = module.get<Repository<UsersEntity>>(getRepositoryToken(UsersEntity));
+    kafkaProducer = module.get<ClientKafka>(KAFKA_CLIENT);
     adaptor = module.get<PsqlUsersRepositoryAdaptor>(PsqlUsersRepositoryAdaptor);
   });
 
@@ -230,6 +242,100 @@ describe("PsqlUsersRepositoryAdaptor", () => {
 
       expect(repository.save).toHaveBeenCalled();
       expect(result.kakao?.uniqueId).toBe("164425");
+    });
+  });
+
+  describe("publishDomainEvents", () => {
+    it("도메인 이벤트를 발행할 수 있다", async () => {
+      const mockUser = createMockUserEntity();
+      const users = Users.createNew({
+        nickname: mockUser.nickname,
+        authChannel: AuthChannel.KAKAO,
+      }).value as Users;
+
+      // 도메인 이벤트 추가
+      const mockEvent = {
+        topic: "user.created",
+        payload: {
+          $typeName: "UserCreatedEvent",
+          userId: users.id.getNumber(),
+        },
+        binary: Uint8Array.from([]),
+      };
+      users.domainEvents.push(mockEvent);
+
+      await adaptor.publishDomainEvents(users);
+
+      expect(kafkaProducer.emit).toHaveBeenCalledWith(mockEvent.topic, mockEvent.binary);
+    });
+
+    it("도메인 이벤트가 없으면 발행하지 않는다", async () => {
+      const mockUser = createMockUserEntity();
+      const users = Users.createNew({
+        nickname: mockUser.nickname,
+        authChannel: AuthChannel.KAKAO,
+      }).value as Users;
+
+      await adaptor.publishDomainEvents(users);
+
+      expect(kafkaProducer.emit).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("create with events", () => {
+    it("사용자 생성 시 도메인 이벤트를 발행한다", async () => {
+      const mockUser = createMockUserEntity();
+      jest.spyOn(repository, "create").mockReturnValue(mockUser);
+      jest.spyOn(repository, "save").mockResolvedValue(mockUser);
+
+      const users = Users.createNew({
+        nickname: mockUser.nickname,
+        authChannel: AuthChannel.KAKAO,
+      }).value as Users;
+
+      // 도메인 이벤트 추가
+      const mockEvent = {
+        topic: "user.created",
+        payload: {
+          $typeName: "UserCreatedEvent",
+          userId: users.id.getNumber(),
+        },
+        binary: Uint8Array.from([]),
+      };
+      users.domainEvents.push(mockEvent);
+
+      await adaptor.create(users);
+
+      expect(kafkaProducer.emit).toHaveBeenCalledWith(mockEvent.topic, mockEvent.binary);
+      expect(repository.save).toHaveBeenCalled();
+    });
+  });
+
+  describe("update with events", () => {
+    it("사용자 업데이트 시 도메인 이벤트를 발행한다", async () => {
+      const mockUser = createMockUserEntity();
+      jest.spyOn(repository, "save").mockResolvedValue(mockUser);
+
+      const users = Users.createNew({
+        nickname: mockUser.nickname,
+        authChannel: AuthChannel.KAKAO,
+      }).value as Users;
+
+      // 도메인 이벤트 추가
+      const mockEvent = {
+        topic: "user.updated",
+        payload: {
+          $typeName: "UserUpdatedEvent",
+          userId: users.id.getNumber(),
+        },
+        binary: Uint8Array.from([]),
+      };
+      users.domainEvents.push(mockEvent);
+
+      await adaptor.update(users);
+
+      expect(kafkaProducer.emit).toHaveBeenCalledWith(mockEvent.topic, mockEvent.binary);
+      expect(repository.save).toHaveBeenCalled();
     });
   });
 });

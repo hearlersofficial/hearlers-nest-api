@@ -4,6 +4,7 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -11,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/message/counsel.proto.
  */
 export const file_v1_message_counsel: GenFile = /*@__PURE__*/
-  fileDesc("Chh2MS9tZXNzYWdlL2NvdW5zZWwucHJvdG8SF2NvbS5oZWFybGVycy52MS5tZXNzYWdlIlwKHENvdW5zZWxNZXNzYWdlQ3JlYXRlZFBheWxvYWQSEgoKY291bnNlbF9pZBgBIAEoBRIPCgdtZXNzYWdlGAIgASgJEhcKD2lzX3VzZXJfbWVzc2FnZRgDIAEoCEKrAQobY29tLmNvbS5oZWFybGVycy52MS5tZXNzYWdlQgxDb3Vuc2VsUHJvdG9QAaICBENIVk2qAhdDb20uSGVhcmxlcnMuVjEuTWVzc2FnZcoCF0NvbVxIZWFybGVyc1xWMVxNZXNzYWdl4gIjQ29tXEhlYXJsZXJzXFYxXE1lc3NhZ2VcR1BCTWV0YWRhdGHqAhpDb206OkhlYXJsZXJzOjpWMTo6TWVzc2FnZWIGcHJvdG8z", [file_google_protobuf_timestamp]);
+  fileDesc("Chh2MS9tZXNzYWdlL2NvdW5zZWwucHJvdG8SF2NvbS5oZWFybGVycy52MS5tZXNzYWdlIo0BChxDb3Vuc2VsTWVzc2FnZUNyZWF0ZWRQYXlsb2FkEhIKCmNvdW5zZWxfaWQYASABKAUSDwoHbWVzc2FnZRgCIAEoCRIXCg9pc191c2VyX21lc3NhZ2UYAyABKAgSLwoLb2NjdXJyZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQqsBChtjb20uY29tLmhlYXJsZXJzLnYxLm1lc3NhZ2VCDENvdW5zZWxQcm90b1ABogIEQ0hWTaoCF0NvbS5IZWFybGVycy5WMS5NZXNzYWdlygIXQ29tXEhlYXJsZXJzXFYxXE1lc3NhZ2XiAiNDb21cSGVhcmxlcnNcVjFcTWVzc2FnZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpNZXNzYWdlYgZwcm90bzM", [file_google_protobuf_timestamp]);
 
 /**
  * topic: counsel.message.created
@@ -33,6 +34,11 @@ export type CounselMessageCreatedPayload = Message<"com.hearlers.v1.message.Coun
    * @generated from field: bool is_user_message = 3;
    */
   isUserMessage: boolean;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp occurred_at = 4;
+   */
+  occurredAt?: Timestamp;
 };
 
 /**
