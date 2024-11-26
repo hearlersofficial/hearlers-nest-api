@@ -12,7 +12,7 @@ export class PsqlCounselPromptsRepositoryAdaptor implements CounselPromptsReposi
     const { promptType } = props;
     const findOptionsRelation: FindOptionsRelations<CounselPromptsEntity> = {};
     const findOptionsWhere: FindOptionsWhere<CounselPromptsEntity> = {};
-    if (promptType) {
+    if (promptType !== undefined || promptType !== null) {
       findOptionsWhere.promptType = promptType;
     }
     const findOptionsOrder: FindOptionsOrder<CounselPromptsEntity> = { version: "DESC", createdAt: "DESC" };
@@ -23,6 +23,7 @@ export class PsqlCounselPromptsRepositoryAdaptor implements CounselPromptsReposi
       order: findOptionsOrder,
     };
     const counselPromptsEntity: CounselPromptsEntity = await this.counselPromptsRepository.findOne(findOneOptions);
+    console.log(counselPromptsEntity);
     return PsqlCounselPromptsMapper.toDomain(counselPromptsEntity);
   }
 }

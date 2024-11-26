@@ -1,6 +1,5 @@
 import { HttpStatus } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import OpenAI from "openai";
 
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { CreateCounselMessageUseCase } from "~/src/aggregates/counsels/applications/useCases/CreateCounselMessageUseCase/CreateCounselMessageUseCase";
@@ -15,11 +14,10 @@ import { GetCounselMessageListUseCase } from "../../useCases/GetCounselMessageLi
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { UpdateCounselUseCase } from "../../useCases/UpdateCounselUseCase/UpdateCounselUseCase";
 import { GenerateGptResponseUseCase } from "../../useCases/GenerateGptResponseUseCase/GenerateGptResponseUseCase";
+import { BranchCounselStageUseCase } from "../../useCases/BranchCounselStageUseCase/BranchCounselStageUseCase";
 
 @CommandHandler(CreateMessageCommand)
 export class CreateMessageHandler implements ICommandHandler<CreateMessageCommand> {
-  private openai: OpenAI;
-
   constructor(
     private readonly getCounselUseCase: GetCounselUseCase,
     private readonly getCounselPromptUseCase: GetCounselPromptUseCase,
@@ -27,11 +25,8 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     private readonly getCounselMessageListUseCase: GetCounselMessageListUseCase,
     private readonly updateCounselUseCase: UpdateCounselUseCase,
     private readonly generateGptResponseUseCase: GenerateGptResponseUseCase,
-  ) {
-    this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY || "",
-    });
-  }
+    private readonly branchCounselStageUseCase: BranchCounselStageUseCase,
+  ) {}
 
   async execute(command: CreateMessageCommand): Promise<CounselMessages> {
     const { counselId, message } = command.props;
@@ -105,35 +100,12 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
 
     // 상담 정보 업데이트(SMALL_TALK  단계에서만 이루어지는지 확인 필요)
     if (this.checkNeedBranch(stage, response)) {
-      const branchCompletion = await this.openai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [
-          {
-            role: "system",
-            content: this.BRANCH_MSG,
-          },
-          {
-            role: "user",
-            content: JSON.stringify(prompts.slice(1)),
-          },
-        ],
-        temperature: 0,
-      });
-      const branch = branchCompletion?.choices[0]?.message?.content;
-      let updatedStage: CounselStage = null;
-      if (branch) {
-        if (branch.includes("1")) {
-          updatedStage = CounselStage.POSITIVE;
-        } else if (branch.includes("2")) {
-          updatedStage = CounselStage.NEGATIVE_WITH_REASON;
-        } else if (branch.includes("3")) {
-          updatedStage = CounselStage.NEGATIVE_WITHOUT_REASON;
-        }
+      const branchCounselStageResult = await this.branchCounselStageUseCase.execute({ prompts: prompts.slice(1) });
+      if (!branchCounselStageResult.ok) {
+        throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, branchCounselStageResult.error);
       }
-      if (updatedStage == null) {
-        updatedStage = CounselStage.POSITIVE;
-      }
-      counsel.updateCounselStage(updatedStage);
+      const branchedStage = branchCounselStageResult.branchedStage;
+      counsel.updateCounselStage(branchedStage);
       const updateCounselResult = await this.updateCounselUseCase.execute({ toUpdateCounsel: counsel });
       if (!updateCounselResult.ok) {
         throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, updateCounselResult.error);
@@ -186,13 +158,4 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     const end_msg = "같이 더 이야기해보자.";
     return stage == CounselStage.SMALL_TALK && response.includes(end_msg);
   }
-
-  private BRANCH_MSG = `
-<Task>
-    Analyze the whole conversation and answer 1, 2, or 3.
-    If the 나's feeling is positive, answer 1. If negative, proceed to the next step.
-    If there is a clear reason for the negative feeling, answer 2. If there is no reason, answer 3.
-    else, answer 4.
-</Task>
-`;
 }
