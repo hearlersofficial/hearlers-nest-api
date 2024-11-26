@@ -4,8 +4,17 @@ import { QueryBus } from "@nestjs/cqrs";
 import { GrpcMethod } from "@nestjs/microservices";
 import { GetCounselListQuery } from "~/src/aggregates/counsels/applications/queries/GetCounselList/GetCounselList.query";
 import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
-import { GetCounselListRequest, GetCounselListResult, GetCounselListResultSchema } from "~/src/gen/v1/service/counsel_pb";
+import {
+  GetCounselListRequest,
+  GetCounselListResult,
+  GetCounselListResultSchema,
+  GetMessageListRequest,
+  GetMessageListResult,
+  GetMessageListResultSchema,
+} from "~/src/gen/v1/service/counsel_pb";
 import { SchemaCounselsMapper } from "../schema.counsels.mapper";
+import { GetMessageListQuery } from "~/src/aggregates/counsels/applications/queries/GetMessageList/GetMessageList.handller";
+import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
 
 @Controller("counsel")
 export class GrpcCounselQueryController {
@@ -17,5 +26,15 @@ export class GrpcCounselQueryController {
     const counselList: Counsels[] = await this.queryBus.execute(query);
 
     return create(GetCounselListResultSchema, { counselList: counselList.map((counsel) => SchemaCounselsMapper.toCounselProto(counsel)) });
+  }
+
+  @GrpcMethod("CounselService", "GetMessageList")
+  async getMessageList(data: GetMessageListRequest): Promise<GetMessageListResult> {
+    const query: GetMessageListQuery = new GetMessageListQuery({ counselId: data.counselId });
+    const counselMessageList: CounselMessages[] = await this.queryBus.execute(query);
+
+    return create(GetMessageListResultSchema, {
+      messageList: counselMessageList.map((counselMessage) => SchemaCounselsMapper.toCounselMessageProto(counselMessage)),
+    });
   }
 }
