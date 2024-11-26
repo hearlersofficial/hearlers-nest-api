@@ -14,6 +14,7 @@ import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
 import { GetCounselMessageListUseCase } from "../../useCases/GetCounselMessageListUseCase/GetCounselMessageListUseCase";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { UpdateCounselUseCase } from "../../useCases/UpdateCounselUseCase/UpdateCounselUseCase";
+import { GenerateGptResponseUseCase } from "../../useCases/GenerateGptResponseUseCase/GenerateGptResponseUseCase";
 
 @CommandHandler(CreateMessageCommand)
 export class CreateMessageHandler implements ICommandHandler<CreateMessageCommand> {
@@ -25,6 +26,7 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     private readonly createCounselMessageUseCase: CreateCounselMessageUseCase,
     private readonly getCounselMessageListUseCase: GetCounselMessageListUseCase,
     private readonly updateCounselUseCase: UpdateCounselUseCase,
+    private readonly generateGptResponseUseCase: GenerateGptResponseUseCase,
   ) {
     this.openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY || "",
@@ -86,15 +88,11 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     });
 
     // 응답 생성
-    const completion = await this.openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: prompts,
-      temperature: 1,
-    });
-    const response = completion?.choices[0]?.message?.content;
-    if (!response) {
-      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, "응답 생성에 실패했습니다.");
+    const generateGptResponseResult = await this.generateGptResponseUseCase.execute({ prompts });
+    if (!generateGptResponseResult.ok) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, generateGptResponseResult.error);
     }
+    const response = generateGptResponseResult.response;
     const createSystemMessageResult = await this.createCounselMessageUseCase.execute({
       counselId,
       message: response,

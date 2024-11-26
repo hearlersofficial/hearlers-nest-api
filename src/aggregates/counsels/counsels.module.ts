@@ -21,6 +21,7 @@ import { UpdateCounselUseCase } from "./applications/useCases/UpdateCounselUseCa
 import { CounselPromptsEntity } from "~/src/shared/core/infrastructure/entities/CounselPrompts.entity";
 import { CreateMessageHandler } from "./applications/commands/CreateMessage/CreateMessage.handler";
 import { GetMessageListHandler } from "./applications/queries/GetMessageList/GetMessageList.query";
+import { GenerateGptResponseUseCase } from "./applications/useCases/GenerateGptResponseUseCase/GenerateGptResponseUseCase";
 
 @Module({
   imports: [TypeOrmModule.forFeature([CounselsEntity, CounselMessagesEntity, CounselPromptsEntity])],
@@ -32,6 +33,7 @@ import { GetMessageListHandler } from "./applications/queries/GetMessageList/Get
     GetCounselPromptUseCase,
     GetCounselMessageListUseCase,
     UpdateCounselUseCase,
+    GenerateGptResponseUseCase,
     CreateCounselHandler,
     GetCounselListHandler,
     CreateMessageHandler,
