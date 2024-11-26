@@ -13,7 +13,7 @@ import { CounselorInfo, CounselorType } from "~/src/shared/enums/CounselorType.e
 import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
 import { GetCounselMessageListUseCase } from "../../useCases/GetCounselMessageListUseCase/GetCounselMessageListUseCase";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
-import { UpdateCounselUseCase } from "../../useCases/updateCounselUseCase/updateCounselUseCase";
+import { UpdateCounselUseCase } from "../../useCases/UpdateCounselUseCase/UpdateCounselUseCase";
 
 @CommandHandler(CreateMessageCommand)
 export class CreateMessageHandler implements ICommandHandler<CreateMessageCommand> {

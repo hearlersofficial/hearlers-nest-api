@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UseCase } from "~/src/shared/core/applications/UseCase";
-import { UpdateCounselUseCaseRequest } from "./dto/updateCounsel.request";
-import { UpdateCounselUseCaseResponse } from "./dto/updateCounsel.response";
+import { UpdateCounselUseCaseRequest } from "./dto/UpdateCounsel.request";
+import { UpdateCounselUseCaseResponse } from "./dto/UpdateCounsel.response";
 import { COUNSEL_REPOSITORY, CounselsRepositoryPort } from "../../../infrastructures/counsels.repository.port";
 
 @Injectable()

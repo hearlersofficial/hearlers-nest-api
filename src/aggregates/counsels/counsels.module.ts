@@ -17,7 +17,7 @@ import { GetCounselPromptUseCase } from "./applications/useCases/GetCounselPromp
 import { PsqlCounselPromptsRepositoryAdaptor } from "./infrastructures/adaptors/psql.counselPrompts.repository.adaptor";
 import { COUNSEL_PROMPT_REPOSITORY } from "./infrastructures/counselPrompts.repository.port";
 import { GetCounselMessageListUseCase } from "./applications/useCases/GetCounselMessageListUseCase/GetCounselMessageListUseCase";
-import { UpdateCounselUseCase } from "./applications/useCases/updateCounselUseCase/updateCounselUseCase";
+import { UpdateCounselUseCase } from "./applications/useCases/UpdateCounselUseCase/UpdateCounselUseCase";
 import { CounselPromptsEntity } from "~/src/shared/core/infrastructure/entities/CounselPrompts.entity";
 import { CreateMessageHandler } from "./applications/commands/CreateMessage/CreateMessage.handler";
 
