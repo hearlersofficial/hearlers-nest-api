@@ -3,7 +3,7 @@ import { CounselsRepositoryPort, FindManyPropsInCounselsRepository, FindOneProps
 import { CounselsEntity } from "~/src/shared/core/infrastructure/entities/Counsels.entity";
 import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
 import { PsqlCounselsMapper } from "~/src/aggregates/counsels/infrastructures/adaptors/mapper/psql.counsels.mapper";
-import { FindManyOptions, FindOneOptions, FindOptionsOrder, FindOptionsRelations, FindOptionsWhere, Repository } from "typeorm";
+import { FindManyOptions, FindOneOptions, FindOptionsOrder, FindOptionsWhere, Repository } from "typeorm";
 
 export class PsqlCounselsRepositoryAdaptor implements CounselsRepositoryPort {
   constructor(@InjectRepository(CounselsEntity) private readonly counselsRepository: Repository<CounselsEntity>) {}
@@ -16,34 +16,33 @@ export class PsqlCounselsRepositoryAdaptor implements CounselsRepositoryPort {
 
   async findMany(props: FindManyPropsInCounselsRepository): Promise<Counsels[] | null> {
     const { userId } = props;
-    const findOptionsRelation: FindOptionsRelations<CounselsEntity> = {};
     const findOptionsWhere: FindOptionsWhere<CounselsEntity> = {};
-    if (userId) {
+    if (userId !== null && userId !== undefined) {
       findOptionsWhere.userId = userId;
     }
+
     const findOptionsOrder: FindOptionsOrder<CounselsEntity> = { lastChatedAt: "DESC" };
 
     const findManyOptions: FindManyOptions<CounselsEntity> = {
       where: findOptionsWhere,
-      relations: findOptionsRelation,
       order: findOptionsOrder,
     };
+
     const counselsEntities: CounselsEntity[] = await this.counselsRepository.find(findManyOptions);
     return counselsEntities.map((entity) => PsqlCounselsMapper.toDomain(entity));
   }
 
   async findOne(props: FindOnePropsInCounselsRepository): Promise<Counsels | null> {
     const { counselId } = props;
-    const findOptionsRelation: FindOptionsRelations<CounselsEntity> = {};
     const findOptionsWhere: FindOptionsWhere<CounselsEntity> = {};
-    if (counselId) {
+    if (counselId !== null && counselId !== undefined) {
       findOptionsWhere.id = counselId;
     }
 
     const findOneOptions: FindOneOptions<CounselsEntity> = {
       where: findOptionsWhere,
-      relations: findOptionsRelation,
     };
+
     const counselsEntity: CounselsEntity = await this.counselsRepository.findOne(findOneOptions);
     return PsqlCounselsMapper.toDomain(counselsEntity);
   }

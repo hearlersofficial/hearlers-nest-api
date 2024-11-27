@@ -20,15 +20,17 @@ export class PsqlCounselMessagesRepositoryAdaptor implements CounselMessagesRepo
   async findMany(props: FindManyPropsInCounselMessagesRepository): Promise<CounselMessages[]> {
     const { counselId } = props;
     const findOptionsWhere: FindOptionsWhere<CounselMessagesEntity> = {};
-    if (counselId) {
+    if (counselId !== null && counselId !== undefined) {
       findOptionsWhere.counselId = counselId;
     }
+
     const findOptionsOrder: FindOptionsOrder<CounselMessagesEntity> = { createdAt: "ASC" };
 
     const findManyOptions: FindManyOptions<CounselMessagesEntity> = {
       where: findOptionsWhere,
       order: findOptionsOrder,
     };
+
     const counselMessagesEntities = await this.counselMessagesRepository.find(findManyOptions);
     return counselMessagesEntities.map((counselMessagesEntity) => PsqlCounselMessagesMapper.toDomain(counselMessagesEntity));
   }
