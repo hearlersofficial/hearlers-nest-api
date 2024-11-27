@@ -10,6 +10,7 @@ export class CounselPromptsEntity extends CoreEntity {
     type: "text",
     name: "persona",
     comment: "Persona",
+    nullable: true,
   })
   persona: string;
 
@@ -25,6 +26,7 @@ export class CounselPromptsEntity extends CoreEntity {
     type: "text",
     name: "instruction",
     comment: "Instruction",
+    nullable: true,
   })
   instruction: string;
 
@@ -35,6 +37,14 @@ export class CounselPromptsEntity extends CoreEntity {
     nullable: true,
   })
   tone: string;
+
+  @Column({
+    type: "text",
+    name: "additional_prompt",
+    comment: "추가 프롬프트",
+    nullable: true,
+  })
+  additionalPrompt: string;
 
   @Column({
     type: "enum",

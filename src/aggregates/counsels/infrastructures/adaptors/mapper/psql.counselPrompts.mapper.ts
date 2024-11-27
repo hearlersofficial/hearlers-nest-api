@@ -12,12 +12,13 @@ export class PsqlCounselPromptsMapper {
     }
 
     const counselPromptsProps = {
-      persona: entity.persona,
-      context: entity.context,
-      instruction: entity.instruction,
-      tone: entity.tone,
+      persona: entity.persona ?? null,
+      context: entity.context ?? null,
+      instruction: entity.instruction ?? null,
+      tone: entity.tone ?? null,
+      additionalPrompt: entity.additionalPrompt ?? null,
       promptType: entity.promptType,
-      description: entity.description,
+      description: entity.description ?? null,
       version: entity.version,
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
@@ -39,12 +40,13 @@ export class PsqlCounselPromptsMapper {
       entity.id = counselPrompts.id.getNumber();
     }
 
-    entity.persona = counselPrompts.persona;
-    entity.context = counselPrompts.context;
-    entity.instruction = counselPrompts.instruction;
-    entity.tone = counselPrompts.tone;
+    entity.persona = counselPrompts.persona ?? null;
+    entity.context = counselPrompts.context ?? null;
+    entity.instruction = counselPrompts.instruction ?? null;
+    entity.tone = counselPrompts.tone ?? null;
+    entity.additionalPrompt = counselPrompts.additionalPrompt ?? null;
     entity.promptType = counselPrompts.promptType;
-    entity.description = counselPrompts.description;
+    entity.description = counselPrompts.description ?? null;
     entity.version = counselPrompts.version;
 
     entity.createdAt = formatDayjs(counselPrompts.createdAt);

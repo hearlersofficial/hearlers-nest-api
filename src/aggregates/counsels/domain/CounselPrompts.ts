@@ -8,13 +8,14 @@ import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 
 interface CounselPromptsNewProps {
-  persona: string;
-  context: string;
-  instruction: string;
-  tone: string;
+  persona: string | null;
+  context: string | null;
+  instruction: string | null;
+  tone: string | null;
+  additionalPrompt: string | null;
   promptType: CounselPrompt;
-  description: string;
-  version?: string;
+  description: string | null;
+  version: string | null;
 }
 
 interface CounselPromptsProps extends CounselPromptsNewProps {
@@ -55,9 +56,9 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
 
   validateDomain(): Result<void> {
     // persona 검증
-    if (!this.props.persona) {
-      return Result.fail<void>("[CounselPrompts] persona는 필수입니다");
-    }
+    // if (!this.props.persona) {
+    //   return Result.fail<void>("[CounselPrompts] persona는 필수입니다");
+    // }
 
     // context 검증
     // if (!this.props.context) {
@@ -65,9 +66,9 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
     // }
 
     // instruction 검증
-    if (!this.props.instruction) {
-      return Result.fail<void>("[CounselPrompts] instruction은 필수입니다");
-    }
+    // if (!this.props.instruction) {
+    //   return Result.fail<void>("[CounselPrompts] instruction은 필수입니다");
+    // }
 
     // tone 검증
     // if (!this.props.tone) {
@@ -81,11 +82,6 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
     if (!Object.values(CounselPrompt).includes(this.props.promptType)) {
       return Result.fail<void>("[CounselPrompts] 유효하지 않은 promptType입니다");
     }
-
-    // description 검증
-    // if (!this.props.description) {
-    //   return Result.fail<void>("[CounselPrompts] description은 필수입니다");
-    // }
 
     // version 검증
     if (!this.props.version) {
@@ -118,6 +114,10 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
 
   get tone(): string {
     return this.props.tone;
+  }
+
+  get additionalPrompt(): string {
+    return this.props.additionalPrompt;
   }
 
   get promptType(): CounselPrompt {
@@ -181,6 +181,12 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
       content += `
 <Tone>
   ${this.tone}
+
+      `;
+    }
+    if (this.additionalPrompt) {
+      content += `
+${this.additionalPrompt}
 
       `;
     }
