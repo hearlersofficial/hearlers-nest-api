@@ -56,8 +56,8 @@ export class CounselMessages extends AggregateRoot<CounselMessagesProps> {
       return Result.fail<void>("[CounselMessages] 메시지 내용은 필수입니다");
     }
     // gpt 응답은 80자 초과 가능
-    if (this.props.message && this.props.message.length > 80 && this.props.isUserMessage) {
-      return Result.fail<void>("[CounselMessages] 메시지 내용은 80를 초과할 수 없습니다");
+    if (this.props.isUserMessage && this.props.message.length > 80) {
+      return Result.fail<void>("[CounselMessages] 메시지 내용은 80자를 초과할 수 없습니다");
     }
 
     // isUserMessage 검증
@@ -67,10 +67,10 @@ export class CounselMessages extends AggregateRoot<CounselMessagesProps> {
 
     // 날짜 검증
     if (!this.props.createdAt) {
-      return Result.fail<void>("[UserProfiles] 생성 시간은 필수입니다");
+      return Result.fail<void>("[CounselMessages] 생성 시간은 필수입니다");
     }
     if (!this.props.updatedAt) {
-      return Result.fail<void>("[UserProfiles] 수정 시간은 필수입니다");
+      return Result.fail<void>("[CounselMessages] 수정 시간은 필수입니다");
     }
 
     return Result.ok<void>();

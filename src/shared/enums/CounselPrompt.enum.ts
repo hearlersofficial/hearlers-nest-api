@@ -8,4 +8,5 @@ export enum CounselPrompt {
   TIRED_REASON_MSG = 6,
   TIRED_NO_REASON_MSG = 7,
   WHY_LIVE_MSG = 8,
+  BRANCH_MSG = 9,
 }

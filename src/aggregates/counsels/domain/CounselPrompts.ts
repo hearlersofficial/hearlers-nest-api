@@ -153,8 +153,7 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
     this.props.deletedAt = null;
   }
 
-  public makePrompt(counselorType: CounselorType): ChatCompletionSystemMessageParam {
-    const { name, gender } = CounselorInfo[counselorType];
+  public makePrompt(counselorType?: CounselorType): ChatCompletionSystemMessageParam {
     let content: string = "";
     if (this.persona) {
       content += `
@@ -191,9 +190,14 @@ ${this.additionalPrompt}
       `;
     }
 
+    if (counselorType !== undefined) {
+      const { name, gender } = CounselorInfo[counselorType];
+      content = content.replace("{name}", name).replace("{gender}", gender);
+    }
+
     return {
       role: "system",
-      content: content.replace("{name}", name).replace("{gender}", gender),
+      content,
     };
   }
 }

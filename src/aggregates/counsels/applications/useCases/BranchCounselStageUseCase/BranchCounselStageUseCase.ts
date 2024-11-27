@@ -1,15 +1,21 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { BranchCounselStageUseCaseRequest } from "./dto/BranchCounselStage.request";
 import { BranchCounselStageUseCaseResponse } from "./dto/BranchCounselStage.response";
 import { UseCase } from "~/src/shared/core/applications/UseCase";
 import OpenAI from "openai";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
+import { COUNSEL_PROMPT_REPOSITORY, CounselPromptsRepositoryPort } from "../../../infrastructures/counselPrompts.repository.port";
+import { CounselPrompts } from "../../../domain/CounselPrompts";
+import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
 
 @Injectable()
 export class BranchCounselStageUseCase implements UseCase<BranchCounselStageUseCaseRequest, BranchCounselStageUseCaseResponse> {
   private openai: OpenAI;
 
-  constructor() {
+  constructor(
+    @Inject(COUNSEL_PROMPT_REPOSITORY)
+    private readonly counselPromptsRepository: CounselPromptsRepositoryPort,
+  ) {
     this.openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY || "",
     });
@@ -17,13 +23,13 @@ export class BranchCounselStageUseCase implements UseCase<BranchCounselStageUseC
 
   async execute(request: BranchCounselStageUseCaseRequest): Promise<BranchCounselStageUseCaseResponse> {
     const { prompts } = request;
+
+    const branchPrompt: CounselPrompts = await this.counselPromptsRepository.findOne({ promptType: CounselPrompt.BRANCH_MSG });
+
     const completion = await this.openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
-        {
-          role: "system",
-          content: this.BRANCH_MSG,
-        },
+        branchPrompt.makePrompt(),
         {
           role: "user",
           content: JSON.stringify(prompts),
@@ -55,13 +61,4 @@ export class BranchCounselStageUseCase implements UseCase<BranchCounselStageUseC
       branchedStage,
     };
   }
-
-  private BRANCH_MSG = `
-<Task>
-    Analyze the whole conversation and answer 1, 2, or 3.
-    If the 나's feeling is positive, answer 1. If negative, proceed to the next step.
-    If there is a clear reason for the negative feeling, answer 2. If there is no reason, answer 3.
-    else, answer 4.
-</Task>
-`;
 }
