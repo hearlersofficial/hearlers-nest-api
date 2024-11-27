@@ -13,7 +13,7 @@ import {
   GetMessageListResultSchema,
 } from "~/src/gen/v1/service/counsel_pb";
 import { SchemaCounselsMapper } from "../schema.counsels.mapper";
-import { GetMessageListQuery } from "~/src/aggregates/counsels/applications/queries/GetMessageList/GetMessageList.handller";
+import { GetMessageListQuery } from "~/src/aggregates/counsels/applications/queries/GetMessageList/GetMessageList.query";
 import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
 
 @Controller("counsel")

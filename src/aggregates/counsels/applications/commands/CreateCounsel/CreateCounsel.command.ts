@@ -10,12 +10,15 @@ export class CreateCounselCommand {
   }
 
   private validate(props: CreateCounselCommandProps): void {
-    if (props.userId == null || props.userId === undefined) {
+    if (props.userId === null || props.userId === undefined) {
       throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "사용자 ID는 필수입니다.");
     }
 
-    if (!props.counselorType == null || props.counselorType === undefined) {
+    if (!props.counselorType === null || props.counselorType === undefined) {
       throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "상담사 타입은 필수입니다.");
+    }
+    if (!Object.values(CounselorType).includes(this.props.counselorType)) {
+      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "유효하지 않은 상담사 타입입니다.");
     }
   }
 }

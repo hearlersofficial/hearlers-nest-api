@@ -20,7 +20,7 @@ import { GetCounselMessageListUseCase } from "./applications/useCases/GetCounsel
 import { UpdateCounselUseCase } from "./applications/useCases/UpdateCounselUseCase/UpdateCounselUseCase";
 import { CounselPromptsEntity } from "~/src/shared/core/infrastructure/entities/CounselPrompts.entity";
 import { CreateMessageHandler } from "./applications/commands/CreateMessage/CreateMessage.handler";
-import { GetMessageListHandler } from "./applications/queries/GetMessageList/GetMessageList.query";
+import { GetMessageListHandler } from "./applications/queries/GetMessageList/GetMessageList.handler";
 import { GenerateGptResponseUseCase } from "./applications/useCases/GenerateGptResponseUseCase/GenerateGptResponseUseCase";
 import { BranchCounselStageUseCase } from "./applications/useCases/BranchCounselStageUseCase/BranchCounselStageUseCase";
 

@@ -7,7 +7,7 @@ export class GetCounselListQuery {
   }
 
   private validateProps(props: GetCounselListQueryProps): void {
-    if (props.userId == null || props.userId === undefined) {
+    if (props.userId === null || props.userId === undefined) {
       throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "사용자 ID는 필수입니다.");
     }
   }
