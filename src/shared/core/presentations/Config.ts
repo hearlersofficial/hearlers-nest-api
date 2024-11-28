@@ -56,7 +56,7 @@ export async function createMicroservices(
   config: GrpcServiceConfig,
 ): Promise<INestApplication> {
   const app = await NestFactory.create(module);
-  app.connectMicroservice(createGrpcOptions(serviceName, config));
+  app.connectMicroservice(createGrpcOptions(serviceName, config), { inheritAppConfig: true });
   app.connectMicroservice({
     transport: Transport.KAFKA,
     options: {
