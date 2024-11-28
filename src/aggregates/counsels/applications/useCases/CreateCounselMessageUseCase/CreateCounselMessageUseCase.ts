@@ -6,15 +6,12 @@ import { CreateCounselMessageUseCaseResponse } from "~/src/aggregates/counsels/a
 import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
 import { COUNSEL_MESSAGE_REPOSITORY, CounselMessagesRepositoryPort } from "~/src/aggregates/counsels/infrastructures/counselMessages.repository.port";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { COUNSEL_REPOSITORY, CounselsRepositoryPort } from "../../../infrastructures/counsels.repository.port";
 
 @Injectable()
 export class CreateCounselMessageUseCase implements UseCase<CreateCounselMessageUseCaseRequest, CreateCounselMessageUseCaseResponse> {
   constructor(
     @Inject(COUNSEL_MESSAGE_REPOSITORY)
     private readonly counselMessagesRepository: CounselMessagesRepositoryPort,
-    @Inject(COUNSEL_REPOSITORY)
-    private readonly counselsRepository: CounselsRepositoryPort,
   ) {}
 
   async execute(request: CreateCounselMessageUseCaseRequest): Promise<CreateCounselMessageUseCaseResponse> {
@@ -28,12 +25,6 @@ export class CreateCounselMessageUseCase implements UseCase<CreateCounselMessage
     }
     const counselMessage: CounselMessages = counselMessageOrError.value;
     const savedCounselMessage: CounselMessages = await this.counselMessagesRepository.create(counselMessage);
-
-    // last message 저장
-    const counsel = await this.counselsRepository.findOne({ counselId });
-    counsel.saveLastMessage(savedCounselMessage);
-    await this.counselsRepository.update(counsel);
-
     return {
       ok: true,
       counselMessage: savedCounselMessage,
