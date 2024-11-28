@@ -15,6 +15,8 @@ import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { UpdateCounselUseCase } from "../../useCases/UpdateCounselUseCase/UpdateCounselUseCase";
 import { GenerateGptResponseUseCase } from "../../useCases/GenerateGptResponseUseCase/GenerateGptResponseUseCase";
 import { BranchCounselStageUseCase } from "../../useCases/BranchCounselStageUseCase/BranchCounselStageUseCase";
+import { Counsels } from "../../../domain/Counsels";
+import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 
 @CommandHandler(CreateMessageCommand)
 export class CreateMessageHandler implements ICommandHandler<CreateMessageCommand> {
@@ -38,13 +40,14 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     }
     const counsel = getCounselResult.counsel;
 
-    //극단적 상태 체크
+    // 상담 단계 초기화여부 체크
+    if (this.checkNeedStageReset(counsel)) {
+      counsel.updateCounselStage(CounselStage.SMALL_TALK);
+    }
+
+    // 극단적 상태 체크
     if (this.checkExtreme(message)) {
       counsel.updateCounselStage(CounselStage.EXTREME);
-      const updateCounselResult = await this.updateCounselUseCase.execute({ toUpdateCounsel: counsel });
-      if (!updateCounselResult.ok) {
-        throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, updateCounselResult.error);
-      }
     }
 
     const counselorType = counsel.counselorType;
@@ -72,7 +75,6 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     }
 
     // 이전 대화 가져오기 (유저의 대화만 가져오는지 시스템 응답도 포함하는지 확인 필요)
-    // 비로그인 유저일 경우 횟수제한 로직 추가
     const getMessageListResult = await this.getCounselMessageListUseCase.execute({ counselId });
     if (!getMessageListResult.ok) {
       throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, getMessageListResult.error);
@@ -88,6 +90,8 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
       throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, generateGptResponseResult.error);
     }
     const response = generateGptResponseResult.response;
+
+    // 시스템 메시지 추가
     const createSystemMessageResult = await this.createCounselMessageUseCase.execute({
       counselId,
       message: response,
@@ -98,7 +102,7 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     }
     const systemMessage = createSystemMessageResult.counselMessage;
 
-    // 상담 정보 업데이트(SMALL_TALK  단계에서만 이루어지는지 확인 필요)
+    // 프롬프트 분기(SMALL_TALK  단계에서만 이루어지는지 확인 필요)
     if (this.checkNeedBranch(stage, response)) {
       const branchCounselStageResult = await this.branchCounselStageUseCase.execute({ prompts: prompts.slice(1) });
       if (!branchCounselStageResult.ok) {
@@ -106,10 +110,13 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
       }
       const branchedStage = branchCounselStageResult.branchedStage;
       counsel.updateCounselStage(branchedStage);
-      const updateCounselResult = await this.updateCounselUseCase.execute({ toUpdateCounsel: counsel });
-      if (!updateCounselResult.ok) {
-        throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, updateCounselResult.error);
-      }
+    }
+
+    // last message 저장 및 상담 정보 업데이트
+    counsel.saveLastMessage(systemMessage);
+    const updateCounselResult = await this.updateCounselUseCase.execute({ toUpdateCounsel: counsel });
+    if (!updateCounselResult.ok) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, updateCounselResult.error);
     }
 
     return systemMessage;
@@ -157,5 +164,12 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
   private checkNeedBranch(stage: CounselStage, response: string): boolean {
     const end_msg = "같이 더 이야기해보자.";
     return stage == CounselStage.SMALL_TALK && response.includes(end_msg);
+  }
+
+  private checkNeedStageReset(counsel: Counsels): boolean {
+    const lastChatedAt = counsel.lastChatedAt;
+    const now = getNowDayjs();
+
+    return now.isAfter(lastChatedAt.add(6, "hour"));
   }
 }
