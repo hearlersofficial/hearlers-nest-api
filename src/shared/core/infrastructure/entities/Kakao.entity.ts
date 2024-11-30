@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne, RelationId } from "typeorm";
+import { AuthUsersEntity } from "~/src/shared/core/infrastructure/entities/AuthUsers.entity";
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
-import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 
 @Entity({
   name: "kakao",
@@ -13,13 +13,13 @@ export class KakaoEntity extends CoreEntity {
   })
   uniqueId: string;
 
-  @RelationId((kakao: KakaoEntity) => kakao.user)
+  @RelationId((kakao: KakaoEntity) => kakao.authUser)
   @Column({
-    name: "user_id",
+    name: "auth_user_id",
   })
-  userId: number;
+  authUserId: number;
 
-  @OneToOne(() => UsersEntity)
-  @JoinColumn({ name: "user_id" })
-  user: UsersEntity;
+  @OneToOne(() => AuthUsersEntity)
+  @JoinColumn({ name: "auth_user_id" })
+  authUser: AuthUsersEntity;
 }

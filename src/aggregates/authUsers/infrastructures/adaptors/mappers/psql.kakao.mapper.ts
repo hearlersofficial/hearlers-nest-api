@@ -1,5 +1,5 @@
 import { InternalServerErrorException } from "@nestjs/common";
-import { Kakao } from "~/src/aggregates/users/domain/Kakao";
+import { Kakao } from "~/src/aggregates/authUsers/domain/Kakao";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
@@ -12,7 +12,7 @@ export class PsqlKakaoMapper {
     }
 
     const kakaoProps = {
-      userId: new UniqueEntityId(entity.userId),
+      authUserId: new UniqueEntityId(entity.authUserId),
       uniqueId: entity.uniqueId,
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
@@ -35,7 +35,7 @@ export class PsqlKakaoMapper {
       entity.id = kakao.id.getNumber();
     }
 
-    entity.userId = kakao.userId.getNumber();
+    entity.authUserId = kakao.authUserId.getNumber();
     entity.uniqueId = kakao.uniqueId;
     entity.createdAt = formatDayjs(kakao.createdAt);
     entity.updatedAt = formatDayjs(kakao.updatedAt);

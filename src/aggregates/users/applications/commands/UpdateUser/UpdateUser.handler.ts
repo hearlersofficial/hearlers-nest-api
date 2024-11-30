@@ -3,7 +3,7 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { UpdateUserCommand } from "./UpdateUser.command";
 import { FindOneUserUseCase } from "../../useCases/FindOneUserUseCase/FindOneUserUseCase";
 import { UpdateUserUseCase } from "../../useCases/UpdateUserUseCase/UpdateUserUseCase";
-import { Kakao } from "~/src/aggregates/users/domain/Kakao";
+import { Kakao } from "~/src/aggregates/authUsers/domain/Kakao";
 import { Users, UsersProps } from "~/src/aggregates/users/domain/Users";
 import { AuthChannel, ProgressStatus, ProgressType, UserProfile } from "~/src/gen/v1/model/user_pb";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
@@ -66,10 +66,9 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   }
 
   private getUpdateProps(command: UpdateUserCommand, originalUser: Users): UsersProps {
-    const { nickname, authChannel } = command.props;
+    const { nickname } = command.props;
     const props = originalUser.propsValue;
     if (nickname) props.nickname = nickname;
-    if (authChannel) props.authChannel = authChannel;
 
     return props;
   }

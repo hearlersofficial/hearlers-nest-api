@@ -1,13 +1,12 @@
 import { InjectRepository } from "@nestjs/typeorm";
 import { FindOneOptions, FindOptionsRelations, FindOptionsWhere, Repository } from "typeorm";
 import { Users } from "~/src/aggregates/users/domain/Users";
-import { PsqlUsersMapper } from "~/src/aggregates/users/infrastructures/adaptors/mapper/psql.users.mapper";
+import { PsqlUsersMapper } from "~/src/aggregates/users/infrastructures/adaptors/mappers/psql.users.mapper";
 import {
   FindOnePropsInUsersRepository,
   UsersRepositoryPort,
 } from "~/src/aggregates/users/infrastructures/users.repository.port";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 import { ClientKafka } from "@nestjs/microservices";
 import { KAFKA_CLIENT } from "~/src/shared/core/infrastructure/Config";
 import { Inject } from "@nestjs/common";
@@ -41,7 +40,7 @@ export class PsqlUsersRepositoryAdaptor implements UsersRepositoryPort {
   }
 
   async findOne(props: FindOnePropsInUsersRepository): Promise<Users | null> {
-    const { userId, nickname, authChannel, uniqueId } = props;
+    const { userId, nickname } = props;
     const findOptionsRelation = this.userFindOptionsRelation;
     const findOptionsWhere: FindOptionsWhere<UsersEntity> = {};
     if (userId) {
@@ -49,12 +48,6 @@ export class PsqlUsersRepositoryAdaptor implements UsersRepositoryPort {
     }
     if (nickname) {
       findOptionsWhere.nickname = nickname;
-    }
-    if (authChannel && authChannel === AuthChannel.KAKAO) {
-      findOptionsRelation.kakao = true;
-      findOptionsWhere.kakao = {
-        uniqueId,
-      };
     }
 
     const findOneOptions: FindOneOptions<UsersEntity> = {

@@ -1,12 +1,13 @@
 import { Column, Entity, OneToMany, OneToOne, RelationId } from "typeorm";
 
 import { CoreEntity } from "~/src/shared/core/infrastructure/entities/Core.entity";
-import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
 import { UserActivitiesEntity } from "~/src/shared/core/infrastructure/entities/UserActivities.entity";
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
 import { AuthChannel } from "~/src/gen/v1/model/user_pb";
+import { AuthUsersEntity } from "~/src/shared/core/infrastructure/entities/AuthUsers.entity";
+import { CoreStatus } from "~/src/shared/core/constants/status.constants";
 
 @Entity({
   name: "users",
@@ -28,11 +29,6 @@ export class UsersEntity extends CoreEntity {
     default: AuthChannel.NONE,
   })
   authChannel: AuthChannel;
-
-  @OneToOne(() => KakaoEntity, (kakao) => kakao.user, {
-    cascade: true,
-  })
-  kakao: KakaoEntity;
 
   @OneToOne(() => UserProfilesEntity, (userProfiles) => userProfiles.user, {
     cascade: true,
@@ -63,4 +59,19 @@ export class UsersEntity extends CoreEntity {
     cascade: true,
   })
   userActivities: UserActivitiesEntity[];
+
+  @OneToOne(() => AuthUsersEntity, (authUser) => authUser.user, {
+    cascade: true,
+    orphanedRowAction: "disable",
+  })
+  authUser: AuthUsersEntity;
+
+  @Column({
+    type: "enum",
+    name: "status",
+    enum: CoreStatus,
+    comment: "상태",
+    default: CoreStatus.ACTIVE,
+  })
+  status: CoreStatus;
 }

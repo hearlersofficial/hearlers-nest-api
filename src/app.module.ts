@@ -1,35 +1,18 @@
-import { Module } from "@nestjs/common";
-import { ConfigModule } from "@nestjs/config";
-import { APP_FILTER, APP_PIPE } from "@nestjs/core";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { Logger, Module, OnModuleInit } from "@nestjs/common";
 import { CounselsServiceModule } from "~/src/services/counselings/counsels.service.module";
 import { UsersServiceModule } from "~/src/services/users/users.service.module";
-import { TypeOrmConfigs } from "~/src/shared/core/infrastructure/Config";
-import { AllExceptionFilter } from "~/src/shared/filters/GrpcExceptionFilter";
-import { GrpcValidationPipe } from "~/src/shared/pipes/GrpcValidationPipe";
 
 @Module({
-  imports: [
-    UsersServiceModule,
-    CounselsServiceModule,
-    ConfigModule.forRoot({
-      envFilePath: [".env", ".env.dev"],
-      isGlobal: true,
-    }),
-    TypeOrmModule.forRootAsync({
-      useClass: TypeOrmConfigs,
-    }),
-  ],
+  imports: [UsersServiceModule, CounselsServiceModule],
   controllers: [],
-  providers: [
-    {
-      provide: APP_FILTER,
-      useClass: AllExceptionFilter,
-    },
-    {
-      provide: APP_PIPE,
-      useClass: GrpcValidationPipe,
-    },
-  ],
+  providers: [],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  private readonly logger = new Logger(AppModule.name);
+
+  async onModuleInit() {
+    this.logger.log("App Module has been initialized");
+    this.logger.log(`Environment: ${process.env.NODE_ENV}`);
+    this.logger.log(`GRPC Port: ${process.env.GRPC_PORT}`);
+  }
+}

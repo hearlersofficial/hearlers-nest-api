@@ -5,11 +5,18 @@ import { NestFactory } from "@nestjs/core";
 import { findProtoFiles } from "~/src/shared/utils/Proto.utils";
 
 export enum ServiceType {
+  APP = "APP",
   USERS = "USERS",
   COUNSELINGS = "COUNSELINGS",
 }
 
 export const serviceConfigs = {
+  [ServiceType.APP]: {
+    packages: ["com.hearlers.v1.model", "com.hearlers.v1.service", "com.hearlers.v1.common"],
+    port: parseInt(process.env.GRPC_PORT || "50050"),
+    host: process.env.GRPC_HOST || "localhost",
+    protoPath: process.cwd() + process.env.PROTO_PATH || "src/proto",
+  },
   [ServiceType.USERS]: {
     packages: ["com.hearlers.v1.model", "com.hearlers.v1.service", "com.hearlers.v1.common"],
     port: parseInt(process.env.GRPC_PORT || "50051"),

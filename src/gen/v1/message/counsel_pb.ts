@@ -4,6 +4,8 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv1";
+import type { CounselorType } from "../model/counsel_pb";
+import { file_v1_model_counsel } from "../model/counsel_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
@@ -12,7 +14,41 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/message/counsel.proto.
  */
 export const file_v1_message_counsel: GenFile = /*@__PURE__*/
-  fileDesc("Chh2MS9tZXNzYWdlL2NvdW5zZWwucHJvdG8SF2NvbS5oZWFybGVycy52MS5tZXNzYWdlIo0BChxDb3Vuc2VsTWVzc2FnZUNyZWF0ZWRQYXlsb2FkEhIKCmNvdW5zZWxfaWQYASABKAUSDwoHbWVzc2FnZRgCIAEoCRIXCg9pc191c2VyX21lc3NhZ2UYAyABKAgSLwoLb2NjdXJyZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQqsBChtjb20uY29tLmhlYXJsZXJzLnYxLm1lc3NhZ2VCDENvdW5zZWxQcm90b1ABogIEQ0hWTaoCF0NvbS5IZWFybGVycy5WMS5NZXNzYWdlygIXQ29tXEhlYXJsZXJzXFYxXE1lc3NhZ2XiAiNDb21cSGVhcmxlcnNcVjFcTWVzc2FnZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpNZXNzYWdlYgZwcm90bzM", [file_google_protobuf_timestamp]);
+  fileDesc("Chh2MS9tZXNzYWdlL2NvdW5zZWwucHJvdG8SF2NvbS5oZWFybGVycy52MS5tZXNzYWdlIqsBChVDb3Vuc2VsQ3JlYXRlZFBheWxvYWQSEgoKY291bnNlbF9pZBgBIAEoBRIPCgd1c2VyX2lkGAIgASgFEjwKDmNvdW5zZWxvcl90eXBlGAMgASgOMiQuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkNvdW5zZWxvclR5cGUSLwoLb2NjdXJyZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIo0BChxDb3Vuc2VsTWVzc2FnZUNyZWF0ZWRQYXlsb2FkEhIKCmNvdW5zZWxfaWQYASABKAUSDwoHbWVzc2FnZRgCIAEoCRIXCg9pc191c2VyX21lc3NhZ2UYAyABKAgSLwoLb2NjdXJyZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQqsBChtjb20uY29tLmhlYXJsZXJzLnYxLm1lc3NhZ2VCDENvdW5zZWxQcm90b1ABogIEQ0hWTaoCF0NvbS5IZWFybGVycy5WMS5NZXNzYWdlygIXQ29tXEhlYXJsZXJzXFYxXE1lc3NhZ2XiAiNDb21cSGVhcmxlcnNcVjFcTWVzc2FnZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpNZXNzYWdlYgZwcm90bzM", [file_v1_model_counsel, file_google_protobuf_timestamp]);
+
+/**
+ * topic: counsel.created
+ *
+ * @generated from message com.hearlers.v1.message.CounselCreatedPayload
+ */
+export type CounselCreatedPayload = Message<"com.hearlers.v1.message.CounselCreatedPayload"> & {
+  /**
+   * @generated from field: int32 counsel_id = 1;
+   */
+  counselId: number;
+
+  /**
+   * @generated from field: int32 user_id = 2;
+   */
+  userId: number;
+
+  /**
+   * @generated from field: com.hearlers.v1.model.CounselorType counselor_type = 3;
+   */
+  counselorType: CounselorType;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp occurred_at = 4;
+   */
+  occurredAt?: Timestamp;
+};
+
+/**
+ * Describes the message com.hearlers.v1.message.CounselCreatedPayload.
+ * Use `create(CounselCreatedPayloadSchema)` to create a new message.
+ */
+export const CounselCreatedPayloadSchema: GenMessage<CounselCreatedPayload> = /*@__PURE__*/
+  messageDesc(file_v1_message_counsel, 0);
 
 /**
  * topic: counsel.message.created
@@ -46,5 +82,5 @@ export type CounselMessageCreatedPayload = Message<"com.hearlers.v1.message.Coun
  * Use `create(CounselMessageCreatedPayloadSchema)` to create a new message.
  */
 export const CounselMessageCreatedPayloadSchema: GenMessage<CounselMessageCreatedPayload> = /*@__PURE__*/
-  messageDesc(file_v1_message_counsel, 0);
+  messageDesc(file_v1_message_counsel, 1);
 

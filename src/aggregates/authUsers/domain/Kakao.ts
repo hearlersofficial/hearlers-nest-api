@@ -1,11 +1,11 @@
-import { DomainEntity } from "~/src/shared/core/domain/DomainEntity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { DomainEntity } from "~/src/shared/core/domain/DomainEntity";
 
 interface KakaoNewProps {
-  userId: UniqueEntityId;
+  authUserId: UniqueEntityId;
   uniqueId: string;
 }
 
@@ -35,8 +35,8 @@ export class Kakao extends DomainEntity<KakaoProps> {
   }
 
   validateDomain(): Result<void> {
-    // userId 검증
-    if (!this.props.userId) {
+    // authUserId 검증
+    if (!this.props.authUserId) {
       return Result.fail<void>("[Kakao] 사용자 ID는 필수입니다");
     }
 
@@ -57,8 +57,8 @@ export class Kakao extends DomainEntity<KakaoProps> {
   }
 
   // Getters
-  get userId(): UniqueEntityId {
-    return this.props.userId;
+  get authUserId(): UniqueEntityId {
+    return this.props.authUserId;
   }
 
   get uniqueId(): string {

@@ -11,7 +11,7 @@ import { ProgressType, ProgressStatus } from "~/src/gen/v1/model/user_pb";
 import { getNowDayjs, formatDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
-import { Kakao } from "~/src/aggregates/users/domain/Kakao";
+import { Kakao } from "~/src/aggregates/authUsers/domain/Kakao";
 import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
 
 describe("PsqlUsersMapper", () => {

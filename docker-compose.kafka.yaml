@@ -14,6 +14,14 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
       - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      # SASL/PLAIN 설정
+      - KAFKA_CFG_SASL_ENABLED_MECHANISMS=PLAIN
+      - KAFKA_CFG_SASL_MECHANISM_INTER_BROKER_PROTOCOL=PLAIN
+      - KAFKA_CFG_AUTHORIZER_CLASS_NAME=kafka.security.auth.SimpleAclAuthorizer
+      - KAFKA_CFG_ALLOW_EVERYONE_IF_NO_ACL_FOUND=false
+      # 사용자 정의 비밀번호
+      - KAFKA_CFG_SUPER_USERS=User:kafka_admin
+      - ALLOW_PLAINTEXT_LISTENER=yes # 테스트용 (생산 환경에서는 설정 X)
     volumes:
       - kafka_data:/opt/bitnami/kafka/data # Kafka 데이터를 영구 저장
     restart: always # 컨테이너 오류 발생 시 자동 재시작

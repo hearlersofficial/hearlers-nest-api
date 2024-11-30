@@ -1,7 +1,7 @@
 import { fakerKO as faker } from "@faker-js/faker";
 import { InternalServerErrorException } from "@nestjs/common";
 import { PsqlKakaoMapper } from "./psql.kakao.mapper";
-import { Kakao } from "~/src/aggregates/users/domain/Kakao";
+import { Kakao } from "~/src/aggregates/authUsers/domain/Kakao";
 import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { formatDayjs, getNowDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
@@ -10,7 +10,7 @@ describe("PsqlKakaoMapper", () => {
   const createMockKakaoEntity = () => {
     const entity = new KakaoEntity();
     entity.id = faker.number.int();
-    entity.userId = faker.number.int();
+    entity.authUserId = faker.number.int();
     entity.uniqueId = faker.string.numeric(10);
     entity.createdAt = formatDayjs(getNowDayjs());
     entity.updatedAt = formatDayjs(getNowDayjs());
@@ -25,7 +25,7 @@ describe("PsqlKakaoMapper", () => {
 
       expect(result).toBeDefined();
       expect(result?.id.getNumber()).toBe(mockEntity.id);
-      expect(result?.userId.getNumber()).toBe(mockEntity.userId);
+      expect(result?.authUserId.getNumber()).toBe(mockEntity.authUserId);
       expect(result?.uniqueId).toBe(mockEntity.uniqueId);
       expect(result?.createdAt.toISOString()).toBe(convertDayjs(mockEntity.createdAt).toISOString());
       expect(result?.updatedAt.toISOString()).toBe(convertDayjs(mockEntity.updatedAt).toISOString());
@@ -57,18 +57,18 @@ describe("PsqlKakaoMapper", () => {
 
   describe("toEntity", () => {
     it("Kakao 도메인을 KakaoEntity로 변환할 수 있다", () => {
-      const userId = new UniqueEntityId();
+      const authUserId = new UniqueEntityId();
       const uniqueId = faker.string.numeric(10);
 
       const kakao = Kakao.createNew({
-        userId,
+        authUserId,
         uniqueId,
       }).value as Kakao;
 
       const result = PsqlKakaoMapper.toEntity(kakao);
 
       expect(result).toBeDefined();
-      expect(result.userId).toBe(userId.getNumber());
+      expect(result.authUserId).toBe(authUserId.getNumber());
       expect(result.uniqueId).toBe(uniqueId);
       expect(result.createdAt).toBeDefined();
       expect(result.updatedAt).toBeDefined();
@@ -84,11 +84,11 @@ describe("PsqlKakaoMapper", () => {
     });
 
     it("삭제된 도메인을 변환할 수 있다", () => {
-      const userId = new UniqueEntityId();
+      const authUserId = new UniqueEntityId();
       const uniqueId = faker.string.numeric(10);
 
       const kakao = Kakao.createNew({
-        userId,
+        authUserId,
         uniqueId,
       }).value as Kakao;
 
@@ -106,7 +106,7 @@ describe("PsqlKakaoMapper", () => {
       const resultEntity = PsqlKakaoMapper.toEntity(domain);
 
       expect(resultEntity.id).toBe(originalEntity.id);
-      expect(resultEntity.userId).toBe(originalEntity.userId);
+      expect(resultEntity.authUserId).toBe(originalEntity.authUserId);
       expect(resultEntity.uniqueId).toBe(originalEntity.uniqueId);
       expect(resultEntity.createdAt).toBe(originalEntity.createdAt);
       expect(resultEntity.updatedAt).toBe(originalEntity.updatedAt);
@@ -115,14 +115,14 @@ describe("PsqlKakaoMapper", () => {
 
     it("Domain -> Entity -> Domain 변환이 일관성있게 동작한다", () => {
       const originalDomain = Kakao.createNew({
-        userId: new UniqueEntityId(),
+        authUserId: new UniqueEntityId(),
         uniqueId: faker.string.numeric(10),
       }).value as Kakao;
 
       const entity = PsqlKakaoMapper.toEntity(originalDomain);
       const resultDomain = PsqlKakaoMapper.toDomain(entity);
 
-      expect(resultDomain.userId.equals(originalDomain.userId)).toBeTruthy();
+      expect(resultDomain.authUserId.equals(originalDomain.authUserId)).toBeTruthy();
       expect(resultDomain.uniqueId).toBe(originalDomain.uniqueId);
       expect(resultDomain.createdAt.format("YYYY-MM-DD HH:mm:ss")).toBe(
         originalDomain.createdAt.format("YYYY-MM-DD HH:mm:ss"),

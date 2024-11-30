@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { formatDayjs, getNowDayjs } from "~/src/shared/utils/Date.utils";
 
 import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
-import { PsqlUserPromptsMapper } from "~/src/aggregates/users/infrastructures/adaptors/mapper/psql.userPrompts.mapper";
+import { PsqlUserPromptsMapper } from "~/src/aggregates/users/infrastructures/adaptors/mappers/psql.userPrompts.mapper";
 import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { EmotionalState } from "~/src/shared/enums/EmotionalState.enum";
