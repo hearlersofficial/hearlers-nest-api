@@ -17,7 +17,6 @@ export class SchemaUsersMapper {
     return create(UserSchema, {
       id: user.id.getNumber(),
       nickname: user.nickname,
-      authChannel: user.authChannel,
       userProfile: user.userProfile ? this.toUserProfileProto(user.userProfile) : null,
       userProgresses: user.userProgresses ? user.userProgresses.map(this.toUserProgressProto) : null,
       createdAt: TimestampUtils.dayjsToTimestamp(user.createdAt),

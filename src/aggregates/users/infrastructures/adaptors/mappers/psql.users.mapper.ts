@@ -16,7 +16,6 @@ export class PsqlUsersMapper {
 
     const userProps = {
       nickname: entity.nickname,
-      authChannel: entity.authChannel,
       userProfile: entity.userProfiles ? PsqlUserProfilesMapper.toDomain(entity.userProfiles) : undefined,
       userProgresses:
         entity.userProgresses?.map((progress) => PsqlUserProgressesMapper.toDomain(progress)).filter(Boolean) || [],

@@ -16,9 +16,7 @@ describe("Users", () => {
 
   describe("createNew", () => {
     it("새로운 Users를 생성할 수 있다", () => {
-      const result = Users.createNew({
-        nickname: validNickname,
-      });
+      const result = Users.createNew({});
 
       expect(result.isSuccess).toBe(true);
       if (result.isSuccess) {
@@ -38,22 +36,6 @@ describe("Users", () => {
 
       expect(result.isFailure).toBe(true);
       expect(result.error).toContain("[Users] 닉네임은 필수입니다");
-    });
-
-    it("닉네임이 너무 짧거나 길면 생성에 실패한다", () => {
-      const shortResult = Users.createNew({
-        nickname: "a",
-      });
-
-      expect(shortResult.isFailure).toBe(true);
-      expect(shortResult.error).toContain("[Users] 닉네임은 2-20자 사이여야 합니다");
-
-      const longResult = Users.createNew({
-        nickname: "a".repeat(21),
-      });
-
-      expect(longResult.isFailure).toBe(true);
-      expect(longResult.error).toContain("[Users] 닉네임은 2-20자 사이여야 합니다");
     });
   });
 

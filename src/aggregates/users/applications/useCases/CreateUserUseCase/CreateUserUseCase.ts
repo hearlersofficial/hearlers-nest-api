@@ -15,9 +15,8 @@ export class CreateUserUseCase implements UseCase<CreateUserUseCaseRequest, Crea
     private readonly usersRepository: UsersRepositoryPort,
   ) {}
 
-  async execute(request: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    const { nickname, authChannel } = request;
-    const userResult = Users.createNew({ nickname, authChannel });
+  async execute(): Promise<CreateUserUseCaseResponse> {
+    const userResult = Users.createNew({});
     if (userResult.isFailure) {
       return { ok: false, error: userResult.error };
     }

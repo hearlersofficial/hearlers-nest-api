@@ -4,7 +4,12 @@ import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { CommandBus, CqrsModule } from "@nestjs/cqrs";
 import { ClientKafka, ClientsModule } from "@nestjs/microservices";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { AuthModule } from "~/src/aggregates/authUsers/auth.module";
 import { UsersModule } from "~/src/aggregates/users/users.module";
+import { ConnectAuthChannelHandler } from "~/src/services/users/applications/commands/ConnectAuthChannel/ConnectAuthChannel.handler";
+import { InitializeUserHandler } from "~/src/services/users/applications/commands/InitializeUser/InitializeUser.handler";
+import { BindAuthUserToUseUseCase } from "~/src/services/users/applications/useCases/BindAuthUserToUseUseCase/BindAuthUserToUseUseCase";
+import { ConnectAuthChannelUseCase } from "~/src/services/users/applications/useCases/ConnectAuthChannelUseCase/ConnectAuthChannelUseCase";
 import { GrpcUserCommandController } from "~/src/services/users/presentations/grpc/command/users.command.controller";
 import { GrpcUserQueryController } from "~/src/services/users/presentations/grpc/query/users.query.controller";
 import { UsersMessageController } from "~/src/services/users/presentations/message/users.message.controller";
@@ -15,6 +20,7 @@ import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor
 @Module({
   imports: [
     UsersModule,
+    AuthModule,
     CqrsModule,
     ConfigModule.forRoot({
       envFilePath: [".env", ".env.dev"],
@@ -25,6 +31,10 @@ import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor
   ],
   controllers: [GrpcUserCommandController, GrpcUserQueryController, UsersMessageController],
   providers: [
+    BindAuthUserToUseUseCase,
+    ConnectAuthChannelUseCase,
+    ConnectAuthChannelHandler,
+    InitializeUserHandler,
     {
       provide: APP_FILTER,
       useClass: AllExceptionFilter,

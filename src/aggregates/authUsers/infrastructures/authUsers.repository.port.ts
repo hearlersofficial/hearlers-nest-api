@@ -1,5 +1,5 @@
 import { AuthUsers } from "~/src/aggregates/authUsers/domain/AuthUsers";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel } from "~/src/gen/v1/model/auth_user_pb";
 
 export const AUTH_USERS_REPOSITORY = Symbol("AUTH_USERS_REPOSITORY");
 
@@ -12,7 +12,7 @@ export interface AuthUsersRepositoryPort {
 export interface FindOnePropsInAuthUsersRepository {
   userId?: number;
   authUserId?: number;
-  channelInfo: {
+  channelInfo?: {
     uniqueId?: string;
     authChannel?: AuthChannel;
   };

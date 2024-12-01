@@ -4,25 +4,25 @@ import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { Result } from "~/src/shared/core/domain/Result";
 import { CoreStatus } from "~/src/shared/core/constants/status.constants";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel } from "~/src/gen/v1/model/auth_user_pb";
 import { Kakao } from "~/src/aggregates/authUsers/domain/Kakao";
 import { RefreshTokensVO } from "~/src/aggregates/authUsers/domain/RefreshTokens.vo";
 
 const REFRESH_TOKEN_NOT_FOUND = "리프레시 토큰을 찾을 수 없습니다.";
 const REFRESH_TOKEN_EXPIRED = "리프레시 토큰이 만료되었습니다.";
 
-export interface AuthUsersNewProps {
-  authChannel: AuthChannel;
-}
+export interface AuthUsersNewProps {}
 
 export interface AuthUsersProps extends AuthUsersNewProps {
+  authChannel: AuthChannel;
   status: CoreStatus;
   userId: number;
-  lastLoginAt: Dayjs | null;
-  createdAt: Dayjs;
-  updatedAt: Dayjs;
+  lastLoginAt: Dayjs;
   kakao?: Kakao;
   refreshTokens: RefreshTokensVO[];
+  createdAt: Dayjs;
+  updatedAt: Dayjs;
+  deletedAt: Dayjs | null;
 }
 
 export class AuthUsers extends AggregateRoot<AuthUsersProps> {
@@ -47,12 +47,14 @@ export class AuthUsers extends AggregateRoot<AuthUsersProps> {
     return this.create(
       {
         ...props,
+        authChannel: AuthChannel.UNLINKED,
         userId: null,
         status: CoreStatus.INACTIVE,
         lastLoginAt: nowDayjs,
+        refreshTokens: [],
         createdAt: nowDayjs,
         updatedAt: nowDayjs,
-        refreshTokens: [],
+        deletedAt: null,
       },
       new UniqueEntityId(),
     );
@@ -98,21 +100,32 @@ export class AuthUsers extends AggregateRoot<AuthUsersProps> {
     return this.props.updatedAt;
   }
 
-  // Methods
+  get deletedAt(): Dayjs | null {
+    return this.props.deletedAt;
+  }
 
-  public setKakao(kakao: Kakao): Result<void> {
-    if (!kakao.authUserId.equals(this.id)) {
-      return Result.fail<void>("[Users] Kakao 계정의 사용자 ID가 일치하지 않습니다");
+  // Methods
+  public connectAuthChannel(authChannel: AuthChannel, uniqueId: string): Result<void> {
+    if (this.props.authChannel !== AuthChannel.UNLINKED) {
+      return Result.fail<void>("인증 채널은 이미 연결되어 있습니다.");
     }
-    if (this.props.authChannel !== AuthChannel.KAKAO) {
-      return Result.fail<void>("[Users] 인증 채널이 Kakao가 아닙니다");
+    switch (authChannel) {
+      case AuthChannel.KAKAO:
+        const kakaoResult: Result<Kakao> = Kakao.createNew({ uniqueId, authUserId: this.id });
+        if (kakaoResult.isFailure) {
+          return Result.fail<void>(kakaoResult.error);
+        }
+        this.props.authChannel = authChannel;
+        this.props.kakao = kakaoResult.value;
+        break;
+      default:
+        return Result.fail<void>("Invalid auth channel");
     }
-    this.props.kakao = kakao;
     this.props.updatedAt = getNowDayjs();
     return Result.ok<void>();
   }
 
-  public signUp(userId: number): void {
+  public bindUser(userId: number): void {
     this.props.userId = userId;
     this.props.status = CoreStatus.ACTIVE;
     this.props.updatedAt = getNowDayjs();
@@ -120,6 +133,12 @@ export class AuthUsers extends AggregateRoot<AuthUsersProps> {
 
   public inactive(): Result<void> {
     this.props.status = CoreStatus.INACTIVE;
+    this.props.updatedAt = getNowDayjs();
+    return Result.ok<void>();
+  }
+
+  public update(props: AuthUsersProps): Result<void> {
+    this.props = { ...this.props, ...props };
     this.props.updatedAt = getNowDayjs();
     return Result.ok<void>();
   }
@@ -137,38 +156,41 @@ export class AuthUsers extends AggregateRoot<AuthUsersProps> {
     return Result.ok<RefreshTokensVO>(refreshTokenVO);
   }
 
-  public initializeRefreshTokens(toAddRefreshTokenVO: RefreshTokensVO): Result<RefreshTokensVO> {
-    this.addRefreshToken(toAddRefreshTokenVO);
+  public saveRefreshToken(refreshToken: string, expiresAt: Dayjs): Result<RefreshTokensVO> {
+    const refreshTokenVOResult = RefreshTokensVO.create({
+      token: refreshToken,
+      expiresAt,
+      createdAt: getNowDayjs(),
+      updatedAt: getNowDayjs(),
+    });
+    if (refreshTokenVOResult.isFailure) {
+      return Result.fail<RefreshTokensVO>(refreshTokenVOResult.error);
+    }
+    const refreshTokenVO = refreshTokenVOResult.value;
+    this.props.refreshTokens.push(refreshTokenVO);
     this.expireRefreshTokens();
     this.updateLastLoginAt();
-    return Result.ok<RefreshTokensVO>(toAddRefreshTokenVO);
+    return Result.ok<RefreshTokensVO>(refreshTokenVO);
   }
 
-  public rotateRefreshToken(
-    originalRefreshTokenVO: RefreshTokensVO,
-    toAddRefreshTokenVO: RefreshTokensVO,
-  ): Result<RefreshTokensVO> {
-    if (originalRefreshTokenVO.isExpired()) {
+  public verifyRefreshToken(refreshToken: string): Result<RefreshTokensVO> {
+    const findRefreshTokenResult = this.findRefreshToken(refreshToken);
+    if (findRefreshTokenResult.isFailure) {
+      return Result.fail<RefreshTokensVO>(findRefreshTokenResult.error);
+    }
+    const refreshTokenVO = findRefreshTokenResult.value;
+    if (refreshTokenVO.isExpired()) {
       return Result.fail<RefreshTokensVO>(REFRESH_TOKEN_EXPIRED);
     }
-    this.removeRefreshToken(originalRefreshTokenVO);
-    this.addRefreshToken(toAddRefreshTokenVO);
-    this.updateLastLoginAt();
-    return Result.ok<RefreshTokensVO>(toAddRefreshTokenVO);
-  }
-
-  private addRefreshToken(refreshTokenVO: RefreshTokensVO): void {
-    this.props.refreshTokens.push(refreshTokenVO);
-    this.updateLastLoginAt();
+    this.removeRefreshToken(refreshTokenVO);
+    return Result.ok<RefreshTokensVO>(refreshTokenVO);
   }
 
   private removeRefreshToken(refreshTokenVO: RefreshTokensVO): void {
     this.props.refreshTokens = this.props.refreshTokens.filter((token) => token.token !== refreshTokenVO.token);
-    this.updateLastLoginAt();
   }
 
   private expireRefreshTokens(): void {
     this.props.refreshTokens = this.props.refreshTokens.filter((token) => !token.isExpired());
-    this.updateLastLoginAt();
   }
 }

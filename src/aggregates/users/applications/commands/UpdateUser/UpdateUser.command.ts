@@ -1,5 +1,6 @@
 import { HttpStatus } from "@nestjs/common";
-import { AuthChannel, UserProfile } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel } from "~/src/gen/v1/model/auth_user_pb";
+import { UserProfile } from "~/src/gen/v1/model/user_pb";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 
 export class UpdateUserCommand {

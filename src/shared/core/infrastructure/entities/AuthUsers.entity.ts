@@ -4,7 +4,7 @@ import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.ent
 import { CoreStatus } from "~/src/shared/core/constants/status.constants";
 import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
 import { RefreshTokenEntity } from "~/src/shared/core/infrastructure/entities/RefreshTokens.entity";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel } from "~/src/gen/v1/model/auth_user_pb";
 
 @Entity({
   name: "auth_users",
@@ -12,8 +12,10 @@ import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 })
 export class AuthUsersEntity extends CoreEntity {
   @OneToOne(() => UsersEntity, (user) => user.authUser, {
-    cascade: true,
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
     orphanedRowAction: "disable",
+    nullable: true,
   })
   @JoinColumn({ name: "user_id" })
   user: UsersEntity;
@@ -23,11 +25,12 @@ export class AuthUsersEntity extends CoreEntity {
     name: "user_id",
     type: "int",
     comment: "사용자 ID (외래 키)",
+    nullable: true,
   })
   userId: number;
 
   @Column({
-    type: "datetime",
+    type: "timestamp",
     name: "last_login_at",
     comment: "마지막 로그인 시간",
     nullable: true,
@@ -51,7 +54,7 @@ export class AuthUsersEntity extends CoreEntity {
     name: "auth_channel",
     enum: AuthChannel,
     comment: "인증 채널",
-    default: AuthChannel.NONE,
+    default: AuthChannel.UNLINKED,
   })
   authChannel: AuthChannel;
 

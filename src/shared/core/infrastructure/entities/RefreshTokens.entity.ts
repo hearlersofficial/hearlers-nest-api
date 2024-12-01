@@ -8,12 +8,12 @@ export class RefreshTokenEntity {
   @Column({ type: "varchar", comment: "리프레시 토큰" })
   token: string;
 
-  @Column({ type: "datetime", comment: "토큰 만료 시간" })
+  @Column({ type: "timestamp", comment: "토큰 만료 시간" })
   expiresAt: string;
 
   @JoinColumn({ name: "authUserId" })
   @ManyToOne(() => AuthUsersEntity, (authUser) => authUser.refreshTokens, {
-    onDelete: "CASCADE", // 사용자 삭제 시 토큰도 삭제
+    onDelete: "CASCADE",
     onUpdate: "CASCADE",
   })
   authUser: AuthUsersEntity;
@@ -24,14 +24,14 @@ export class RefreshTokenEntity {
 
   @Column({
     name: "created_at",
-    type: "datetime",
+    type: "timestamp",
     comment: "생성일시 (한국시간)",
   })
   createdAt: string;
 
   @Column({
     name: "updated_at",
-    type: "datetime",
+    type: "timestamp",
     comment: "마지막 수정일시 (한국시간)",
   })
   updatedAt: string;

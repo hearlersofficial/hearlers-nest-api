@@ -10,12 +10,12 @@ import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { create } from "@bufbuild/protobuf";
 import { UserUpdatedPayloadSchema } from "~/src/gen/v1/message/user_pb";
 import { UserUpdatedEvent } from "~/src/aggregates/users/domain/events/UserUpdatedEvents";
+import { generateUUID } from "~/src/shared/utils/UUID.utils";
 
-interface UsersNewProps {
-  nickname: string;
-}
+interface UsersNewProps {}
 
 export interface UsersProps extends UsersNewProps {
+  nickname: string;
   userProfile: UserProfiles;
   userProgresses: UserProgresses[];
   userPrompts: UserPrompts[];
@@ -44,13 +44,14 @@ export class Users extends AggregateRoot<UsersProps> {
     return this.create(
       {
         ...newProps,
+        nickname: generateUUID(),
         // 계정 생성 시 프로필 기본값
         userProfile: UserProfiles.createNew({
           userId: newId,
           profileImage: "",
           phoneNumber: "",
-          gender: Gender.NONE,
-          mbti: Mbti.NONE,
+          gender: Gender.UNSPECIFIED,
+          mbti: Mbti.UNSPECIFIED,
           birthday: getNowDayjs(),
           introduction: "",
         }).value,
@@ -68,9 +69,6 @@ export class Users extends AggregateRoot<UsersProps> {
     // nickname 검증
     if (!this.props.nickname) {
       return Result.fail<void>("[Users] 닉네임은 필수입니다");
-    }
-    if (this.props.nickname.length < 2 || this.props.nickname.length > 20) {
-      return Result.fail<void>("[Users] 닉네임은 2-20자 사이여야 합니다");
     }
 
     // userProfile 검증 (있는 경우)

@@ -12,7 +12,7 @@ import type { JsonObject, Message } from "@bufbuild/protobuf";
  * Describes the file v1/model/user.proto.
  */
 export const file_v1_model_user: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9tb2RlbC91c2VyLnByb3RvEhVjb20uaGVhcmxlcnMudjEubW9kZWwi5gIKBFVzZXISCgoCaWQYASABKAUSEAoIbmlja25hbWUYAiABKAkSOAoMYXV0aF9jaGFubmVsGAMgASgOMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhDaGFubmVsEjgKDHVzZXJfcHJvZmlsZRgEIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZRI8Cg91c2VyX3Byb2dyZXNzZXMYBSADKAsyIy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlclByb2dyZXNzEi4KCmNyZWF0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmRlbGV0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIugCCgtVc2VyUHJvZmlsZRIVCg1wcm9maWxlX2ltYWdlGAEgASgJEhQKDHBob25lX251bWJlchgCIAEoCRItCgZnZW5kZXIYAyABKA4yHS5jb20uaGVhcmxlcnMudjEubW9kZWwuR2VuZGVyEiwKCGJpcnRoZGF5GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIUCgxpbnRyb2R1Y3Rpb24YBSABKAkSKQoEbWJ0aRgGIAEoDjIbLmNvbS5oZWFybGVycy52MS5tb2RlbC5NYnRpEi4KCmNyZWF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmRlbGV0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIsMCCgxVc2VyUHJvZ3Jlc3MSOgoNcHJvZ3Jlc3NfdHlwZRgBIAEoDjIjLmNvbS5oZWFybGVycy52MS5tb2RlbC5Qcm9ncmVzc1R5cGUSNQoGc3RhdHVzGAIgASgOMiUuY29tLmhlYXJsZXJzLnYxLm1vZGVsLlByb2dyZXNzU3RhdHVzEjAKDGxhc3RfdXBkYXRlZBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZGVsZXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAihQMKDFVzZXJBY3Rpdml0eRI6Cg1hY3Rpdml0eV90eXBlGAEgASgOMiMuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkFjdGl2aXR5VHlwZRIuCg1hY3Rpdml0eV9kYXRhGAIgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBI3CghwbGF0Zm9ybRgDIAEoDjIlLmNvbS5oZWFybGVycy52MS5tb2RlbC5EZXZpY2VQbGF0Zm9ybRISCgppcF9hZGRyZXNzGAQgASgJEhIKCnVzZXJfYWdlbnQYBSABKAkSGAoQZHVyYXRpb25fc2Vjb25kcxgGIAEoBRIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpkZWxldGVkX2F0GAkgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCpUCgtBdXRoQ2hhbm5lbBIVChFBVVRIX0NIQU5ORUxfTk9ORRAAEhYKEkFVVEhfQ0hBTk5FTF9LQUtBTxABEhYKEkFVVEhfQ0hBTk5FTF9OQVZFUhACKj0KBkdlbmRlchIPCgtHRU5ERVJfTk9ORRAAEg8KC0dFTkRFUl9NQUxFEAESEQoNR0VOREVSX0ZFTUFMRRACKo4BCg5Qcm9ncmVzc1N0YXR1cxIfChtQUk9HUkVTU19TVEFUVVNfTk9UX1NUQVJURUQQABIfChtQUk9HUkVTU19TVEFUVVNfSU5fUFJPR1JFU1MQARIdChlQUk9HUkVTU19TVEFUVVNfQ09NUExFVEVEEAISGwoXUFJPR1JFU1NfU1RBVFVTX0JMT0NLRUQQAypMCgxQcm9ncmVzc1R5cGUSHAoYUFJPR1JFU1NfVFlQRV9PTkJPQVJESU5HEAASHgoaUFJPR1JFU1NfVFlQRV9WRVJJRklDQVRJT04QASqFAgoETWJ0aRINCglNQlRJX05PTkUQABINCglNQlRJX0VOVFAQARINCglNQlRJX0VORlAQAhINCglNQlRJX0VOVEoQAxINCglNQlRJX0VORkoQBBINCglNQlRJX0VTVFAQBRINCglNQlRJX0VTVEoQBhINCglNQlRJX0VTRlAQBxINCglNQlRJX0VTRkoQCBINCglNQlRJX0lOVEoQCRINCglNQlRJX0lORkoQChINCglNQlRJX0lOVFAQCxINCglNQlRJX0lORlAQDBINCglNQlRJX0lTVFAQDRINCglNQlRJX0lTVEoQDhINCglNQlRJX0lTRlAQDxINCglNQlRJX0lTRkoQECqWAQoORGV2aWNlUGxhdGZvcm0SGAoUREVWSUNFX1BMQVRGT1JNX05PTkUQABIXChNERVZJQ0VfUExBVEZPUk1fV0VCEAESFwoTREVWSUNFX1BMQVRGT1JNX0lPUxACEhsKF0RFVklDRV9QTEFURk9STV9BTkRST0lEEAMSGwoXREVWSUNFX1BMQVRGT1JNX0RFU0tUT1AQBCriBAoMQWN0aXZpdHlUeXBlEhYKEkFDVElWSVRZX1RZUEVfTk9ORRAAEhcKE0FDVElWSVRZX1RZUEVfTE9HSU4QARIYChRBQ1RJVklUWV9UWVBFX0xPR09VVBACEikKJUFDVElWSVRZX1RZUEVfVU5MT0dJTk5FRF9VU0VSX0NPTUVfSU4QAxI0CjBBQ1RJVklUWV9UWVBFX1VOTE9HSU5ORURfVVNFUl9TVEFSVEVEX0NPVU5TRUxJTkcQBBI1CjFBQ1RJVklUWV9UWVBFX1VOTE9HSU5ORURfVVNFUl9GSU5JU0hFRF9DT1VOU0VMSU5HEAUSIgoeQUNUSVZJVFlfVFlQRV9PTkJPQVJESU5HX1NUQVJUEAYSIAocQUNUSVZJVFlfVFlQRV9PTkJPQVJESU5HX0VORBAHEi0KKUFDVElWSVRZX1RZUEVfU0VUX0NPTlZFUlNBVElPTl9QUkVGRVJFTkNFEAgSIgoeQUNUSVZJVFlfVFlQRV9DT1VOU0VMSU5HX1NUQVJUEAkSIAocQUNUSVZJVFlfVFlQRV9DT1VOU0VMSU5HX0VORBAKEiAKHEFDVElWSVRZX1RZUEVfUFJPRklMRV9VUERBVEUQCxIhCh1BQ1RJVklUWV9UWVBFX0ZFRURCQUNLX1NVQk1JVBAMEiQKIEFDVElWSVRZX1RZUEVfU1VCU0NSSVBUSU9OX1NUQVJUEA0SJQohQUNUSVZJVFlfVFlQRV9TVUJTQ1JJUFRJT05fQ0FOQ0VMEA4SIgoeQUNUSVZJVFlfVFlQRV9QQVlNRU5UX0NPTVBMRVRFEA9CngEKGWNvbS5jb20uaGVhcmxlcnMudjEubW9kZWxCCVVzZXJQcm90b1ABogIEQ0hWTaoCFUNvbS5IZWFybGVycy5WMS5Nb2RlbMoCFUNvbVxIZWFybGVyc1xWMVxNb2RlbOICIUNvbVxIZWFybGVyc1xWMVxNb2RlbFxHUEJNZXRhZGF0YeoCGENvbTo6SGVhcmxlcnM6OlYxOjpNb2RlbGIGcHJvdG8z", [file_google_protobuf_timestamp, file_google_protobuf_struct]);
+  fileDesc("ChN2MS9tb2RlbC91c2VyLnByb3RvEhVjb20uaGVhcmxlcnMudjEubW9kZWwirAIKBFVzZXISCgoCaWQYASABKAUSEAoIbmlja25hbWUYAiABKAkSOAoMdXNlcl9wcm9maWxlGAMgASgLMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLlVzZXJQcm9maWxlEjwKD3VzZXJfcHJvZ3Jlc3NlcxgEIAMoCzIjLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZ3Jlc3MSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZGVsZXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAi6AIKC1VzZXJQcm9maWxlEhUKDXByb2ZpbGVfaW1hZ2UYASABKAkSFAoMcGhvbmVfbnVtYmVyGAIgASgJEi0KBmdlbmRlchgDIAEoDjIdLmNvbS5oZWFybGVycy52MS5tb2RlbC5HZW5kZXISLAoIYmlydGhkYXkYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhQKDGludHJvZHVjdGlvbhgFIAEoCRIpCgRtYnRpGAYgASgOMhsuY29tLmhlYXJsZXJzLnYxLm1vZGVsLk1idGkSLgoKY3JlYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZGVsZXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiwwIKDFVzZXJQcm9ncmVzcxI6Cg1wcm9ncmVzc190eXBlGAEgASgOMiMuY29tLmhlYXJsZXJzLnYxLm1vZGVsLlByb2dyZXNzVHlwZRI1CgZzdGF0dXMYAiABKA4yJS5jb20uaGVhcmxlcnMudjEubW9kZWwuUHJvZ3Jlc3NTdGF0dXMSMAoMbGFzdF91cGRhdGVkGAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpkZWxldGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCKFAwoMVXNlckFjdGl2aXR5EjoKDWFjdGl2aXR5X3R5cGUYASABKA4yIy5jb20uaGVhcmxlcnMudjEubW9kZWwuQWN0aXZpdHlUeXBlEi4KDWFjdGl2aXR5X2RhdGEYAiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0EjcKCHBsYXRmb3JtGAMgASgOMiUuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkRldmljZVBsYXRmb3JtEhIKCmlwX2FkZHJlc3MYBCABKAkSEgoKdXNlcl9hZ2VudBgFIAEoCRIYChBkdXJhdGlvbl9zZWNvbmRzGAYgASgFEi4KCmNyZWF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmRlbGV0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wKkQKBkdlbmRlchIWChJHRU5ERVJfVU5TUEVDSUZJRUQQABIPCgtHRU5ERVJfTUFMRRABEhEKDUdFTkRFUl9GRU1BTEUQAiqvAQoOUHJvZ3Jlc3NTdGF0dXMSHwobUFJPR1JFU1NfU1RBVFVTX1VOU1BFQ0lGSUVEEAASHwobUFJPR1JFU1NfU1RBVFVTX05PVF9TVEFSVEVEEAESHwobUFJPR1JFU1NfU1RBVFVTX0lOX1BST0dSRVNTEAISHQoZUFJPR1JFU1NfU1RBVFVTX0NPTVBMRVRFRBADEhsKF1BST0dSRVNTX1NUQVRVU19CTE9DS0VEEAQqawoMUHJvZ3Jlc3NUeXBlEh0KGVBST0dSRVNTX1RZUEVfVU5TUEVDSUZJRUQQABIcChhQUk9HUkVTU19UWVBFX09OQk9BUkRJTkcQARIeChpQUk9HUkVTU19UWVBFX1ZFUklGSUNBVElPThACKowCCgRNYnRpEhQKEE1CVElfVU5TUEVDSUZJRUQQABINCglNQlRJX0VOVFAQARINCglNQlRJX0VORlAQAhINCglNQlRJX0VOVEoQAxINCglNQlRJX0VORkoQBBINCglNQlRJX0VTVFAQBRINCglNQlRJX0VTVEoQBhINCglNQlRJX0VTRlAQBxINCglNQlRJX0VTRkoQCBINCglNQlRJX0lOVEoQCRINCglNQlRJX0lORkoQChINCglNQlRJX0lOVFAQCxINCglNQlRJX0lORlAQDBINCglNQlRJX0lTVFAQDRINCglNQlRJX0lTVEoQDhINCglNQlRJX0lTRlAQDxINCglNQlRJX0lTRkoQECqdAQoORGV2aWNlUGxhdGZvcm0SHwobREVWSUNFX1BMQVRGT1JNX1VOU1BFQ0lGSUVEEAASFwoTREVWSUNFX1BMQVRGT1JNX1dFQhABEhcKE0RFVklDRV9QTEFURk9STV9JT1MQAhIbChdERVZJQ0VfUExBVEZPUk1fQU5EUk9JRBADEhsKF0RFVklDRV9QTEFURk9STV9ERVNLVE9QEAQq6QQKDEFjdGl2aXR5VHlwZRIdChlBQ1RJVklUWV9UWVBFX1VOU1BFQ0lGSUVEEAASFwoTQUNUSVZJVFlfVFlQRV9MT0dJThABEhgKFEFDVElWSVRZX1RZUEVfTE9HT1VUEAISKQolQUNUSVZJVFlfVFlQRV9VTkxPR0lOTkVEX1VTRVJfQ09NRV9JThADEjQKMEFDVElWSVRZX1RZUEVfVU5MT0dJTk5FRF9VU0VSX1NUQVJURURfQ09VTlNFTElORxAEEjUKMUFDVElWSVRZX1RZUEVfVU5MT0dJTk5FRF9VU0VSX0ZJTklTSEVEX0NPVU5TRUxJTkcQBRIiCh5BQ1RJVklUWV9UWVBFX09OQk9BUkRJTkdfU1RBUlQQBhIgChxBQ1RJVklUWV9UWVBFX09OQk9BUkRJTkdfRU5EEAcSLQopQUNUSVZJVFlfVFlQRV9TRVRfQ09OVkVSU0FUSU9OX1BSRUZFUkVOQ0UQCBIiCh5BQ1RJVklUWV9UWVBFX0NPVU5TRUxJTkdfU1RBUlQQCRIgChxBQ1RJVklUWV9UWVBFX0NPVU5TRUxJTkdfRU5EEAoSIAocQUNUSVZJVFlfVFlQRV9QUk9GSUxFX1VQREFURRALEiEKHUFDVElWSVRZX1RZUEVfRkVFREJBQ0tfU1VCTUlUEAwSJAogQUNUSVZJVFlfVFlQRV9TVUJTQ1JJUFRJT05fU1RBUlQQDRIlCiFBQ1RJVklUWV9UWVBFX1NVQlNDUklQVElPTl9DQU5DRUwQDhIiCh5BQ1RJVklUWV9UWVBFX1BBWU1FTlRfQ09NUExFVEUQD0KeAQoZY29tLmNvbS5oZWFybGVycy52MS5tb2RlbEIJVXNlclByb3RvUAGiAgRDSFZNqgIVQ29tLkhlYXJsZXJzLlYxLk1vZGVsygIVQ29tXEhlYXJsZXJzXFYxXE1vZGVs4gIhQ29tXEhlYXJsZXJzXFYxXE1vZGVsXEdQQk1ldGFkYXRh6gIYQ29tOjpIZWFybGVyczo6VjE6Ok1vZGVsYgZwcm90bzM", [file_google_protobuf_timestamp, file_google_protobuf_struct]);
 
 /**
  * @generated from message com.hearlers.v1.model.User
@@ -29,32 +29,27 @@ export type User = Message<"com.hearlers.v1.model.User"> & {
   nickname: string;
 
   /**
-   * @generated from field: com.hearlers.v1.model.AuthChannel auth_channel = 3;
-   */
-  authChannel: AuthChannel;
-
-  /**
-   * @generated from field: com.hearlers.v1.model.UserProfile user_profile = 4;
+   * @generated from field: com.hearlers.v1.model.UserProfile user_profile = 3;
    */
   userProfile?: UserProfile;
 
   /**
-   * @generated from field: repeated com.hearlers.v1.model.UserProgress user_progresses = 5;
+   * @generated from field: repeated com.hearlers.v1.model.UserProgress user_progresses = 4;
    */
   userProgresses: UserProgress[];
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 6;
+   * @generated from field: google.protobuf.Timestamp created_at = 5;
    */
   createdAt?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 7;
+   * @generated from field: google.protobuf.Timestamp updated_at = 6;
    */
   updatedAt?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Timestamp deleted_at = 8;
+   * @generated from field: google.protobuf.Timestamp deleted_at = 7;
    */
   deletedAt?: Timestamp;
 };
@@ -223,39 +218,13 @@ export const UserActivitySchema: GenMessage<UserActivity> = /*@__PURE__*/
   messageDesc(file_v1_model_user, 3);
 
 /**
- * @generated from enum com.hearlers.v1.model.AuthChannel
- */
-export enum AuthChannel {
-  /**
-   * @generated from enum value: AUTH_CHANNEL_NONE = 0;
-   */
-  NONE = 0,
-
-  /**
-   * @generated from enum value: AUTH_CHANNEL_KAKAO = 1;
-   */
-  KAKAO = 1,
-
-  /**
-   * @generated from enum value: AUTH_CHANNEL_NAVER = 2;
-   */
-  NAVER = 2,
-}
-
-/**
- * Describes the enum com.hearlers.v1.model.AuthChannel.
- */
-export const AuthChannelSchema: GenEnum<AuthChannel> = /*@__PURE__*/
-  enumDesc(file_v1_model_user, 0);
-
-/**
  * @generated from enum com.hearlers.v1.model.Gender
  */
 export enum Gender {
   /**
-   * @generated from enum value: GENDER_NONE = 0;
+   * @generated from enum value: GENDER_UNSPECIFIED = 0;
    */
-  NONE = 0,
+  UNSPECIFIED = 0,
 
   /**
    * @generated from enum value: GENDER_MALE = 1;
@@ -272,68 +241,78 @@ export enum Gender {
  * Describes the enum com.hearlers.v1.model.Gender.
  */
 export const GenderSchema: GenEnum<Gender> = /*@__PURE__*/
-  enumDesc(file_v1_model_user, 1);
+  enumDesc(file_v1_model_user, 0);
 
 /**
  * @generated from enum com.hearlers.v1.model.ProgressStatus
  */
 export enum ProgressStatus {
   /**
-   * @generated from enum value: PROGRESS_STATUS_NOT_STARTED = 0;
+   * @generated from enum value: PROGRESS_STATUS_UNSPECIFIED = 0;
    */
-  NOT_STARTED = 0,
+  UNSPECIFIED = 0,
 
   /**
-   * @generated from enum value: PROGRESS_STATUS_IN_PROGRESS = 1;
+   * @generated from enum value: PROGRESS_STATUS_NOT_STARTED = 1;
    */
-  IN_PROGRESS = 1,
+  NOT_STARTED = 1,
 
   /**
-   * @generated from enum value: PROGRESS_STATUS_COMPLETED = 2;
+   * @generated from enum value: PROGRESS_STATUS_IN_PROGRESS = 2;
    */
-  COMPLETED = 2,
+  IN_PROGRESS = 2,
 
   /**
-   * @generated from enum value: PROGRESS_STATUS_BLOCKED = 3;
+   * @generated from enum value: PROGRESS_STATUS_COMPLETED = 3;
    */
-  BLOCKED = 3,
+  COMPLETED = 3,
+
+  /**
+   * @generated from enum value: PROGRESS_STATUS_BLOCKED = 4;
+   */
+  BLOCKED = 4,
 }
 
 /**
  * Describes the enum com.hearlers.v1.model.ProgressStatus.
  */
 export const ProgressStatusSchema: GenEnum<ProgressStatus> = /*@__PURE__*/
-  enumDesc(file_v1_model_user, 2);
+  enumDesc(file_v1_model_user, 1);
 
 /**
  * @generated from enum com.hearlers.v1.model.ProgressType
  */
 export enum ProgressType {
   /**
-   * @generated from enum value: PROGRESS_TYPE_ONBOARDING = 0;
+   * @generated from enum value: PROGRESS_TYPE_UNSPECIFIED = 0;
    */
-  ONBOARDING = 0,
+  UNSPECIFIED = 0,
 
   /**
-   * @generated from enum value: PROGRESS_TYPE_VERIFICATION = 1;
+   * @generated from enum value: PROGRESS_TYPE_ONBOARDING = 1;
    */
-  VERIFICATION = 1,
+  ONBOARDING = 1,
+
+  /**
+   * @generated from enum value: PROGRESS_TYPE_VERIFICATION = 2;
+   */
+  VERIFICATION = 2,
 }
 
 /**
  * Describes the enum com.hearlers.v1.model.ProgressType.
  */
 export const ProgressTypeSchema: GenEnum<ProgressType> = /*@__PURE__*/
-  enumDesc(file_v1_model_user, 3);
+  enumDesc(file_v1_model_user, 2);
 
 /**
  * @generated from enum com.hearlers.v1.model.Mbti
  */
 export enum Mbti {
   /**
-   * @generated from enum value: MBTI_NONE = 0;
+   * @generated from enum value: MBTI_UNSPECIFIED = 0;
    */
-  NONE = 0,
+  UNSPECIFIED = 0,
 
   /**
    * @generated from enum value: MBTI_ENTP = 1;
@@ -420,16 +399,16 @@ export enum Mbti {
  * Describes the enum com.hearlers.v1.model.Mbti.
  */
 export const MbtiSchema: GenEnum<Mbti> = /*@__PURE__*/
-  enumDesc(file_v1_model_user, 4);
+  enumDesc(file_v1_model_user, 3);
 
 /**
  * @generated from enum com.hearlers.v1.model.DevicePlatform
  */
 export enum DevicePlatform {
   /**
-   * @generated from enum value: DEVICE_PLATFORM_NONE = 0;
+   * @generated from enum value: DEVICE_PLATFORM_UNSPECIFIED = 0;
    */
-  NONE = 0,
+  UNSPECIFIED = 0,
 
   /**
    * @generated from enum value: DEVICE_PLATFORM_WEB = 1;
@@ -456,16 +435,16 @@ export enum DevicePlatform {
  * Describes the enum com.hearlers.v1.model.DevicePlatform.
  */
 export const DevicePlatformSchema: GenEnum<DevicePlatform> = /*@__PURE__*/
-  enumDesc(file_v1_model_user, 5);
+  enumDesc(file_v1_model_user, 4);
 
 /**
  * @generated from enum com.hearlers.v1.model.ActivityType
  */
 export enum ActivityType {
   /**
-   * @generated from enum value: ACTIVITY_TYPE_NONE = 0;
+   * @generated from enum value: ACTIVITY_TYPE_UNSPECIFIED = 0;
    */
-  NONE = 0,
+  UNSPECIFIED = 0,
 
   /**
    * @generated from enum value: ACTIVITY_TYPE_LOGIN = 1;
@@ -547,5 +526,5 @@ export enum ActivityType {
  * Describes the enum com.hearlers.v1.model.ActivityType.
  */
 export const ActivityTypeSchema: GenEnum<ActivityType> = /*@__PURE__*/
-  enumDesc(file_v1_model_user, 6);
+  enumDesc(file_v1_model_user, 5);
 

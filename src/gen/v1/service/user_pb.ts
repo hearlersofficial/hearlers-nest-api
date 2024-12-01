@@ -4,59 +4,195 @@
 
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv1";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv1";
-import type { ActivityType, AuthChannel, DevicePlatform, User, UserActivity, UserProfile } from "../model/user_pb";
+import type { ActivityType, DevicePlatform, User, UserActivity, UserProfile } from "../model/user_pb";
 import { file_v1_model_user } from "../model/user_pb";
+import type { AuthChannel, AuthUser } from "../model/auth_user_pb";
+import { file_v1_model_auth_user } from "../model/auth_user_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_struct, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Pagination } from "../common/pagination_pb";
 import { file_v1_common_pagination } from "../common/pagination_pb";
-import { file_google_protobuf_struct } from "@bufbuild/protobuf/wkt";
 import type { JsonObject, Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/service/user.proto.
  */
 export const file_v1_service_user: GenFile = /*@__PURE__*/
-  fileDesc("ChV2MS9zZXJ2aWNlL3VzZXIucHJvdG8SF2NvbS5oZWFybGVycy52MS5zZXJ2aWNlIl8KEUNyZWF0ZVVzZXJSZXF1ZXN0EhAKCG5pY2tuYW1lGAEgASgJEjgKDGF1dGhfY2hhbm5lbBgCIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbCI9ChBDcmVhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciLQAQoSRmluZE9uZVVzZXJSZXF1ZXN0EhQKB3VzZXJfaWQYASABKAVIAIgBARIVCghuaWNrbmFtZRgCIAEoCUgBiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgCiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgDiAEBQgoKCF91c2VyX2lkQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWQiPgoRRmluZE9uZVVzZXJSZXN1bHQSKQoEdXNlchgBIAEoCzIbLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyIk0KE0ZpbmRNYW55VXNlclJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLmNvbS5oZWFybGVycy52MS5jb21tb24uUGFnaW5hdGlvbiJAChJGaW5kTWFueVVzZXJSZXN1bHQSKgoFdXNlcnMYASADKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciKOAgoRVXBkYXRlVXNlclJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoBRIVCghuaWNrbmFtZRgCIAEoCUgAiAEBEj0KDGF1dGhfY2hhbm5lbBgDIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbEgBiAEBEhYKCXVuaXF1ZV9pZBgEIAEoCUgCiAEBEj0KDHVzZXJfcHJvZmlsZRgFIAEoCzIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyUHJvZmlsZUgDiAEBQgsKCV9uaWNrbmFtZUIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWRCDwoNX3VzZXJfcHJvZmlsZSI9ChBVcGRhdGVVc2VyUmVzdWx0EikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciL+AQoVQ3JlYXRlQWN0aXZpdHlSZXF1ZXN0EjoKDWFjdGl2aXR5X3R5cGUYASABKA4yIy5jb20uaGVhcmxlcnMudjEubW9kZWwuQWN0aXZpdHlUeXBlEi4KDWFjdGl2aXR5X2RhdGEYAiABKAsyFy5nb29nbGUucHJvdG9idWYuU3RydWN0EjcKCHBsYXRmb3JtGAMgASgOMiUuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkRldmljZVBsYXRmb3JtEhIKCmlwX2FkZHJlc3MYBCABKAkSEgoKdXNlcl9hZ2VudBgFIAEoCRIYChBkdXJhdGlvbl9zZWNvbmRzGAYgASgFIlIKFENyZWF0ZUFjdGl2aXR5UmVzdWx0EjoKDXVzZXJfYWN0aXZpdHkYASABKAsyIy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlckFjdGl2aXR5MqQDCgtVc2VyU2VydmljZRJfCgZjcmVhdGUSKi5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVVc2VyUmVxdWVzdBopLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkNyZWF0ZVVzZXJSZXN1bHQSYgoHZmluZE9uZRIrLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkZpbmRPbmVVc2VyUmVxdWVzdBoqLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkZpbmRPbmVVc2VyUmVzdWx0El8KBnVwZGF0ZRIqLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLlVwZGF0ZVVzZXJSZXF1ZXN0GikuY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuVXBkYXRlVXNlclJlc3VsdBJvCg5jcmVhdGVBY3Rpdml0eRIuLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkNyZWF0ZUFjdGl2aXR5UmVxdWVzdBotLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkNyZWF0ZUFjdGl2aXR5UmVzdWx0QqgBChtjb20uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2VCCVVzZXJQcm90b1ABogIEQ0hWU6oCF0NvbS5IZWFybGVycy5WMS5TZXJ2aWNlygIXQ29tXEhlYXJsZXJzXFYxXFNlcnZpY2XiAiNDb21cSGVhcmxlcnNcVjFcU2VydmljZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpTZXJ2aWNlYgZwcm90bzM", [file_v1_model_user, file_v1_common_pagination, file_google_protobuf_struct]);
+  fileDesc("ChV2MS9zZXJ2aWNlL3VzZXIucHJvdG8SF2NvbS5oZWFybGVycy52MS5zZXJ2aWNlIhcKFUluaXRpYWxpemVVc2VyUmVxdWVzdCJ3ChZJbml0aWFsaXplVXNlclJlc3BvbnNlEikKBHVzZXIYASABKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlchIyCglhdXRoX3VzZXIYAiABKAsyHy5jb20uaGVhcmxlcnMudjEubW9kZWwuQXV0aFVzZXIieQoZQ29ubmVjdEF1dGhDaGFubmVsUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgFEjgKDGF1dGhfY2hhbm5lbBgCIAEoDjIiLmNvbS5oZWFybGVycy52MS5tb2RlbC5BdXRoQ2hhbm5lbBIRCgl1bmlxdWVfaWQYAyABKAkiUAoaQ29ubmVjdEF1dGhDaGFubmVsUmVzcG9uc2USMgoJYXV0aF91c2VyGAEgASgLMh8uY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhVc2VyImkKF1NhdmVSZWZyZXNoVG9rZW5SZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAUSDQoFdG9rZW4YAiABKAkSLgoKZXhwaXJlc19hdBgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiKwoYU2F2ZVJlZnJlc2hUb2tlblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiOwoZVmVyaWZ5UmVmcmVzaFRva2VuUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgFEg0KBXRva2VuGAIgASgJIi0KGlZlcmlmeVJlZnJlc2hUb2tlblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgi0AEKEkZpbmRPbmVVc2VyUmVxdWVzdBIUCgd1c2VyX2lkGAEgASgFSACIAQESFQoIbmlja25hbWUYAiABKAlIAYgBARI9CgxhdXRoX2NoYW5uZWwYAyABKA4yIi5jb20uaGVhcmxlcnMudjEubW9kZWwuQXV0aENoYW5uZWxIAogBARIWCgl1bmlxdWVfaWQYBCABKAlIA4gBAUIKCghfdXNlcl9pZEILCglfbmlja25hbWVCDwoNX2F1dGhfY2hhbm5lbEIMCgpfdW5pcXVlX2lkIkAKE0ZpbmRPbmVVc2VyUmVzcG9uc2USKQoEdXNlchgBIAEoCzIbLmNvbS5oZWFybGVycy52MS5tb2RlbC5Vc2VyIk0KE0ZpbmRNYW55VXNlclJlcXVlc3QSNgoKcGFnaW5hdGlvbhgBIAEoCzIiLmNvbS5oZWFybGVycy52MS5jb21tb24uUGFnaW5hdGlvbiJAChJGaW5kTWFueVVzZXJSZXN1bHQSKgoFdXNlcnMYASADKAsyGy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlciLcAQoWRmluZE9uZUF1dGhVc2VyUmVxdWVzdBIZCgxhdXRoX3VzZXJfaWQYASABKAVIAIgBARIUCgd1c2VyX2lkGAIgASgFSAGIAQESPQoMYXV0aF9jaGFubmVsGAMgASgOMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhDaGFubmVsSAKIAQESFgoJdW5pcXVlX2lkGAQgASgJSAOIAQFCDwoNX2F1dGhfdXNlcl9pZEIKCghfdXNlcl9pZEIPCg1fYXV0aF9jaGFubmVsQgwKCl91bmlxdWVfaWQiTQoXRmluZE9uZUF1dGhVc2VyUmVzcG9uc2USMgoJYXV0aF91c2VyGAEgASgLMh8uY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhVc2VyIo4CChFVcGRhdGVVc2VyUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgFEhUKCG5pY2tuYW1lGAIgASgJSACIAQESPQoMYXV0aF9jaGFubmVsGAMgASgOMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkF1dGhDaGFubmVsSAGIAQESFgoJdW5pcXVlX2lkGAQgASgJSAKIAQESPQoMdXNlcl9wcm9maWxlGAUgASgLMiIuY29tLmhlYXJsZXJzLnYxLm1vZGVsLlVzZXJQcm9maWxlSAOIAQFCCwoJX25pY2tuYW1lQg8KDV9hdXRoX2NoYW5uZWxCDAoKX3VuaXF1ZV9pZEIPCg1fdXNlcl9wcm9maWxlIj8KElVwZGF0ZVVzZXJSZXNwb25zZRIpCgR1c2VyGAEgASgLMhsuY29tLmhlYXJsZXJzLnYxLm1vZGVsLlVzZXIi/gEKFUNyZWF0ZUFjdGl2aXR5UmVxdWVzdBI6Cg1hY3Rpdml0eV90eXBlGAEgASgOMiMuY29tLmhlYXJsZXJzLnYxLm1vZGVsLkFjdGl2aXR5VHlwZRIuCg1hY3Rpdml0eV9kYXRhGAIgASgLMhcuZ29vZ2xlLnByb3RvYnVmLlN0cnVjdBI3CghwbGF0Zm9ybRgDIAEoDjIlLmNvbS5oZWFybGVycy52MS5tb2RlbC5EZXZpY2VQbGF0Zm9ybRISCgppcF9hZGRyZXNzGAQgASgJEhIKCnVzZXJfYWdlbnQYBSABKAkSGAoQZHVyYXRpb25fc2Vjb25kcxgGIAEoBSJUChZDcmVhdGVBY3Rpdml0eVJlc3BvbnNlEjoKDXVzZXJfYWN0aXZpdHkYASABKAsyIy5jb20uaGVhcmxlcnMudjEubW9kZWwuVXNlckFjdGl2aXR5MrEHCgtVc2VyU2VydmljZRJxCg5Jbml0aWFsaXplVXNlchIuLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkluaXRpYWxpemVVc2VyUmVxdWVzdBovLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkluaXRpYWxpemVVc2VyUmVzcG9uc2USfQoSQ29ubmVjdEF1dGhDaGFubmVsEjIuY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuQ29ubmVjdEF1dGhDaGFubmVsUmVxdWVzdBozLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkNvbm5lY3RBdXRoQ2hhbm5lbFJlc3BvbnNlEncKEFNhdmVSZWZyZXNoVG9rZW4SMC5jb20uaGVhcmxlcnMudjEuc2VydmljZS5TYXZlUmVmcmVzaFRva2VuUmVxdWVzdBoxLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLlNhdmVSZWZyZXNoVG9rZW5SZXNwb25zZRJ9ChJWZXJpZnlSZWZyZXNoVG9rZW4SMi5jb20uaGVhcmxlcnMudjEuc2VydmljZS5WZXJpZnlSZWZyZXNoVG9rZW5SZXF1ZXN0GjMuY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuVmVyaWZ5UmVmcmVzaFRva2VuUmVzcG9uc2USaAoLRmluZE9uZVVzZXISKy5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lVXNlclJlcXVlc3QaLC5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lVXNlclJlc3BvbnNlEnQKD0ZpbmRPbmVBdXRoVXNlchIvLmNvbS5oZWFybGVycy52MS5zZXJ2aWNlLkZpbmRPbmVBdXRoVXNlclJlcXVlc3QaMC5jb20uaGVhcmxlcnMudjEuc2VydmljZS5GaW5kT25lQXV0aFVzZXJSZXNwb25zZRJlCgpVcGRhdGVVc2VyEiouY29tLmhlYXJsZXJzLnYxLnNlcnZpY2UuVXBkYXRlVXNlclJlcXVlc3QaKy5jb20uaGVhcmxlcnMudjEuc2VydmljZS5VcGRhdGVVc2VyUmVzcG9uc2UScQoOQ3JlYXRlQWN0aXZpdHkSLi5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVBY3Rpdml0eVJlcXVlc3QaLy5jb20uaGVhcmxlcnMudjEuc2VydmljZS5DcmVhdGVBY3Rpdml0eVJlc3BvbnNlQqgBChtjb20uY29tLmhlYXJsZXJzLnYxLnNlcnZpY2VCCVVzZXJQcm90b1ABogIEQ0hWU6oCF0NvbS5IZWFybGVycy5WMS5TZXJ2aWNlygIXQ29tXEhlYXJsZXJzXFYxXFNlcnZpY2XiAiNDb21cSGVhcmxlcnNcVjFcU2VydmljZVxHUEJNZXRhZGF0YeoCGkNvbTo6SGVhcmxlcnM6OlYxOjpTZXJ2aWNlYgZwcm90bzM", [file_v1_model_user, file_v1_model_auth_user, file_google_protobuf_timestamp, file_v1_common_pagination, file_google_protobuf_struct]);
 
 /**
- * @generated from message com.hearlers.v1.service.CreateUserRequest
+ * initializeUser
+ *
+ * @generated from message com.hearlers.v1.service.InitializeUserRequest
  */
-export type CreateUserRequest = Message<"com.hearlers.v1.service.CreateUserRequest"> & {
+export type InitializeUserRequest = Message<"com.hearlers.v1.service.InitializeUserRequest"> & {
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.InitializeUserRequest.
+ * Use `create(InitializeUserRequestSchema)` to create a new message.
+ */
+export const InitializeUserRequestSchema: GenMessage<InitializeUserRequest> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 0);
+
+/**
+ * @generated from message com.hearlers.v1.service.InitializeUserResponse
+ */
+export type InitializeUserResponse = Message<"com.hearlers.v1.service.InitializeUserResponse"> & {
   /**
-   * @generated from field: string nickname = 1;
+   * @generated from field: com.hearlers.v1.model.User user = 1;
    */
-  nickname: string;
+  user?: User;
+
+  /**
+   * @generated from field: com.hearlers.v1.model.AuthUser auth_user = 2;
+   */
+  authUser?: AuthUser;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.InitializeUserResponse.
+ * Use `create(InitializeUserResponseSchema)` to create a new message.
+ */
+export const InitializeUserResponseSchema: GenMessage<InitializeUserResponse> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 1);
+
+/**
+ * connectAuthChannel
+ *
+ * @generated from message com.hearlers.v1.service.ConnectAuthChannelRequest
+ */
+export type ConnectAuthChannelRequest = Message<"com.hearlers.v1.service.ConnectAuthChannelRequest"> & {
+  /**
+   * @generated from field: int32 user_id = 1;
+   */
+  userId: number;
 
   /**
    * @generated from field: com.hearlers.v1.model.AuthChannel auth_channel = 2;
    */
   authChannel: AuthChannel;
-};
 
-/**
- * Describes the message com.hearlers.v1.service.CreateUserRequest.
- * Use `create(CreateUserRequestSchema)` to create a new message.
- */
-export const CreateUserRequestSchema: GenMessage<CreateUserRequest> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 0);
-
-/**
- * @generated from message com.hearlers.v1.service.CreateUserResult
- */
-export type CreateUserResult = Message<"com.hearlers.v1.service.CreateUserResult"> & {
   /**
-   * @generated from field: com.hearlers.v1.model.User user = 1;
+   * @generated from field: string unique_id = 3;
    */
-  user?: User;
+  uniqueId: string;
 };
 
 /**
- * Describes the message com.hearlers.v1.service.CreateUserResult.
- * Use `create(CreateUserResultSchema)` to create a new message.
+ * Describes the message com.hearlers.v1.service.ConnectAuthChannelRequest.
+ * Use `create(ConnectAuthChannelRequestSchema)` to create a new message.
  */
-export const CreateUserResultSchema: GenMessage<CreateUserResult> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 1);
+export const ConnectAuthChannelRequestSchema: GenMessage<ConnectAuthChannelRequest> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 2);
 
 /**
+ * @generated from message com.hearlers.v1.service.ConnectAuthChannelResponse
+ */
+export type ConnectAuthChannelResponse = Message<"com.hearlers.v1.service.ConnectAuthChannelResponse"> & {
+  /**
+   * @generated from field: com.hearlers.v1.model.AuthUser auth_user = 1;
+   */
+  authUser?: AuthUser;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.ConnectAuthChannelResponse.
+ * Use `create(ConnectAuthChannelResponseSchema)` to create a new message.
+ */
+export const ConnectAuthChannelResponseSchema: GenMessage<ConnectAuthChannelResponse> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 3);
+
+/**
+ * saveRefreshToken
+ *
+ * @generated from message com.hearlers.v1.service.SaveRefreshTokenRequest
+ */
+export type SaveRefreshTokenRequest = Message<"com.hearlers.v1.service.SaveRefreshTokenRequest"> & {
+  /**
+   * @generated from field: int32 user_id = 1;
+   */
+  userId: number;
+
+  /**
+   * @generated from field: string token = 2;
+   */
+  token: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp expires_at = 3;
+   */
+  expiresAt?: Timestamp;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.SaveRefreshTokenRequest.
+ * Use `create(SaveRefreshTokenRequestSchema)` to create a new message.
+ */
+export const SaveRefreshTokenRequestSchema: GenMessage<SaveRefreshTokenRequest> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 4);
+
+/**
+ * @generated from message com.hearlers.v1.service.SaveRefreshTokenResponse
+ */
+export type SaveRefreshTokenResponse = Message<"com.hearlers.v1.service.SaveRefreshTokenResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.SaveRefreshTokenResponse.
+ * Use `create(SaveRefreshTokenResponseSchema)` to create a new message.
+ */
+export const SaveRefreshTokenResponseSchema: GenMessage<SaveRefreshTokenResponse> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 5);
+
+/**
+ * verifyRefreshToken
+ *
+ * @generated from message com.hearlers.v1.service.VerifyRefreshTokenRequest
+ */
+export type VerifyRefreshTokenRequest = Message<"com.hearlers.v1.service.VerifyRefreshTokenRequest"> & {
+  /**
+   * @generated from field: int32 user_id = 1;
+   */
+  userId: number;
+
+  /**
+   * @generated from field: string token = 2;
+   */
+  token: string;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.VerifyRefreshTokenRequest.
+ * Use `create(VerifyRefreshTokenRequestSchema)` to create a new message.
+ */
+export const VerifyRefreshTokenRequestSchema: GenMessage<VerifyRefreshTokenRequest> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 6);
+
+/**
+ * @generated from message com.hearlers.v1.service.VerifyRefreshTokenResponse
+ */
+export type VerifyRefreshTokenResponse = Message<"com.hearlers.v1.service.VerifyRefreshTokenResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.VerifyRefreshTokenResponse.
+ * Use `create(VerifyRefreshTokenResponseSchema)` to create a new message.
+ */
+export const VerifyRefreshTokenResponseSchema: GenMessage<VerifyRefreshTokenResponse> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 7);
+
+/**
+ * findOneUser
+ *
  * @generated from message com.hearlers.v1.service.FindOneUserRequest
  */
 export type FindOneUserRequest = Message<"com.hearlers.v1.service.FindOneUserRequest"> & {
@@ -86,14 +222,12 @@ export type FindOneUserRequest = Message<"com.hearlers.v1.service.FindOneUserReq
  * Use `create(FindOneUserRequestSchema)` to create a new message.
  */
 export const FindOneUserRequestSchema: GenMessage<FindOneUserRequest> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 2);
+  messageDesc(file_v1_service_user, 8);
 
 /**
- * Retrieves a single user.
- *
- * @generated from message com.hearlers.v1.service.FindOneUserResult
+ * @generated from message com.hearlers.v1.service.FindOneUserResponse
  */
-export type FindOneUserResult = Message<"com.hearlers.v1.service.FindOneUserResult"> & {
+export type FindOneUserResponse = Message<"com.hearlers.v1.service.FindOneUserResponse"> & {
   /**
    * @generated from field: com.hearlers.v1.model.User user = 1;
    */
@@ -101,13 +235,15 @@ export type FindOneUserResult = Message<"com.hearlers.v1.service.FindOneUserResu
 };
 
 /**
- * Describes the message com.hearlers.v1.service.FindOneUserResult.
- * Use `create(FindOneUserResultSchema)` to create a new message.
+ * Describes the message com.hearlers.v1.service.FindOneUserResponse.
+ * Use `create(FindOneUserResponseSchema)` to create a new message.
  */
-export const FindOneUserResultSchema: GenMessage<FindOneUserResult> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 3);
+export const FindOneUserResponseSchema: GenMessage<FindOneUserResponse> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 9);
 
 /**
+ * findManyUser
+ *
  * @generated from message com.hearlers.v1.service.FindManyUserRequest
  */
 export type FindManyUserRequest = Message<"com.hearlers.v1.service.FindManyUserRequest"> & {
@@ -122,7 +258,7 @@ export type FindManyUserRequest = Message<"com.hearlers.v1.service.FindManyUserR
  * Use `create(FindManyUserRequestSchema)` to create a new message.
  */
 export const FindManyUserRequestSchema: GenMessage<FindManyUserRequest> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 4);
+  messageDesc(file_v1_service_user, 10);
 
 /**
  * @generated from message com.hearlers.v1.service.FindManyUserResult
@@ -139,9 +275,62 @@ export type FindManyUserResult = Message<"com.hearlers.v1.service.FindManyUserRe
  * Use `create(FindManyUserResultSchema)` to create a new message.
  */
 export const FindManyUserResultSchema: GenMessage<FindManyUserResult> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 5);
+  messageDesc(file_v1_service_user, 11);
 
 /**
+ * findOneAuthUser
+ *
+ * @generated from message com.hearlers.v1.service.FindOneAuthUserRequest
+ */
+export type FindOneAuthUserRequest = Message<"com.hearlers.v1.service.FindOneAuthUserRequest"> & {
+  /**
+   * @generated from field: optional int32 auth_user_id = 1;
+   */
+  authUserId?: number;
+
+  /**
+   * @generated from field: optional int32 user_id = 2;
+   */
+  userId?: number;
+
+  /**
+   * @generated from field: optional com.hearlers.v1.model.AuthChannel auth_channel = 3;
+   */
+  authChannel?: AuthChannel;
+
+  /**
+   * @generated from field: optional string unique_id = 4;
+   */
+  uniqueId?: string;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.FindOneAuthUserRequest.
+ * Use `create(FindOneAuthUserRequestSchema)` to create a new message.
+ */
+export const FindOneAuthUserRequestSchema: GenMessage<FindOneAuthUserRequest> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 12);
+
+/**
+ * @generated from message com.hearlers.v1.service.FindOneAuthUserResponse
+ */
+export type FindOneAuthUserResponse = Message<"com.hearlers.v1.service.FindOneAuthUserResponse"> & {
+  /**
+   * @generated from field: com.hearlers.v1.model.AuthUser auth_user = 1;
+   */
+  authUser?: AuthUser;
+};
+
+/**
+ * Describes the message com.hearlers.v1.service.FindOneAuthUserResponse.
+ * Use `create(FindOneAuthUserResponseSchema)` to create a new message.
+ */
+export const FindOneAuthUserResponseSchema: GenMessage<FindOneAuthUserResponse> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 13);
+
+/**
+ * updateUser
+ *
  * @generated from message com.hearlers.v1.service.UpdateUserRequest
  */
 export type UpdateUserRequest = Message<"com.hearlers.v1.service.UpdateUserRequest"> & {
@@ -176,12 +365,12 @@ export type UpdateUserRequest = Message<"com.hearlers.v1.service.UpdateUserReque
  * Use `create(UpdateUserRequestSchema)` to create a new message.
  */
 export const UpdateUserRequestSchema: GenMessage<UpdateUserRequest> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 6);
+  messageDesc(file_v1_service_user, 14);
 
 /**
- * @generated from message com.hearlers.v1.service.UpdateUserResult
+ * @generated from message com.hearlers.v1.service.UpdateUserResponse
  */
-export type UpdateUserResult = Message<"com.hearlers.v1.service.UpdateUserResult"> & {
+export type UpdateUserResponse = Message<"com.hearlers.v1.service.UpdateUserResponse"> & {
   /**
    * @generated from field: com.hearlers.v1.model.User user = 1;
    */
@@ -189,13 +378,15 @@ export type UpdateUserResult = Message<"com.hearlers.v1.service.UpdateUserResult
 };
 
 /**
- * Describes the message com.hearlers.v1.service.UpdateUserResult.
- * Use `create(UpdateUserResultSchema)` to create a new message.
+ * Describes the message com.hearlers.v1.service.UpdateUserResponse.
+ * Use `create(UpdateUserResponseSchema)` to create a new message.
  */
-export const UpdateUserResultSchema: GenMessage<UpdateUserResult> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 7);
+export const UpdateUserResponseSchema: GenMessage<UpdateUserResponse> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 15);
 
 /**
+ * createActivity
+ *
  * @generated from message com.hearlers.v1.service.CreateActivityRequest
  */
 export type CreateActivityRequest = Message<"com.hearlers.v1.service.CreateActivityRequest"> & {
@@ -235,12 +426,12 @@ export type CreateActivityRequest = Message<"com.hearlers.v1.service.CreateActiv
  * Use `create(CreateActivityRequestSchema)` to create a new message.
  */
 export const CreateActivityRequestSchema: GenMessage<CreateActivityRequest> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 8);
+  messageDesc(file_v1_service_user, 16);
 
 /**
- * @generated from message com.hearlers.v1.service.CreateActivityResult
+ * @generated from message com.hearlers.v1.service.CreateActivityResponse
  */
-export type CreateActivityResult = Message<"com.hearlers.v1.service.CreateActivityResult"> & {
+export type CreateActivityResponse = Message<"com.hearlers.v1.service.CreateActivityResponse"> & {
   /**
    * @generated from field: com.hearlers.v1.model.UserActivity user_activity = 1;
    */
@@ -248,49 +439,97 @@ export type CreateActivityResult = Message<"com.hearlers.v1.service.CreateActivi
 };
 
 /**
- * Describes the message com.hearlers.v1.service.CreateActivityResult.
- * Use `create(CreateActivityResultSchema)` to create a new message.
+ * Describes the message com.hearlers.v1.service.CreateActivityResponse.
+ * Use `create(CreateActivityResponseSchema)` to create a new message.
  */
-export const CreateActivityResultSchema: GenMessage<CreateActivityResult> = /*@__PURE__*/
-  messageDesc(file_v1_service_user, 9);
+export const CreateActivityResponseSchema: GenMessage<CreateActivityResponse> = /*@__PURE__*/
+  messageDesc(file_v1_service_user, 17);
 
 /**
  * @generated from service com.hearlers.v1.service.UserService
  */
 export const UserService: GenService<{
   /**
-   * @generated from rpc com.hearlers.v1.service.UserService.create
+   * 최초 접속 시 user & authUser 생성
+   *
+   * @generated from rpc com.hearlers.v1.service.UserService.InitializeUser
    */
-  create: {
+  initializeUser: {
     methodKind: "unary";
-    input: typeof CreateUserRequestSchema;
-    output: typeof CreateUserResultSchema;
+    input: typeof InitializeUserRequestSchema;
+    output: typeof InitializeUserResponseSchema;
   },
   /**
-   * @generated from rpc com.hearlers.v1.service.UserService.findOne
+   * 인증 채널 연결
+   *
+   * @generated from rpc com.hearlers.v1.service.UserService.ConnectAuthChannel
    */
-  findOne: {
+  connectAuthChannel: {
+    methodKind: "unary";
+    input: typeof ConnectAuthChannelRequestSchema;
+    output: typeof ConnectAuthChannelResponseSchema;
+  },
+  /**
+   * 리프레시 토큰 저장
+   *
+   * @generated from rpc com.hearlers.v1.service.UserService.SaveRefreshToken
+   */
+  saveRefreshToken: {
+    methodKind: "unary";
+    input: typeof SaveRefreshTokenRequestSchema;
+    output: typeof SaveRefreshTokenResponseSchema;
+  },
+  /**
+   * 리프레시 토큰 인증
+   *
+   * @generated from rpc com.hearlers.v1.service.UserService.VerifyRefreshToken
+   */
+  verifyRefreshToken: {
+    methodKind: "unary";
+    input: typeof VerifyRefreshTokenRequestSchema;
+    output: typeof VerifyRefreshTokenResponseSchema;
+  },
+  /**
+   * 유저 조회
+   *
+   * @generated from rpc com.hearlers.v1.service.UserService.FindOneUser
+   */
+  findOneUser: {
     methodKind: "unary";
     input: typeof FindOneUserRequestSchema;
-    output: typeof FindOneUserResultSchema;
+    output: typeof FindOneUserResponseSchema;
   },
   /**
-   * rpc findMany (FindManyUserRequest) returns (FindManyUserResult);
+   * 유저 목록 조회
+   * rpc FindManyUser (FindManyUserRequest) returns (FindManyUserResult);
+   * 인증 유저 조회
    *
-   * @generated from rpc com.hearlers.v1.service.UserService.update
+   * @generated from rpc com.hearlers.v1.service.UserService.FindOneAuthUser
    */
-  update: {
+  findOneAuthUser: {
+    methodKind: "unary";
+    input: typeof FindOneAuthUserRequestSchema;
+    output: typeof FindOneAuthUserResponseSchema;
+  },
+  /**
+   * 유저 업데이트
+   *
+   * @generated from rpc com.hearlers.v1.service.UserService.UpdateUser
+   */
+  updateUser: {
     methodKind: "unary";
     input: typeof UpdateUserRequestSchema;
-    output: typeof UpdateUserResultSchema;
+    output: typeof UpdateUserResponseSchema;
   },
   /**
-   * @generated from rpc com.hearlers.v1.service.UserService.createActivity
+   * 활동 생성
+   *
+   * @generated from rpc com.hearlers.v1.service.UserService.CreateActivity
    */
   createActivity: {
     methodKind: "unary";
     input: typeof CreateActivityRequestSchema;
-    output: typeof CreateActivityResultSchema;
+    output: typeof CreateActivityResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_v1_service_user, 0);

@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { CreateUserHandler } from "~/src/aggregates/users/applications/commands/CreateUser/CreateUser.handler";
 import { UpdateUserHandler } from "~/src/aggregates/users/applications/commands/UpdateUser/UpdateUser.handler";
 import { FindOneUserHandler } from "~/src/aggregates/users/applications/queries/FindOneUser/FindOneUser.handler";
 import { CreateUserUseCase } from "~/src/aggregates/users/applications/useCases/CreateUserUseCase/CreateUserUseCase";
@@ -14,20 +13,19 @@ import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/
 import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 
+const useCases = [CreateUserUseCase, FindOneUserUseCase, UpdateUserUseCase];
+
 @Module({
   imports: [TypeOrmModule.forFeature([UsersEntity, UserProgressesEntity, UserProfilesEntity, UserPromptsEntity])],
   providers: [
-    FindOneUserUseCase,
+    ...useCases,
     FindOneUserHandler,
-    CreateUserUseCase,
-    CreateUserHandler,
-    UpdateUserUseCase,
     UpdateUserHandler,
     {
       provide: USER_REPOSITORY,
       useClass: PsqlUsersRepositoryAdaptor,
     },
   ],
-  exports: [],
+  exports: [...useCases],
 })
 export class UsersModule {}

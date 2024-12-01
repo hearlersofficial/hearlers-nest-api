@@ -3,11 +3,9 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { UpdateUserCommand } from "./UpdateUser.command";
 import { FindOneUserUseCase } from "../../useCases/FindOneUserUseCase/FindOneUserUseCase";
 import { UpdateUserUseCase } from "../../useCases/UpdateUserUseCase/UpdateUserUseCase";
-import { Kakao } from "~/src/aggregates/authUsers/domain/Kakao";
 import { Users, UsersProps } from "~/src/aggregates/users/domain/Users";
-import { AuthChannel, ProgressStatus, ProgressType, UserProfile } from "~/src/gen/v1/model/user_pb";
+import { UserProfile } from "~/src/gen/v1/model/user_pb";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
-import { Result } from "~/src/shared/core/domain/Result";
 import { UserProfiles, UserProfilesProps } from "~/src/aggregates/users/domain/UserProfiles";
 import { TimestampUtils } from "~/src/shared/utils/Date.utils";
 
@@ -19,7 +17,7 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
   ) {}
 
   async execute(command: UpdateUserCommand): Promise<Users> {
-    const { userId, authChannel, uniqueId, userProfile } = command.props;
+    const { userId, userProfile } = command.props;
 
     // 기존 사용자 조회
     const findOneUserUseCaseResponse = await this.findOneUserUseCase.execute({ userId });
@@ -36,13 +34,6 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     }
     const toUpdateUser = toUpdateUserOrError.value;
 
-    // 카카오 인증 처리
-    if (authChannel === AuthChannel.KAKAO && uniqueId) {
-      const authResult = this.handleKakaoAuth(toUpdateUser, uniqueId);
-      if (authResult.isFailure) {
-        throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, authResult.error);
-      }
-    }
     // 프로필 업데이트
     if (userProfile) {
       const updatedUserProfileProps = this.getUpdatedUserProfileProps(userProfile, originalUser);
@@ -83,27 +74,5 @@ export class UpdateUserHandler implements ICommandHandler<UpdateUserCommand> {
     if (introduction) props.introduction = introduction;
     if (mbti) props.mbti = mbti;
     return props;
-  }
-
-  private handleKakaoAuth(user: Users, uniqueId: string): Result<void> {
-    if (user.authChannel === AuthChannel.KAKAO) {
-      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "이미 카카오 인증된 사용자입니다.");
-    }
-    const kakaoOrError = Kakao.createNew({ userId: user.id, uniqueId });
-    if (kakaoOrError.isFailure) {
-      return Result.fail(kakaoOrError.error);
-    }
-
-    const updatedResult = user.setKakao(kakaoOrError.value);
-    if (updatedResult.isFailure) {
-      return Result.fail(updatedResult.error);
-    }
-
-    const verificationProgress = user.findProgress(ProgressType.VERIFICATION);
-    if (verificationProgress) {
-      verificationProgress.updateStatus(ProgressStatus.COMPLETED);
-    }
-
-    return Result.ok();
   }
 }

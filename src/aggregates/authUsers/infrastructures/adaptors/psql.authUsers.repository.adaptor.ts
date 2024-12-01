@@ -1,12 +1,12 @@
 import { InjectRepository } from "@nestjs/typeorm";
-import { FindOptionsWhere, Repository } from "typeorm";
+import { FindOptionsRelations, FindOptionsWhere, Repository } from "typeorm";
 import { AuthUsers } from "~/src/aggregates/authUsers/domain/AuthUsers";
 import { PsqlAuthUsersMapper } from "~/src/aggregates/authUsers/infrastructures/adaptors/mappers/psql.authUsers.mapper";
 import {
   AuthUsersRepositoryPort,
   FindOnePropsInAuthUsersRepository,
 } from "~/src/aggregates/authUsers/infrastructures/authUsers.repository.port";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
+import { AuthChannel } from "~/src/gen/v1/model/auth_user_pb";
 import { AuthUsersEntity } from "~/src/shared/core/infrastructure/entities/AuthUsers.entity";
 
 export class PsqlAuthUsersRepositoryAdaptor implements AuthUsersRepositoryPort {
@@ -28,6 +28,10 @@ export class PsqlAuthUsersRepositoryAdaptor implements AuthUsersRepositoryPort {
 
   async findOne(props: FindOnePropsInAuthUsersRepository): Promise<AuthUsers | null> {
     const { userId, authUserId, channelInfo } = props;
+    const relations: FindOptionsRelations<AuthUsersEntity> = {
+      kakao: true,
+      refreshTokens: true,
+    };
     const where: FindOptionsWhere<AuthUsersEntity> = {};
     if (userId) {
       where.userId = userId;
@@ -43,7 +47,7 @@ export class PsqlAuthUsersRepositoryAdaptor implements AuthUsersRepositoryPort {
           break;
       }
     }
-    const result = await this.authUsersRepository.findOne({ where });
+    const result = await this.authUsersRepository.findOne({ where, relations });
     return result ? PsqlAuthUsersMapper.toDomain(result) : null;
   }
 }

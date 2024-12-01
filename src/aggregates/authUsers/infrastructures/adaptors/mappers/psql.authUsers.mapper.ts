@@ -22,6 +22,7 @@ export class PsqlAuthUsersMapper {
       kakao: PsqlKakaoMapper.toDomain(entity.kakao),
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
+      deletedAt: entity.deletedAt ? convertDayjs(entity.deletedAt) : null,
       refreshTokens: PsqlRefreshTokensMapper.toVOs(entity.refreshTokens),
     };
     const authUserOrError: Result<AuthUsers> = AuthUsers.create(authUsersProps, new UniqueEntityId(entity.id));
@@ -40,12 +41,12 @@ export class PsqlAuthUsersMapper {
 
     entity.userId = authUser.userId;
     entity.lastLoginAt = formatDayjs(authUser.lastLoginAt);
-    entity.kakao = PsqlKakaoMapper.toEntity(authUser.kakao);
-    entity.refreshTokens = PsqlRefreshTokensMapper.toEntities(authUser.refreshTokens, authUser.id.getNumber());
     entity.authChannel = authUser.authChannel;
+    entity.kakao = authUser.kakao ? PsqlKakaoMapper.toEntity(authUser.kakao) : null;
+    entity.refreshTokens = PsqlRefreshTokensMapper.toEntities(authUser.refreshTokens, authUser.id.getNumber());
     entity.createdAt = formatDayjs(authUser.createdAt);
     entity.updatedAt = formatDayjs(authUser.updatedAt);
-
+    entity.deletedAt = authUser.deletedAt ? formatDayjs(authUser.deletedAt) : null;
     return entity;
   }
 }

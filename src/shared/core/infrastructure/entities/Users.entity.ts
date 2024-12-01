@@ -5,7 +5,6 @@ import { UserActivitiesEntity } from "~/src/shared/core/infrastructure/entities/
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 import { AuthUsersEntity } from "~/src/shared/core/infrastructure/entities/AuthUsers.entity";
 import { CoreStatus } from "~/src/shared/core/constants/status.constants";
 
@@ -20,15 +19,6 @@ export class UsersEntity extends CoreEntity {
     comment: "닉네임",
   })
   nickname: string;
-
-  @Column({
-    type: "enum",
-    name: "auth_channel",
-    enum: AuthChannel,
-    comment: "인증 채널",
-    default: AuthChannel.NONE,
-  })
-  authChannel: AuthChannel;
 
   @OneToOne(() => UserProfilesEntity, (userProfiles) => userProfiles.user, {
     cascade: true,
