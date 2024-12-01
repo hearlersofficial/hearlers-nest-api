@@ -4,6 +4,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from "@nestjs/core";
 import { CommandBus, CqrsModule } from "@nestjs/cqrs";
 import { ClientKafka, ClientsModule } from "@nestjs/microservices";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { FindOneAuthUserHandler } from "~/src/aggregates/authUsers/applications/queries/FindOneAuthUser/FindOneAuthUser.handler";
 import { AuthModule } from "~/src/aggregates/authUsers/auth.module";
 import { UsersModule } from "~/src/aggregates/users/users.module";
 import { ConnectAuthChannelHandler } from "~/src/services/users/applications/commands/ConnectAuthChannel/ConnectAuthChannel.handler";
@@ -34,6 +35,7 @@ import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor
     BindAuthUserToUseUseCase,
     ConnectAuthChannelUseCase,
     ConnectAuthChannelHandler,
+    FindOneAuthUserHandler,
     InitializeUserHandler,
     {
       provide: APP_FILTER,

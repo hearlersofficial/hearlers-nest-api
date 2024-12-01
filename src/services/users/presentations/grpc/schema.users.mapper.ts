@@ -1,4 +1,5 @@
 import { create } from "@bufbuild/protobuf";
+import { HttpStatus } from "@nestjs/common";
 import { UserProfiles } from "~/src/aggregates/users/domain/UserProfiles";
 import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { Users } from "~/src/aggregates/users/domain/Users";
@@ -10,10 +11,14 @@ import {
   UserProgressSchema,
   UserSchema,
 } from "~/src/gen/v1/model/user_pb";
+import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { TimestampUtils } from "~/src/shared/utils/Date.utils";
 
 export class SchemaUsersMapper {
   static toUserProto(user: Users): User {
+    if (!user) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, "failed to map user to proto");
+    }
     return create(UserSchema, {
       id: user.id.getNumber(),
       nickname: user.nickname,
@@ -26,6 +31,9 @@ export class SchemaUsersMapper {
   }
 
   static toUserProfileProto(userProfile: UserProfiles): UserProfile {
+    if (!userProfile) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, "failed to map userProfile to proto");
+    }
     return create(UserProfileSchema, {
       profileImage: userProfile.profileImage,
       phoneNumber: userProfile.phoneNumber,
@@ -39,6 +47,9 @@ export class SchemaUsersMapper {
   }
 
   static toUserProgressProto(userProgress: UserProgresses): UserProgress {
+    if (!userProgress) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, "failed to map userProgress to proto");
+    }
     return create(UserProgressSchema, {
       status: userProgress.status,
       progressType: userProgress.progressType,

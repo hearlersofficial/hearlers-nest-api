@@ -1,4 +1,5 @@
 import { create } from "@bufbuild/protobuf";
+import { HttpStatus } from "@nestjs/common";
 import { AuthUsers } from "~/src/aggregates/authUsers/domain/AuthUsers";
 import { RefreshTokensVO } from "~/src/aggregates/authUsers/domain/RefreshTokens.vo";
 import {
@@ -10,10 +11,14 @@ import {
   RefreshToken,
   RefreshTokenSchema,
 } from "~/src/gen/v1/model/auth_user_pb";
+import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { TimestampUtils } from "~/src/shared/utils/Date.utils";
 
 export class SchemaAuthUsersMapper {
   static toAuthUserProto(authUser: AuthUsers): AuthUser {
+    if (!authUser) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, "failed to map authUser to proto");
+    }
     return create(AuthUserSchema, {
       id: authUser.id.getNumber(),
       userId: authUser.userId,
@@ -28,6 +33,12 @@ export class SchemaAuthUsersMapper {
   }
 
   static toOAuthChannelInfoProto(authUser: AuthUsers): OAuthChannelInfo {
+    if (!authUser) {
+      throw new HttpStatusBasedRpcException(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        "failed to map oauthChannelInfo to proto",
+      );
+    }
     switch (authUser.authChannel) {
       case AuthChannel.KAKAO:
         return create(OAuthChannelInfoSchema, {
@@ -43,6 +54,9 @@ export class SchemaAuthUsersMapper {
     }
   }
   static toRefreshTokenProto(refreshToken: RefreshTokensVO): RefreshToken {
+    if (!refreshToken) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, "failed to map refreshToken to proto");
+    }
     return create(RefreshTokenSchema, {
       token: refreshToken.token,
       expiresAt: TimestampUtils.dayjsToTimestamp(refreshToken.expiresAt),

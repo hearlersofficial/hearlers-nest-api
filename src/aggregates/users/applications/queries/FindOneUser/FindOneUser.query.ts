@@ -7,20 +7,13 @@ export class FindOneUserQuery {
   }
 
   private validateProps(props: FindOneUserQueryProps): void {
-    if (!props.userId) {
-      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "UserId is required");
-    }
-
-    if (!Number.isInteger(props.userId)) {
-      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "UserId must be an integer");
-    }
-
-    if (props.userId <= 0) {
-      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "UserId must be a positive number");
+    if (!props.userId && !props.nickname) {
+      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "UserId or nickname is required");
     }
   }
 }
 
 interface FindOneUserQueryProps {
-  userId: number;
+  userId?: number;
+  nickname?: string;
 }
