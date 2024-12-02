@@ -18,7 +18,7 @@ interface CounselPromptsNewProps {
   version: string | null;
 }
 
-interface CounselPromptsProps extends CounselPromptsNewProps {
+export interface CounselPromptsProps extends CounselPromptsNewProps {
   createdAt: Dayjs;
   updatedAt: Dayjs;
   deletedAt: Dayjs | null;

@@ -14,10 +14,14 @@ import {
   CreatePromptRequest,
   CreatePromptResult,
   CreatePromptResultSchema,
+  UpdatePromptRequest,
+  UpdatePromptResult,
+  UpdatePromptResultSchema,
 } from "~/src/gen/v1/service/counsel_pb";
 import { SchemaCounselsMapper } from "~/src/services/counselings/presentations/grpc/schema.counsels.mapper";
 import { CreateCounselCommand, CreateCounselCommandResult } from "../../../applications/commands/CreateCounsel/CreateCounsel.command";
 import { CreatePromptCommand } from "~/src/aggregates/counselPrompts/applications/commands/CreatePrompt/CreatePrompt.command";
+import { UpdatePromptCommand } from "~/src/aggregates/counselPrompts/applications/commands/UpdatePrompt/UpdatePrompt.command";
 
 @Controller("counsel")
 export class GrpcCounselCommandController {
@@ -56,6 +60,16 @@ export class GrpcCounselCommandController {
     const counselPrompt = await this.commandBus.execute(command);
 
     return create(CreatePromptResultSchema, {
+      prompt: SchemaCounselsMapper.toCounselPromptProto(counselPrompt),
+    });
+  }
+
+  @GrpcMethod("CounselService", "UpdatePrompt")
+  async updateCounselPrompt(request: UpdatePromptRequest): Promise<UpdatePromptResult> {
+    const command: UpdatePromptCommand = new UpdatePromptCommand(request);
+    const counselPrompt = await this.commandBus.execute(command);
+
+    return create(UpdatePromptResultSchema, {
       prompt: SchemaCounselsMapper.toCounselPromptProto(counselPrompt),
     });
   }
