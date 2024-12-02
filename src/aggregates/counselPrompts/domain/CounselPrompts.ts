@@ -4,7 +4,7 @@ import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { CounselorInfo, CounselorType } from "~/src/shared/enums/CounselorType.enum";
-import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
+import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 
 interface CounselPromptsNewProps {
@@ -13,7 +13,7 @@ interface CounselPromptsNewProps {
   instruction: string | null;
   tone: string | null;
   additionalPrompt: string | null;
-  promptType: CounselPrompt;
+  promptType: CounselPromptType;
   description: string | null;
   version: string | null;
 }
@@ -79,7 +79,7 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
     if (this.props.promptType === null || this.props.promptType === undefined) {
       return Result.fail<void>("[CounselPrompts] promptType은 필수입니다");
     }
-    if (!Object.values(CounselPrompt).includes(this.props.promptType)) {
+    if (!Object.values(CounselPromptType).includes(this.props.promptType)) {
       return Result.fail<void>("[CounselPrompts] 유효하지 않은 promptType입니다");
     }
 
@@ -120,7 +120,7 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
     return this.props.additionalPrompt;
   }
 
-  get promptType(): CounselPrompt {
+  get promptType(): CounselPromptType {
     return this.props.promptType;
   }
 
