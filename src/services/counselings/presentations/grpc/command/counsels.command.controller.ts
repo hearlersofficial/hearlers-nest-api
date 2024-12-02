@@ -11,9 +11,13 @@ import {
   CreateMessageRequest,
   CreateMessageResult,
   CreateMessageResultSchema,
+  CreatePromptRequest,
+  CreatePromptResult,
+  CreatePromptResultSchema,
 } from "~/src/gen/v1/service/counsel_pb";
 import { SchemaCounselsMapper } from "~/src/services/counselings/presentations/grpc/schema.counsels.mapper";
 import { CreateCounselCommand, CreateCounselCommandResult } from "../../../applications/commands/CreateCounsel/CreateCounsel.command";
+import { CreatePromptCommand } from "~/src/aggregates/counselPrompts/applications/commands/CreatePrompt/CreatePrompt.command";
 
 @Controller("counsel")
 export class GrpcCounselCommandController {
@@ -43,6 +47,16 @@ export class GrpcCounselCommandController {
 
     return create(CreateMessageResultSchema, {
       counselMessage: SchemaCounselsMapper.toCounselMessageProto(counselMessage),
+    });
+  }
+
+  @GrpcMethod("CounselService", "CreatePrompt")
+  async createCounselPrompt(request: CreatePromptRequest): Promise<CreatePromptResult> {
+    const command: CreatePromptCommand = new CreatePromptCommand(request);
+    const counselPrompt = await this.commandBus.execute(command);
+
+    return create(CreatePromptResultSchema, {
+      prompt: SchemaCounselsMapper.toCounselPromptProto(counselPrompt),
     });
   }
 }
