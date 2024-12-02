@@ -2,12 +2,8 @@ import { create } from "@bufbuild/protobuf";
 import { Controller } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { GrpcMethod } from "@nestjs/microservices";
-import {
-  CreateCounselCommand,
-  CreateCounselCommandResult,
-} from "~/src/aggregates/counsels/applications/commands/CreateCounsel/CreateCounsel.command";
-import { CreateMessageCommand } from "~/src/aggregates/counsels/applications/commands/CreateMessage/CreateMessage.command";
-import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
+import { CreateMessageCommand } from "~/src/services/counselings/applications/commands/CreateMessage/CreateMessage.command";
+import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
 import {
   CreateCounselRequest,
   CreateCounselResult,
@@ -17,6 +13,7 @@ import {
   CreateMessageResultSchema,
 } from "~/src/gen/v1/service/counsel_pb";
 import { SchemaCounselsMapper } from "~/src/services/counselings/presentations/grpc/schema.counsels.mapper";
+import { CreateCounselCommand, CreateCounselCommandResult } from "../../../applications/commands/CreateCounsel/CreateCounsel.command";
 
 @Controller("counsel")
 export class GrpcCounselCommandController {
@@ -32,9 +29,7 @@ export class GrpcCounselCommandController {
 
     return create(CreateCounselResultSchema, {
       counsel: SchemaCounselsMapper.toCounselProto(counsel),
-      counselMessages: counselMessages.map((counselMessage) =>
-        SchemaCounselsMapper.toCounselMessageProto(counselMessage),
-      ),
+      counselMessages: counselMessages.map((counselMessage) => SchemaCounselsMapper.toCounselMessageProto(counselMessage)),
     });
   }
 

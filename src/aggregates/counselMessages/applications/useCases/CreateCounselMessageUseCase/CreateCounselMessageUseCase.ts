@@ -1,10 +1,10 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { UseCase } from "~/src/shared/core/applications/UseCase";
 import { Result } from "~/src/shared/core/domain/Result";
-import { CreateCounselMessageUseCaseRequest } from "~/src/aggregates/counsels/applications/useCases/CreateCounselMessageUseCase/dto/CreateCounselMessage.request";
-import { CreateCounselMessageUseCaseResponse } from "~/src/aggregates/counsels/applications/useCases/CreateCounselMessageUseCase/dto/CreateCounselMessage.response";
-import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
-import { COUNSEL_MESSAGE_REPOSITORY, CounselMessagesRepositoryPort } from "~/src/aggregates/counsels/infrastructures/counselMessages.repository.port";
+import { CreateCounselMessageUseCaseRequest } from "~/src/aggregates/counselMessages/applications/useCases/CreateCounselMessageUseCase/dto/CreateCounselMessage.request";
+import { CreateCounselMessageUseCaseResponse } from "~/src/aggregates/counselMessages/applications/useCases/CreateCounselMessageUseCase/dto/CreateCounselMessage.response";
+import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
+import { COUNSEL_MESSAGE_REPOSITORY, CounselMessagesRepositoryPort } from "~/src/aggregates/counselMessages/infrastructures/counselMessages.repository.port";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 
 @Injectable()

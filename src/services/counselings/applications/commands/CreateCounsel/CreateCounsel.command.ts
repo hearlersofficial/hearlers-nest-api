@@ -1,8 +1,8 @@
-import { CounselorType } from "~/src/shared/enums/CounselorType.enum";
-import { Counsels } from "../../../domain/Counsels";
-import { CounselMessages } from "../../../domain/CounselMessages";
-import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { HttpStatus } from "@nestjs/common";
+import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
+import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
+import { CounselorType } from "~/src/shared/enums/CounselorType.enum";
+import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 
 export class CreateCounselCommand {
   constructor(public readonly props: CreateCounselCommandProps) {

@@ -3,10 +3,10 @@ import { FindManyOptions, FindOptionsOrder, FindOptionsWhere, Repository } from 
 import {
   CounselMessagesRepositoryPort,
   FindManyPropsInCounselMessagesRepository,
-} from "~/src/aggregates/counsels/infrastructures/counselMessages.repository.port";
+} from "~/src/aggregates/counselMessages/infrastructures/counselMessages.repository.port";
 import { CounselMessagesEntity } from "~/src/shared/core/infrastructure/entities/CounselMessages.entity";
-import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
-import { PsqlCounselMessagesMapper } from "~/src/aggregates/counsels/infrastructures/adaptors/mapper/psql.counselMessages.mapper";
+import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
+import { PsqlCounselMessagesMapper } from "./mapper/psql.counselMessages.mapper";
 
 export class PsqlCounselMessagesRepositoryAdaptor implements CounselMessagesRepositoryPort {
   constructor(@InjectRepository(CounselMessagesEntity) private readonly counselMessagesRepository: Repository<CounselMessagesEntity>) {}

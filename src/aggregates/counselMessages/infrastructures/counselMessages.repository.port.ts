@@ -1,4 +1,4 @@
-import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
+import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
 
 export const COUNSEL_MESSAGE_REPOSITORY = Symbol("COUNSEL_MESSAGE_REPOSITORY");
 

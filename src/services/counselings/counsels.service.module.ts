@@ -9,10 +9,19 @@ import { TypeOrmConfigs } from "~/src/shared/core/infrastructure/Config";
 import { AllExceptionFilter } from "~/src/shared/filters/GrpcExceptionFilter";
 import { LoggingInterceptor } from "~/src/shared/interceptors/LoggingInterceptor";
 import { GrpcCounselQueryController } from "./presentations/grpc/query/counsels.query.controller";
+import { CounselMessagesModule } from "~/src/aggregates/counselMessages/counselMessages.module";
+import { CounselPromptsModule } from "~/src/aggregates/counselPrompts/counselPrompts.module";
+import { InitializeCounselUseCase } from "./applications/useCases/InitializeCounselUseCase/InitializeCounselUseCase";
+import { CreateCounselHandler } from "./applications/commands/CreateCounsel/CreateCounsel.handler";
+import { BranchCounselStageUseCase } from "./applications/useCases/BranchCounselStageUseCase/BranchCounselStageUseCase";
+import { GenerateGptResponseUseCase } from "./applications/useCases/GenerateGptResponseUseCase/GenerateGptResponseUseCase";
+import { CreateMessageHandler } from "./applications/commands/CreateMessage/CreateMessage.handler";
 
 @Module({
   imports: [
     CounselsModule,
+    CounselMessagesModule,
+    CounselPromptsModule,
     CqrsModule,
     ConfigModule.forRoot({
       envFilePath: [".env", ".env.dev"],
@@ -24,6 +33,11 @@ import { GrpcCounselQueryController } from "./presentations/grpc/query/counsels.
   ],
   controllers: [GrpcCounselCommandController, GrpcCounselQueryController],
   providers: [
+    InitializeCounselUseCase,
+    BranchCounselStageUseCase,
+    GenerateGptResponseUseCase,
+    CreateCounselHandler,
+    CreateMessageHandler,
     {
       provide: APP_FILTER,
       useClass: AllExceptionFilter,
