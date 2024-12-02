@@ -1,4 +1,4 @@
-export enum CounselPrompt {
+export enum CounselPromptType {
   SYSTEM_MSG = 0,
   POSITIVE_MSG = 1,
   DEPRESSED_REASON_MSG = 2,

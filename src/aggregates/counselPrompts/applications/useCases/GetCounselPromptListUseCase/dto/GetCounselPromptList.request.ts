@@ -1,5 +1,5 @@
-import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
+import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 
 export interface GetCounselPromptListUseCaseRequest {
-  promptType: CounselPrompt;
+  promptType: CounselPromptType;
 }

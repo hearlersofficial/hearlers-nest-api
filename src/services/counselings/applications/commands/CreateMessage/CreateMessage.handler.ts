@@ -13,7 +13,7 @@ import { HttpStatus } from "@nestjs/common";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { CounselorInfo, CounselorType } from "~/src/shared/enums/CounselorType.enum";
-import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
+import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
 
@@ -121,38 +121,38 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     return systemMessage;
   }
 
-  private decideSystemPrompt(counselorType: CounselorType, stage: CounselStage): CounselPrompt {
+  private decideSystemPrompt(counselorType: CounselorType, stage: CounselStage): CounselPromptType {
     if (stage == CounselStage.SMALL_TALK) {
-      return CounselPrompt.SYSTEM_MSG;
+      return CounselPromptType.SYSTEM_MSG;
     }
     if (stage == CounselStage.POSITIVE) {
-      return CounselPrompt.POSITIVE_MSG;
+      return CounselPromptType.POSITIVE_MSG;
     }
     const type = CounselorInfo[counselorType].type;
     if (stage == CounselStage.NEGATIVE_WITH_REASON) {
       if (type == "우울") {
-        return CounselPrompt.DEPRESSED_REASON_MSG;
+        return CounselPromptType.DEPRESSED_REASON_MSG;
       }
       if (type == "불안") {
-        return CounselPrompt.ANXIOUS_REASON_MSG;
+        return CounselPromptType.ANXIOUS_REASON_MSG;
       }
       if (type == "무기력") {
-        return CounselPrompt.TIRED_REASON_MSG;
+        return CounselPromptType.TIRED_REASON_MSG;
       }
     }
     if (stage == CounselStage.NEGATIVE_WITHOUT_REASON) {
       if (type == "우울") {
-        return CounselPrompt.DEPRESSED_NO_REASON_MSG;
+        return CounselPromptType.DEPRESSED_NO_REASON_MSG;
       }
       if (type == "불안") {
-        return CounselPrompt.ANXIOUS_NO_REASON_MSG;
+        return CounselPromptType.ANXIOUS_NO_REASON_MSG;
       }
       if (type == "무기력") {
-        return CounselPrompt.TIRED_NO_REASON_MSG;
+        return CounselPromptType.TIRED_NO_REASON_MSG;
       }
     }
     if (stage == CounselStage.EXTREME) {
-      return CounselPrompt.WHY_LIVE_MSG;
+      return CounselPromptType.WHY_LIVE_MSG;
     }
   }
 

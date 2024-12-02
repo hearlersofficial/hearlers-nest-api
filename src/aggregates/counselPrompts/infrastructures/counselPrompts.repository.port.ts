@@ -1,4 +1,4 @@
-import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
+import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 import { CounselPrompts } from "../domain/CounselPrompts";
 
 export const COUNSEL_PROMPT_REPOSITORY = Symbol("COUNSEL_PROMPT_REPOSITORY");
@@ -11,10 +11,10 @@ export interface CounselPromptsRepositoryPort {
 }
 
 export interface FindOnePropsInCounselPromptsRepository {
-  promptType?: CounselPrompt;
+  promptType?: CounselPromptType;
   id?: number;
 }
 
 export interface FindManyPropsInCounselPromptsRepository {
-  promptType?: CounselPrompt;
+  promptType?: CounselPromptType;
 }

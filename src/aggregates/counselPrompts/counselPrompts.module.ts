@@ -8,6 +8,7 @@ import { GetCounselPromptByTypeUseCase } from "./applications/useCases/GetCounse
 import { GetCounselPromptListUseCase } from "./applications/useCases/GetCounselPromptListUseCase/GetCounselPromptListUseCase";
 import { CreateCounselPromptUseCase } from "./applications/useCases/CreateCounselPromptUseCase/CreateCounselPromptUseCase";
 import { UpdateCounselPromptUseCase } from "./applications/useCases/UpdateCounselPromptUseCase/UpdateCounselPromptUseCase";
+import { GetPromptListHandler } from "./applications/queries/GetPromptList/GetPromptList.handler";
 
 @Module({
   imports: [TypeOrmModule.forFeature([CounselPromptsEntity])],
@@ -17,6 +18,7 @@ import { UpdateCounselPromptUseCase } from "./applications/useCases/UpdateCounse
     GetCounselPromptListUseCase,
     CreateCounselPromptUseCase,
     UpdateCounselPromptUseCase,
+    GetPromptListHandler,
     {
       provide: COUNSEL_PROMPT_REPOSITORY,
       useClass: PsqlCounselPromptsRepositoryAdaptor,

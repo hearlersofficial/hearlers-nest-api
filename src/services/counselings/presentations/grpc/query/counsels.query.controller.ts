@@ -11,10 +11,15 @@ import {
   GetMessageListRequest,
   GetMessageListResult,
   GetMessageListResultSchema,
+  GetPromptListRequest,
+  GetPromptListResult,
+  GetPromptListResultSchema,
 } from "~/src/gen/v1/service/counsel_pb";
 import { SchemaCounselsMapper } from "../schema.counsels.mapper";
 import { GetMessageListQuery } from "~/src/aggregates/counselMessages/applications/queries/GetMessageList/GetMessageList.query";
 import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
+import { GetPromptListQuery } from "~/src/aggregates/counselPrompts/applications/queries/GetPromptList/GetPromptList.query";
+import { CounselPrompts } from "~/src/aggregates/counselPrompts/domain/CounselPrompts";
 
 @Controller("counsel")
 export class GrpcCounselQueryController {
@@ -35,6 +40,16 @@ export class GrpcCounselQueryController {
 
     return create(GetMessageListResultSchema, {
       messageList: counselMessageList.map((counselMessage) => SchemaCounselsMapper.toCounselMessageProto(counselMessage)),
+    });
+  }
+
+  @GrpcMethod("CounselService", "GetPromptList")
+  async getPromptList(data: GetPromptListRequest): Promise<GetPromptListResult> {
+    const query: GetPromptListQuery = new GetPromptListQuery({ promptType: data.promptType });
+    const counselPromptList: CounselPrompts[] = await this.queryBus.execute(query);
+
+    return create(GetPromptListResultSchema, {
+      promptList: counselPromptList.map((counselPrompt) => SchemaCounselsMapper.toCounselPromptProto(counselPrompt)),
     });
   }
 }
