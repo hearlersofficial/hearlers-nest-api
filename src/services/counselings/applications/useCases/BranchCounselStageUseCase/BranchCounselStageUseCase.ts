@@ -5,14 +5,14 @@ import { UseCase } from "~/src/shared/core/applications/UseCase";
 import OpenAI from "openai";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
-import { GetCounselPromptUseCase } from "~/src/aggregates/counselPrompts/applications/useCases/GetCounselPromptUseCase/GetCounselPromptUseCase";
+import { GetCounselPromptByTypeUseCase } from "~/src/aggregates/counselPrompts/applications/useCases/GetCounselPromptByTypeUseCase/GetCounselPromptByTypeUseCase";
 import { CounselPrompts } from "~/src/aggregates/counselPrompts/domain/CounselPrompts";
 
 @Injectable()
 export class BranchCounselStageUseCase implements UseCase<BranchCounselStageUseCaseRequest, BranchCounselStageUseCaseResponse> {
   private openai: OpenAI;
 
-  constructor(private readonly getCounselPromptUseCase: GetCounselPromptUseCase) {
+  constructor(private readonly getCounselPromptByTypeUseCase: GetCounselPromptByTypeUseCase) {
     this.openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY || "",
     });
@@ -21,7 +21,7 @@ export class BranchCounselStageUseCase implements UseCase<BranchCounselStageUseC
   async execute(request: BranchCounselStageUseCaseRequest): Promise<BranchCounselStageUseCaseResponse> {
     const { prompts } = request;
 
-    const getCounselPromptResult = await this.getCounselPromptUseCase.execute({ promptType: CounselPrompt.BRANCH_MSG });
+    const getCounselPromptResult = await this.getCounselPromptByTypeUseCase.execute({ promptType: CounselPrompt.BRANCH_MSG });
     if (!getCounselPromptResult.ok) {
       return {
         ok: false,
