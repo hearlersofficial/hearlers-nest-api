@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { CreateMessageCommand } from "./CreateMessage.command";
 import { GetCounselUseCase } from "~/src/aggregates/counsels/applications/useCases/GetCounselUseCase/GetCounselUseCase";
-import { GetCounselPromptUseCase } from "~/src/aggregates/counselPrompts/applications/useCases/GetCounselPromptUseCase/GetCounselPromptUseCase";
+import { GetCounselPromptByTypeUseCase } from "~/src/aggregates/counselPrompts/applications/useCases/GetCounselPromptByTypeUseCase/GetCounselPromptByTypeUseCase";
 import { CreateCounselMessageUseCase } from "~/src/aggregates/counselMessages/applications/useCases/CreateCounselMessageUseCase/CreateCounselMessageUseCase";
 import { GetCounselMessageListUseCase } from "~/src/aggregates/counselMessages/applications/useCases/GetCounselMessageListUseCase/GetCounselMessageListUseCase";
 import { UpdateCounselUseCase } from "~/src/aggregates/counsels/applications/useCases/UpdateCounselUseCase/UpdateCounselUseCase";
@@ -21,7 +21,7 @@ import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
 export class CreateMessageHandler implements ICommandHandler<CreateMessageCommand> {
   constructor(
     private readonly getCounselUseCase: GetCounselUseCase,
-    private readonly getCounselPromptUseCase: GetCounselPromptUseCase,
+    private readonly getCounselPromptByTypeUseCase: GetCounselPromptByTypeUseCase,
     private readonly createCounselMessageUseCase: CreateCounselMessageUseCase,
     private readonly getCounselMessageListUseCase: GetCounselMessageListUseCase,
     private readonly updateCounselUseCase: UpdateCounselUseCase,
@@ -56,7 +56,7 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     // 유저 정보 가져와 집어넣는 로직 필요(프롬프트에서 사용하는 유저 정보 구체화 필요)
     const prompts: ChatCompletionMessageParam[] = [];
     const systemPrompt = this.decideSystemPrompt(counselorType, stage);
-    const getPromptResult = await this.getCounselPromptUseCase.execute({ promptType: systemPrompt });
+    const getPromptResult = await this.getCounselPromptByTypeUseCase.execute({ promptType: systemPrompt });
     if (!getPromptResult.ok) {
       throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, getPromptResult.error);
     }
