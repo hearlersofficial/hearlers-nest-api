@@ -1,5 +1,5 @@
 import { create } from "@bufbuild/protobuf";
-import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
+import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
 import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
 import { Counsel, CounselMessage, CounselMessageSchema, CounselSchema } from "~/src/gen/v1/model/counsel_pb";
 import { TimestampUtils } from "~/src/shared/utils/Date.utils";

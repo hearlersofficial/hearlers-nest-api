@@ -1,21 +1,18 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { BranchCounselStageUseCaseRequest } from "./dto/BranchCounselStage.request";
 import { BranchCounselStageUseCaseResponse } from "./dto/BranchCounselStage.response";
 import { UseCase } from "~/src/shared/core/applications/UseCase";
 import OpenAI from "openai";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
-import { COUNSEL_PROMPT_REPOSITORY, CounselPromptsRepositoryPort } from "../../../infrastructures/counselPrompts.repository.port";
-import { CounselPrompts } from "../../../domain/CounselPrompts";
 import { CounselPrompt } from "~/src/shared/enums/CounselPrompt.enum";
+import { GetCounselPromptUseCase } from "~/src/aggregates/counselPrompts/applications/useCases/GetCounselPromptUseCase/GetCounselPromptUseCase";
+import { CounselPrompts } from "~/src/aggregates/counselPrompts/domain/CounselPrompts";
 
 @Injectable()
 export class BranchCounselStageUseCase implements UseCase<BranchCounselStageUseCaseRequest, BranchCounselStageUseCaseResponse> {
   private openai: OpenAI;
 
-  constructor(
-    @Inject(COUNSEL_PROMPT_REPOSITORY)
-    private readonly counselPromptsRepository: CounselPromptsRepositoryPort,
-  ) {
+  constructor(private readonly getCounselPromptUseCase: GetCounselPromptUseCase) {
     this.openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY || "",
     });
@@ -24,7 +21,14 @@ export class BranchCounselStageUseCase implements UseCase<BranchCounselStageUseC
   async execute(request: BranchCounselStageUseCaseRequest): Promise<BranchCounselStageUseCaseResponse> {
     const { prompts } = request;
 
-    const branchPrompt: CounselPrompts = await this.counselPromptsRepository.findOne({ promptType: CounselPrompt.BRANCH_MSG });
+    const getCounselPromptResult = await this.getCounselPromptUseCase.execute({ promptType: CounselPrompt.BRANCH_MSG });
+    if (!getCounselPromptResult.ok) {
+      return {
+        ok: false,
+        error: getCounselPromptResult.error,
+      };
+    }
+    const branchPrompt: CounselPrompts = getCounselPromptResult.counselPrompt;
 
     const completion = await this.openai.chat.completions.create({
       model: "gpt-4o",

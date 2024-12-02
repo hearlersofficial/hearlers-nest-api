@@ -1,5 +1,5 @@
 import { Dayjs } from "dayjs";
-import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
+import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
 import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";

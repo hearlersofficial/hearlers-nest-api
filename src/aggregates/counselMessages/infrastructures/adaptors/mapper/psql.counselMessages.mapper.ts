@@ -2,7 +2,7 @@ import { InternalServerErrorException } from "@nestjs/common";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { convertDayjs, formatDayjs } from "~/src/shared/utils/Date.utils";
-import { CounselMessages } from "~/src/aggregates/counsels/domain/CounselMessages";
+import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
 import { CounselMessagesEntity } from "~/src/shared/core/infrastructure/entities/CounselMessages.entity";
 
 export class PsqlCounselMessagesMapper {
