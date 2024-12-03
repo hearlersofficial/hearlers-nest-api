@@ -4,6 +4,7 @@ import { CreateCounselPromptUseCase } from "../../useCases/CreateCounselPromptUs
 import { CounselPrompts } from "../../../domain/CounselPrompts";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { HttpStatus } from "@nestjs/common";
+import { VersionString } from "~/src/shared/types/version.type";
 
 @CommandHandler(CreatePromptCommand)
 export class CreatePromptHandler implements ICommandHandler<CreatePromptCommand> {
@@ -11,8 +12,12 @@ export class CreatePromptHandler implements ICommandHandler<CreatePromptCommand>
 
   async execute(command: CreatePromptCommand): Promise<CounselPrompts> {
     const { props } = command;
+    const request = {
+      ...props,
+      version: props.version as VersionString,
+    };
 
-    const createCounselPromptResult = await this.createCounselPromptUseCase.execute(props);
+    const createCounselPromptResult = await this.createCounselPromptUseCase.execute(request);
     if (!createCounselPromptResult.ok) {
       throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, createCounselPromptResult.error);
     }

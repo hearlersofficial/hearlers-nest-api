@@ -4,6 +4,7 @@ import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { convertDayjs, formatDayjs } from "~/src/shared/utils/Date.utils";
 import { CounselPromptsEntity } from "~/src/shared/core/infrastructure/entities/CounselPrompts.entity";
 import { CounselPrompts } from "../../../domain/CounselPrompts";
+import { VersionString } from "~/src/shared/types/version.type";
 
 export class PsqlCounselPromptsMapper {
   static toDomain(entity: CounselPromptsEntity): CounselPrompts | null {
@@ -19,7 +20,7 @@ export class PsqlCounselPromptsMapper {
       additionalPrompt: entity.additionalPrompt ?? null,
       promptType: entity.promptType,
       description: entity.description ?? null,
-      version: entity.version,
+      version: entity.version as VersionString,
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
       deletedAt: entity.deletedAt ? convertDayjs(entity.deletedAt) : null,

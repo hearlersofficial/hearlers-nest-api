@@ -1,6 +1,7 @@
-import { Column, Entity } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity } from "typeorm";
 import { CoreEntity } from "./Core.entity";
 import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
+import { isValidVersion } from "~/src/shared/types/version.type";
 
 @Entity({
   name: "counsel_prompts",
@@ -69,4 +70,12 @@ export class CounselPromptsEntity extends CoreEntity {
     default: "1.0",
   })
   version: string;
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  protected validateVersion() {
+    if (!isValidVersion(this.version)) {
+      throw new Error("Invalid version format");
+    }
+  }
 }

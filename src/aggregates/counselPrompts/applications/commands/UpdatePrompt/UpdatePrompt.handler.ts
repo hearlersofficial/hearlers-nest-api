@@ -6,6 +6,7 @@ import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { HttpStatus } from "@nestjs/common";
 import { CounselPrompts, CounselPromptsProps } from "../../../domain/CounselPrompts";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { VersionString } from "~/src/shared/types/version.type";
 
 @CommandHandler(UpdatePromptCommand)
 export class UpdatePromptHandler implements ICommandHandler<UpdatePromptCommand> {
@@ -47,7 +48,7 @@ export class UpdatePromptHandler implements ICommandHandler<UpdatePromptCommand>
     if (tone !== null && tone !== undefined) props.tone = tone;
     if (additionalPrompt !== null && additionalPrompt !== undefined) props.additionalPrompt = additionalPrompt;
     if (description !== null && description !== undefined) props.description = description;
-    if (version !== null && version !== undefined) props.version = version;
+    if (version !== null && version !== undefined) props.version = version as VersionString;
     props.updatedAt = getNowDayjs();
 
     return props;
