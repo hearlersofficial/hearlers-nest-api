@@ -1,6 +1,7 @@
 import { HttpStatus } from "@nestjs/common";
 import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
+import { isValidVersion } from "~/src/shared/types/version.type";
 
 export class CreatePromptCommand {
   constructor(public readonly props: CreatePromptCommandProps) {
@@ -13,6 +14,10 @@ export class CreatePromptCommand {
     }
     if (!Object.values(CounselPromptType).includes(props.promptType)) {
       throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "유효하지 않은 프롬프트 타입입니다.");
+    }
+
+    if (props.version !== null && props.version !== undefined && !isValidVersion(props.version)) {
+      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "유효하지 않은 version입니다");
     }
   }
 }

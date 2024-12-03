@@ -5,6 +5,7 @@ import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { CounselorInfo, CounselorType } from "~/src/shared/enums/CounselorType.enum";
 import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
+import { isValidVersion, VersionString } from "~/src/shared/types/version.type";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 
 interface CounselPromptsNewProps {
@@ -15,7 +16,7 @@ interface CounselPromptsNewProps {
   additionalPrompt: string | null;
   promptType: CounselPromptType;
   description: string | null;
-  version: string | null;
+  version: VersionString | null;
 }
 
 export interface CounselPromptsProps extends CounselPromptsNewProps {
@@ -86,6 +87,9 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
     // version 검증
     if (!this.props.version) {
       return Result.fail<void>("[CounselPrompts] version은 필수입니다");
+    }
+    if (!isValidVersion(this.props.version)) {
+      return Result.fail<void>("[CounselPrompts] 유효하지 않은 version입니다");
     }
 
     // 날짜 검증
