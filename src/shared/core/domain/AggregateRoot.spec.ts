@@ -1,6 +1,6 @@
 import { fakerKO as faker } from "@faker-js/faker";
 import { AggregateRoot } from "./AggregateRoot";
-import { UniqueEntityId } from "./UniqueEntityId";
+import { UniqueEntityId } from "./aUniqueEntityId";
 import { Result } from "./Result";
 import { Dayjs } from "dayjs";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";

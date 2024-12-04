@@ -1,6 +1,6 @@
 import { fakerKO as faker } from "@faker-js/faker";
 import { DomainEntity } from "./DomainEntity";
-import { UniqueEntityId } from "./UniqueEntityId";
+import { UniqueEntityId } from "./aUniqueEntityId";
 import { Result } from "./Result";
 import { DomainEvent } from "./events/DomainEvent";
 import { Dayjs } from "dayjs";
