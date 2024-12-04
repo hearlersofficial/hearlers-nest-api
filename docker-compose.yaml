@@ -1,46 +1,13 @@
-version: "3.8"
-
+version: "3"
 services:
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    environment:
-      ALLOW_ANONYMOUS_LOGIN: "yes"
+  api:
+    container_name: hearlers-nest-api-dev
+    restart: always
+    image: node:20.11.0
+    working_dir: /usr/src/app
+    command: bash -c "yarn install && yarn start:dev"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     ports:
-      - "2181:2181"
-    healthcheck:
-      test: ["CMD-SHELL", "echo ruok | nc -w 2 zookeeper 2181"]
-      interval: 5s
-      timeout: 10s
-      retries: 3
-
-  kafka:
-    image: bitnami/kafka:latest
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://34.47.88.194:9092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
-    ports:
-      - "9092:9092" # Kafka 브로커를 외부에 노출
-    depends_on:
-      zookeeper:
-        condition: service_healthy
-    healthcheck:
-      test:
-        ["CMD", "bash", "-c", "unset", "JMX_PORT", ";", "kafka-topics.sh", "--zookeeper", "zookeeper:2181", "--list"]
-      interval: 10s
-      timeout: 10s
-      retries: 4
-
-  # kafka-ui:
-  #   image: provectuslabs/kafka-ui:latest
-  #   environment:
-  #     KAFKA_CLUSTERS_0_NAME: local
-  #     KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 34.47.88.194:9092 # Kafka UI도 퍼블릭 IP를 사용해 통신
-  #   ports:
-  #     - "8080:8080" # Kafka UI는 외부에 노출
-  #   depends_on:
-  #     - kafka
+      - "50051:50051"

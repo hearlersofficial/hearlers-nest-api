@@ -15,7 +15,6 @@ export class UsersEntity extends CoreEntity {
   @Column({
     type: "varchar",
     name: "nickname",
-    unique: true,
     comment: "닉네임",
   })
   nickname: string;
