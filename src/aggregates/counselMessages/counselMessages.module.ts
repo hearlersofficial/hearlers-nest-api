@@ -7,17 +7,18 @@ import { GetMessageListHandler } from "./applications/queries/GetMessageList/Get
 import { COUNSEL_MESSAGE_REPOSITORY } from "./infrastructures/counselMessages.repository.port";
 import { PsqlCounselMessagesRepositoryAdaptor } from "./infrastructures/adaptors/psql.counselMessages.repository.adaptor";
 
+const useCases = [CreateCounselMessageUseCase, GetCounselMessageListUseCase];
+
 @Module({
   imports: [TypeOrmModule.forFeature([CounselMessagesEntity])],
   providers: [
-    CreateCounselMessageUseCase,
-    GetCounselMessageListUseCase,
+    ...useCases,
     GetMessageListHandler,
     {
       provide: COUNSEL_MESSAGE_REPOSITORY,
       useClass: PsqlCounselMessagesRepositoryAdaptor,
     },
   ],
-  exports: [CreateCounselMessageUseCase, GetCounselMessageListUseCase],
+  exports: [...useCases],
 })
 export class CounselMessagesModule {}

@@ -12,15 +12,18 @@ import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { HttpStatus } from "@nestjs/common";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { ChatCompletionMessageParam } from "openai/resources";
-import { CounselorInfo, CounselorType } from "~/src/shared/enums/CounselorType.enum";
 import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
+import { GetCounselorUseCase } from "~/src/aggregates/counselors/applications/useCases/GetCounselorUseCase/GetCounselorUseCase";
+import { Counselors } from "~/src/aggregates/counselors/domain/counselors";
+import { CounselorType } from "~/src/shared/enums/CounselorType.enum";
 
 @CommandHandler(CreateMessageCommand)
 export class CreateMessageHandler implements ICommandHandler<CreateMessageCommand> {
   constructor(
     private readonly getCounselUseCase: GetCounselUseCase,
+    private readonly getCounselorUseCase: GetCounselorUseCase,
     private readonly getCounselPromptByTypeUseCase: GetCounselPromptByTypeUseCase,
     private readonly createCounselMessageUseCase: CreateCounselMessageUseCase,
     private readonly getCounselMessageListUseCase: GetCounselMessageListUseCase,
@@ -49,19 +52,25 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
       counsel.updateCounselStage(CounselStage.EXTREME);
     }
 
-    const counselorType = counsel.counselorType;
     const stage = counsel.counselStage;
+
+    // 상담사 정보 가져오기
+    const getCounselorResult = await this.getCounselorUseCase.execute({ counselorId: counsel.counselorId });
+    if (!getCounselorResult.ok) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, getCounselorResult.error);
+    }
+    const counselor = getCounselorResult.counselor;
 
     // 시스템 프롬프트 가져오기
     // 유저 정보 가져와 집어넣는 로직 필요(프롬프트에서 사용하는 유저 정보 구체화 필요)
     const prompts: ChatCompletionMessageParam[] = [];
-    const systemPrompt = this.decideSystemPrompt(counselorType, stage);
+    const systemPrompt = this.decideSystemPrompt(counselor, stage);
     const getPromptResult = await this.getCounselPromptByTypeUseCase.execute({ promptType: systemPrompt });
     if (!getPromptResult.ok) {
       throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, getPromptResult.error);
     }
     const counselPrompt = getPromptResult.counselPrompt;
-    prompts.push(counselPrompt.makePrompt(counselorType));
+    prompts.push(counselPrompt.makePrompt(counselor));
 
     // 사용자 메시지 추가
     const createUserMessageResult = await this.createCounselMessageUseCase.execute({
@@ -121,33 +130,33 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     return systemMessage;
   }
 
-  private decideSystemPrompt(counselorType: CounselorType, stage: CounselStage): CounselPromptType {
+  private decideSystemPrompt(counselor: Counselors, stage: CounselStage): CounselPromptType {
     if (stage == CounselStage.SMALL_TALK) {
       return CounselPromptType.SYSTEM_MSG;
     }
     if (stage == CounselStage.POSITIVE) {
       return CounselPromptType.POSITIVE_MSG;
     }
-    const type = CounselorInfo[counselorType].type;
+    const type = counselor.counselorType;
     if (stage == CounselStage.NEGATIVE_WITH_REASON) {
-      if (type == "우울") {
+      if (type == CounselorType.DEPRESSED) {
         return CounselPromptType.DEPRESSED_REASON_MSG;
       }
-      if (type == "불안") {
+      if (type == CounselorType.ANXIOUS) {
         return CounselPromptType.ANXIOUS_REASON_MSG;
       }
-      if (type == "무기력") {
+      if (type == CounselorType.TIRED) {
         return CounselPromptType.TIRED_REASON_MSG;
       }
     }
     if (stage == CounselStage.NEGATIVE_WITHOUT_REASON) {
-      if (type == "우울") {
+      if (type == CounselorType.DEPRESSED) {
         return CounselPromptType.DEPRESSED_NO_REASON_MSG;
       }
-      if (type == "불안") {
+      if (type == CounselorType.ANXIOUS) {
         return CounselPromptType.ANXIOUS_NO_REASON_MSG;
       }
-      if (type == "무기력") {
+      if (type == CounselorType.TIRED) {
         return CounselPromptType.TIRED_NO_REASON_MSG;
       }
     }

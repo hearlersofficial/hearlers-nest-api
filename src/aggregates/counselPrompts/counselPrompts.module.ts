@@ -12,14 +12,18 @@ import { GetPromptListHandler } from "./applications/queries/GetPromptList/GetPr
 import { CreatePromptHandler } from "./applications/commands/CreatePrompt/CreatePrompt.handler";
 import { UpdatePromptHandler } from "./applications/commands/UpdatePrompt/UpdatePrompt.handler";
 
+const useCases = [
+  GetCounselPromptByIdUseCase,
+  GetCounselPromptByTypeUseCase,
+  GetCounselPromptListUseCase,
+  CreateCounselPromptUseCase,
+  UpdateCounselPromptUseCase,
+];
+
 @Module({
   imports: [TypeOrmModule.forFeature([CounselPromptsEntity])],
   providers: [
-    GetCounselPromptByIdUseCase,
-    GetCounselPromptByTypeUseCase,
-    GetCounselPromptListUseCase,
-    CreateCounselPromptUseCase,
-    UpdateCounselPromptUseCase,
+    ...useCases,
     GetPromptListHandler,
     CreatePromptHandler,
     UpdatePromptHandler,
@@ -28,6 +32,6 @@ import { UpdatePromptHandler } from "./applications/commands/UpdatePrompt/Update
       useClass: PsqlCounselPromptsRepositoryAdaptor,
     },
   ],
-  exports: [GetCounselPromptByIdUseCase, GetCounselPromptByTypeUseCase, GetCounselPromptListUseCase, CreateCounselPromptUseCase, UpdateCounselPromptUseCase],
+  exports: [...useCases],
 })
 export class CounselPromptsModule {}

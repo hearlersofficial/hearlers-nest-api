@@ -8,6 +8,9 @@ import {
   GetCounselListRequest,
   GetCounselListResult,
   GetCounselListResultSchema,
+  GetCounselorListRequest,
+  GetCounselorListResult,
+  GetCounselorListResultSchema,
   GetMessageListRequest,
   GetMessageListResult,
   GetMessageListResultSchema,
@@ -20,6 +23,8 @@ import { GetMessageListQuery } from "~/src/aggregates/counselMessages/applicatio
 import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
 import { GetPromptListQuery } from "~/src/aggregates/counselPrompts/applications/queries/GetPromptList/GetPromptList.query";
 import { CounselPrompts } from "~/src/aggregates/counselPrompts/domain/CounselPrompts";
+import { GetCounselorListQuery } from "~/src/aggregates/counselors/applications/queries/GetCounselorList/GetCounselorList.query";
+import { Counselors } from "~/src/aggregates/counselors/domain/counselors";
 
 @Controller("counsel")
 export class GrpcCounselQueryController {
@@ -50,6 +55,16 @@ export class GrpcCounselQueryController {
 
     return create(GetPromptListResultSchema, {
       promptList: counselPromptList.map((counselPrompt) => SchemaCounselsMapper.toCounselPromptProto(counselPrompt)),
+    });
+  }
+
+  @GrpcMethod("CounselService", "GetCounselorList")
+  async getCounselorList(data: GetCounselorListRequest): Promise<GetCounselorListResult> {
+    const query: GetCounselorListQuery = new GetCounselorListQuery({ counselorType: data.counselorType });
+    const counselorList: Counselors[] = await this.queryBus.execute(query);
+
+    return create(GetCounselorListResultSchema, {
+      counselorList: counselorList.map((counselor) => SchemaCounselsMapper.toCounselorProto(counselor)),
     });
   }
 }

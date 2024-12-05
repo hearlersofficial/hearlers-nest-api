@@ -1,22 +1,13 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, RelationId } from "typeorm";
 import { CoreEntity } from "./Core.entity";
-import { CounselorType } from "~/src/shared/enums/CounselorType.enum";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { CounselMessagesEntity } from "./CounselMessages.entity";
+import { CounselorsEntity } from "./Counselor.entity";
 
 @Entity({
   name: "counsels",
 })
 export class CounselsEntity extends CoreEntity {
-  @Column({
-    type: "enum",
-    name: "counselor_type",
-    enum: CounselorType,
-    comment: "상담사 타입",
-    default: CounselorType.DAHYE,
-  })
-  counselorType: CounselorType;
-
   @Column({
     type: "int",
     name: "user_id",
@@ -48,6 +39,21 @@ export class CounselsEntity extends CoreEntity {
     comment: "마지막 메시지",
   })
   lastMessage: string | null;
+
+  @ManyToOne(() => CounselorsEntity, (counselor) => counselor.counsels, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  @JoinColumn({ name: "counselor_id" })
+  counselor: CounselorsEntity;
+
+  @RelationId((counsels: CounselsEntity) => counsels.counselor)
+  @Column({
+    type: "int",
+    name: "counselor_id",
+    comment: "상담사 ID",
+  })
+  counselorId: number;
 
   @OneToMany(() => CounselMessagesEntity, (counselMessage) => counselMessage.counsel, {
     onDelete: "CASCADE",

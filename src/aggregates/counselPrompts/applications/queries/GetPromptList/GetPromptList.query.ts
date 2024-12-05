@@ -8,15 +8,12 @@ export class GetPromptListQuery {
   }
 
   private validateProps(props: GetPromptListQueryProps): void {
-    if (props.promptType === null || props.promptType === undefined) {
-      throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "프롬프트 타입은 필수입니다.");
-    }
-    if (!Object.values(CounselPromptType).includes(props.promptType)) {
+    if (props.promptType !== null && props.promptType !== undefined && !Object.values(CounselPromptType).includes(props.promptType)) {
       throw new HttpStatusBasedRpcException(HttpStatus.BAD_REQUEST, "유효하지 않은 프롬프트 타입입니다.");
     }
   }
 }
 
 interface GetPromptListQueryProps {
-  promptType: CounselPromptType;
+  promptType?: CounselPromptType;
 }

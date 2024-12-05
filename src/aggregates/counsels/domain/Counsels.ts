@@ -3,12 +3,11 @@ import { CounselMessages } from "~/src/aggregates/counselMessages/domain/Counsel
 import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { CounselorType } from "~/src/shared/enums/CounselorType.enum";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 
 interface CounselsNewProps {
-  counselorType: CounselorType;
+  counselorId: number;
   userId: number;
 }
 
@@ -54,11 +53,8 @@ export class Counsels extends AggregateRoot<CounselsProps> {
 
   validateDomain(): Result<void> {
     // counselorType 검증
-    if (this.props.counselorType === null || this.props.counselorType === undefined) {
-      return Result.fail<void>("[Counsels] 상담사 타입은 필수입니다");
-    }
-    if (!Object.values(CounselorType).includes(this.props.counselorType)) {
-      return Result.fail<void>("[Counsels] 유효하지 않은 상담사 타입입니다");
+    if (this.props.counselorId === null || this.props.counselorId === undefined) {
+      return Result.fail<void>("[Counsels] 상담사 ID는 필수입니다");
     }
 
     // userId 검증
@@ -86,8 +82,8 @@ export class Counsels extends AggregateRoot<CounselsProps> {
   }
 
   // Getters
-  get counselorType(): CounselorType {
-    return this.props.counselorType;
+  get counselorId(): number {
+    return this.props.counselorId;
   }
 
   get userId(): number {

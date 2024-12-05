@@ -17,10 +17,10 @@ export class InitializeCounselUseCase implements UseCase<InitializeCounselUseCas
   ) {}
 
   async execute(request: InitializeCounselUseCaseRequest): Promise<InitializeCounselUseCaseResponse> {
-    const { userId, counselorType } = request;
+    const { userId, counselorId } = request;
 
     // 상담 생성
-    const createCounselResult = await this.createCounselUseCase.execute({ userId, counselorType });
+    const createCounselResult = await this.createCounselUseCase.execute({ userId, counselorId });
     if (!createCounselResult.ok) {
       return { ok: false, error: createCounselResult.error };
     }
