@@ -5,6 +5,9 @@ import { GrpcMethod } from "@nestjs/microservices";
 import { CreateMessageCommand } from "~/src/services/counselings/applications/commands/CreateMessage/CreateMessage.command";
 import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
 import {
+  CreateCounselorRequest,
+  CreateCounselorResult,
+  CreateCounselorResultSchema,
   CreateCounselRequest,
   CreateCounselResult,
   CreateCounselResultSchema,
@@ -14,6 +17,9 @@ import {
   CreatePromptRequest,
   CreatePromptResult,
   CreatePromptResultSchema,
+  UpdateCounselorRequest,
+  UpdateCounselorResult,
+  UpdateCounselorResultSchema,
   UpdatePromptRequest,
   UpdatePromptResult,
   UpdatePromptResultSchema,
@@ -22,6 +28,8 @@ import { SchemaCounselsMapper } from "~/src/services/counselings/presentations/g
 import { CreateCounselCommand, CreateCounselCommandResult } from "../../../applications/commands/CreateCounsel/CreateCounsel.command";
 import { CreatePromptCommand } from "~/src/aggregates/counselPrompts/applications/commands/CreatePrompt/CreatePrompt.command";
 import { UpdatePromptCommand } from "~/src/aggregates/counselPrompts/applications/commands/UpdatePrompt/UpdatePrompt.command";
+import { CreateCounselorCommand } from "~/src/aggregates/counselors/applications/commands/CreateCounselor/CreateCounselor.command";
+import { UpdateCounselorCommand } from "~/src/aggregates/counselors/applications/commands/UpdateCounselor/UpdateCounselor.command";
 
 @Controller("counsel")
 export class GrpcCounselCommandController {
@@ -31,7 +39,7 @@ export class GrpcCounselCommandController {
   async createCounsel(request: CreateCounselRequest): Promise<CreateCounselResult> {
     const command: CreateCounselCommand = new CreateCounselCommand({
       userId: request.userId,
-      counselorType: request.counselorType,
+      counselorId: request.counselorId,
     });
     const { counsel, counselMessages }: CreateCounselCommandResult = await this.commandBus.execute(command);
 
@@ -71,6 +79,37 @@ export class GrpcCounselCommandController {
 
     return create(UpdatePromptResultSchema, {
       prompt: SchemaCounselsMapper.toCounselPromptProto(counselPrompt),
+    });
+  }
+
+  @GrpcMethod("CounselService", "CreateCounselor")
+  async createCounselor(request: CreateCounselorRequest): Promise<CreateCounselorResult> {
+    const command: CreateCounselorCommand = new CreateCounselorCommand({
+      counselorType: request.counselorType,
+      name: request.name,
+      description: request.description,
+      gender: request.counselorGender,
+    });
+    const counselor = await this.commandBus.execute(command);
+
+    return create(CreateCounselorResultSchema, {
+      counselor: SchemaCounselsMapper.toCounselorProto(counselor),
+    });
+  }
+
+  @GrpcMethod("CounselService", "UpdateCounselor")
+  async updateCounselor(request: UpdateCounselorRequest): Promise<UpdateCounselorResult> {
+    const command: UpdateCounselorCommand = new UpdateCounselorCommand({
+      counselorId: request.counselorId,
+      counselorType: request.counselorType,
+      name: request.name,
+      description: request.description,
+      gender: request.counselorGender,
+    });
+    const counselor = await this.commandBus.execute(command);
+
+    return create(UpdateCounselorResultSchema, {
+      counselor: SchemaCounselsMapper.toCounselorProto(counselor),
     });
   }
 }

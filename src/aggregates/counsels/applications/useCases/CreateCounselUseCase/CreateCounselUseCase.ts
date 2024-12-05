@@ -14,8 +14,8 @@ export class CreateCounselUseCase implements UseCase<CreateCounselUseCaseRequest
   ) {}
 
   async execute(request: CreateCounselUseCaseRequest): Promise<CreateCounselUseCaseResponse> {
-    const { userId, counselorType } = request;
-    const counselOrError: Result<Counsels> = Counsels.createNew({ userId, counselorType });
+    const { userId, counselorId } = request;
+    const counselOrError: Result<Counsels> = Counsels.createNew({ userId, counselorId });
     if (counselOrError.isFailure) {
       return {
         ok: false,
@@ -23,7 +23,9 @@ export class CreateCounselUseCase implements UseCase<CreateCounselUseCaseRequest
       };
     }
     const counsel: Counsels = counselOrError.value;
+    console.log("counsel", counsel);
     const savedCounsel: Counsels = await this.counselsRepository.create(counsel);
+    console.log("savedCounsel", savedCounsel);
     return {
       ok: true,
       counsel: savedCounsel,

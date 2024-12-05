@@ -10,9 +10,9 @@ export class CreateCounselHandler implements ICommandHandler<CreateCounselComman
   constructor(private readonly inializeCounselUseCase: InitializeCounselUseCase) {}
 
   async execute(command: CreateCounselCommand): Promise<CreateCounselCommandResult> {
-    const { userId, counselorType } = command.props;
+    const { userId, counselorId } = command.props;
 
-    const initializeCounselResult = await this.inializeCounselUseCase.execute({ userId, counselorType });
+    const initializeCounselResult = await this.inializeCounselUseCase.execute({ userId, counselorId });
     if (!initializeCounselResult.ok) {
       throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, initializeCounselResult.error);
     }

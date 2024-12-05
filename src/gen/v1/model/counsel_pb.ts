@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/model/counsel.proto.
  */
 export const file_v1_model_counsel: GenFile = /*@__PURE__*/
-  fileDesc("ChZ2MS9tb2RlbC9jb3Vuc2VsLnByb3RvEhVjb20uaGVhcmxlcnMudjEubW9kZWwivgIKB0NvdW5zZWwSCgoCaWQYASABKAUSPAoOY291bnNlbG9yX3R5cGUYAiABKA4yJC5jb20uaGVhcmxlcnMudjEubW9kZWwuQ291bnNlbG9yVHlwZRIPCgd1c2VyX2lkGAMgASgFEhQKDGxhc3RfbWVzc2FnZRgEIAEoCRIyCg5sYXN0X2NoYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZGVsZXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAi6gEKDkNvdW5zZWxNZXNzYWdlEgoKAmlkGAEgASgFEhIKCmNvdW5zZWxfaWQYAiABKAUSDwoHbWVzc2FnZRgDIAEoCRIXCg9pc191c2VyX21lc3NhZ2UYBCABKAgSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZGVsZXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAq3AEKDUNvdW5zZWxvclR5cGUSGAoUQ09VTlNFTE9SX1RZUEVfREFIWUUQABIZChVDT1VOU0VMT1JfVFlQRV9KSUhXQU4QARIYChRDT1VOU0VMT1JfVFlQRV9FTExJRRACEhcKE0NPVU5TRUxPUl9UWVBFX1lPT04QAxIZChVDT1VOU0VMT1JfVFlQRV9DSEVSUlkQBBIXChNDT1VOU0VMT1JfVFlQRV9BREVOEAUSFwoTQ09VTlNFTE9SX1RZUEVfSElLTxAGEhYKEkNPVU5TRUxPUl9UWVBFX0FSVRAHQqEBChljb20uY29tLmhlYXJsZXJzLnYxLm1vZGVsQgxDb3Vuc2VsUHJvdG9QAaICBENIVk2qAhVDb20uSGVhcmxlcnMuVjEuTW9kZWzKAhVDb21cSGVhcmxlcnNcVjFcTW9kZWziAiFDb21cSGVhcmxlcnNcVjFcTW9kZWxcR1BCTWV0YWRhdGHqAhhDb206OkhlYXJsZXJzOjpWMTo6TW9kZWxiBnByb3RvMw", [file_google_protobuf_timestamp]);
+  fileDesc("ChZ2MS9tb2RlbC9jb3Vuc2VsLnByb3RvEhVjb20uaGVhcmxlcnMudjEubW9kZWwilgIKB0NvdW5zZWwSCgoCaWQYASABKAUSFAoMY291bnNlbG9yX2lkGAIgASgFEg8KB3VzZXJfaWQYAyABKAUSFAoMbGFzdF9tZXNzYWdlGAQgASgJEjIKDmxhc3RfY2hhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpjcmVhdGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpkZWxldGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCLqAQoOQ291bnNlbE1lc3NhZ2USCgoCaWQYASABKAUSEgoKY291bnNlbF9pZBgCIAEoBRIPCgdtZXNzYWdlGAMgASgJEhcKD2lzX3VzZXJfbWVzc2FnZRgEIAEoCBIuCgpjcmVhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpkZWxldGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCLwAgoNQ291bnNlbFByb21wdBIKCgJpZBgBIAEoBRIPCgdwZXJzb25hGAIgASgJEg8KB2NvbnRleHQYAyABKAkSEwoLaW5zdHJ1Y3Rpb24YBCABKAkSDAoEdG9uZRgFIAEoCRIZChFhZGRpdGlvbmFsX3Byb21wdBgGIAEoCRI9Cgtwcm9tcHRfdHlwZRgHIAEoDjIoLmNvbS5oZWFybGVycy52MS5tb2RlbC5Db3Vuc2VsUHJvbXB0VHlwZRITCgtkZXNjcmlwdGlvbhgIIAEoCRIPCgd2ZXJzaW9uGAkgASgJEi4KCmNyZWF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnVwZGF0ZWRfYXQYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmRlbGV0ZWRfYXQYDCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIosDCglDb3Vuc2Vsb3ISCgoCaWQYASABKAUSPAoOY291bnNlbG9yX3R5cGUYAiABKA4yJC5jb20uaGVhcmxlcnMudjEubW9kZWwuQ291bnNlbG9yVHlwZRIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEjYKBmdlbmRlchgFIAEoDjImLmNvbS5oZWFybGVycy52MS5tb2RlbC5Db3Vuc2Vsb3JHZW5kZXISFQoNaW50cm9fbWVzc2FnZRgGIAEoCRIYChByZXNwb25zZV9vcHRpb24xGAcgASgJEhgKEHJlc3BvbnNlX29wdGlvbjIYCCABKAkSLgoKY3JlYXRlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZGVsZXRlZF9hdBgLIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAqfgoNQ291bnNlbG9yVHlwZRIcChhDT1VOU0VMT1JfVFlQRV9ERVBSRVNTRUQQABIaChZDT1VOU0VMT1JfVFlQRV9BTlhJT1VTEAESGAoUQ09VTlNFTE9SX1RZUEVfVElSRUQQAhIZChVDT1VOU0VMT1JfVFlQRV9MT05FTFkQAypkCg9Db3Vuc2Vsb3JHZW5kZXISGQoVQ09VTlNFTE9SX0dFTkRFUl9NQUxFEAASGwoXQ09VTlNFTE9SX0dFTkRFUl9GRU1BTEUQARIZChVDT1VOU0VMT1JfR0VOREVSX05PTkUQAiq4AwoRQ291bnNlbFByb21wdFR5cGUSIgoeQ09VTlNFTF9QUk9NUFRfVFlQRV9TWVNURU1fTVNHEAASJAogQ09VTlNFTF9QUk9NUFRfVFlQRV9QT1NJVElWRV9NU0cQARIsCihDT1VOU0VMX1BST01QVF9UWVBFX0RFUFJFU1NFRF9SRUFTT05fTVNHEAISLworQ09VTlNFTF9QUk9NUFRfVFlQRV9ERVBSRVNTRURfTk9fUkVBU09OX01TRxADEioKJkNPVU5TRUxfUFJPTVBUX1RZUEVfQU5YSU9VU19SRUFTT05fTVNHEAQSLQopQ09VTlNFTF9QUk9NUFRfVFlQRV9BTlhJT1VTX05PX1JFQVNPTl9NU0cQBRIoCiRDT1VOU0VMX1BST01QVF9UWVBFX1RJUkVEX1JFQVNPTl9NU0cQBhIrCidDT1VOU0VMX1BST01QVF9UWVBFX1RJUkVEX05PX1JFQVNPTl9NU0cQBxIkCiBDT1VOU0VMX1BST01QVF9UWVBFX1dIWV9MSVZFX01TRxAIEiIKHkNPVU5TRUxfUFJPTVBUX1RZUEVfQlJBTkNIX01TRxAJQqEBChljb20uY29tLmhlYXJsZXJzLnYxLm1vZGVsQgxDb3Vuc2VsUHJvdG9QAaICBENIVk2qAhVDb20uSGVhcmxlcnMuVjEuTW9kZWzKAhVDb21cSGVhcmxlcnNcVjFcTW9kZWziAiFDb21cSGVhcmxlcnNcVjFcTW9kZWxcR1BCTWV0YWRhdGHqAhhDb206OkhlYXJsZXJzOjpWMTo6TW9kZWxiBnByb3RvMw", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message com.hearlers.v1.model.Counsel
@@ -24,9 +24,9 @@ export type Counsel = Message<"com.hearlers.v1.model.Counsel"> & {
   id: number;
 
   /**
-   * @generated from field: com.hearlers.v1.model.CounselorType counselor_type = 2;
+   * @generated from field: int32 counselor_id = 2;
    */
-  counselorType: CounselorType;
+  counselorId: number;
 
   /**
    * @generated from field: int32 user_id = 3;
@@ -114,48 +114,167 @@ export const CounselMessageSchema: GenMessage<CounselMessage> = /*@__PURE__*/
   messageDesc(file_v1_model_counsel, 1);
 
 /**
+ * @generated from message com.hearlers.v1.model.CounselPrompt
+ */
+export type CounselPrompt = Message<"com.hearlers.v1.model.CounselPrompt"> & {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  /**
+   * @generated from field: string persona = 2;
+   */
+  persona: string;
+
+  /**
+   * @generated from field: string context = 3;
+   */
+  context: string;
+
+  /**
+   * @generated from field: string instruction = 4;
+   */
+  instruction: string;
+
+  /**
+   * @generated from field: string tone = 5;
+   */
+  tone: string;
+
+  /**
+   * @generated from field: string additional_prompt = 6;
+   */
+  additionalPrompt: string;
+
+  /**
+   * @generated from field: com.hearlers.v1.model.CounselPromptType prompt_type = 7;
+   */
+  promptType: CounselPromptType;
+
+  /**
+   * @generated from field: string description = 8;
+   */
+  description: string;
+
+  /**
+   * @generated from field: string version = 9;
+   */
+  version: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 10;
+   */
+  createdAt?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp updated_at = 11;
+   */
+  updatedAt?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp deleted_at = 12;
+   */
+  deletedAt?: Timestamp;
+};
+
+/**
+ * Describes the message com.hearlers.v1.model.CounselPrompt.
+ * Use `create(CounselPromptSchema)` to create a new message.
+ */
+export const CounselPromptSchema: GenMessage<CounselPrompt> = /*@__PURE__*/
+  messageDesc(file_v1_model_counsel, 2);
+
+/**
+ * @generated from message com.hearlers.v1.model.Counselor
+ */
+export type Counselor = Message<"com.hearlers.v1.model.Counselor"> & {
+  /**
+   * @generated from field: int32 id = 1;
+   */
+  id: number;
+
+  /**
+   * @generated from field: com.hearlers.v1.model.CounselorType counselor_type = 2;
+   */
+  counselorType: CounselorType;
+
+  /**
+   * @generated from field: string name = 3;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string description = 4;
+   */
+  description: string;
+
+  /**
+   * @generated from field: com.hearlers.v1.model.CounselorGender gender = 5;
+   */
+  gender: CounselorGender;
+
+  /**
+   * @generated from field: string intro_message = 6;
+   */
+  introMessage: string;
+
+  /**
+   * @generated from field: string response_option1 = 7;
+   */
+  responseOption1: string;
+
+  /**
+   * @generated from field: string response_option2 = 8;
+   */
+  responseOption2: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 9;
+   */
+  createdAt?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp updated_at = 10;
+   */
+  updatedAt?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp deleted_at = 11;
+   */
+  deletedAt?: Timestamp;
+};
+
+/**
+ * Describes the message com.hearlers.v1.model.Counselor.
+ * Use `create(CounselorSchema)` to create a new message.
+ */
+export const CounselorSchema: GenMessage<Counselor> = /*@__PURE__*/
+  messageDesc(file_v1_model_counsel, 3);
+
+/**
  * @generated from enum com.hearlers.v1.model.CounselorType
  */
 export enum CounselorType {
   /**
-   * @generated from enum value: COUNSELOR_TYPE_DAHYE = 0;
+   * @generated from enum value: COUNSELOR_TYPE_DEPRESSED = 0;
    */
-  DAHYE = 0,
+  DEPRESSED = 0,
 
   /**
-   * @generated from enum value: COUNSELOR_TYPE_JIHWAN = 1;
+   * @generated from enum value: COUNSELOR_TYPE_ANXIOUS = 1;
    */
-  JIHWAN = 1,
+  ANXIOUS = 1,
 
   /**
-   * @generated from enum value: COUNSELOR_TYPE_ELLIE = 2;
+   * @generated from enum value: COUNSELOR_TYPE_TIRED = 2;
    */
-  ELLIE = 2,
+  TIRED = 2,
 
   /**
-   * @generated from enum value: COUNSELOR_TYPE_YOON = 3;
+   * @generated from enum value: COUNSELOR_TYPE_LONELY = 3;
    */
-  YOON = 3,
-
-  /**
-   * @generated from enum value: COUNSELOR_TYPE_CHERRY = 4;
-   */
-  CHERRY = 4,
-
-  /**
-   * @generated from enum value: COUNSELOR_TYPE_ADEN = 5;
-   */
-  ADEN = 5,
-
-  /**
-   * @generated from enum value: COUNSELOR_TYPE_HIKO = 6;
-   */
-  HIKO = 6,
-
-  /**
-   * @generated from enum value: COUNSELOR_TYPE_ARU = 7;
-   */
-  ARU = 7,
+  LONELY = 3,
 }
 
 /**
@@ -163,4 +282,91 @@ export enum CounselorType {
  */
 export const CounselorTypeSchema: GenEnum<CounselorType> = /*@__PURE__*/
   enumDesc(file_v1_model_counsel, 0);
+
+/**
+ * @generated from enum com.hearlers.v1.model.CounselorGender
+ */
+export enum CounselorGender {
+  /**
+   * @generated from enum value: COUNSELOR_GENDER_MALE = 0;
+   */
+  MALE = 0,
+
+  /**
+   * @generated from enum value: COUNSELOR_GENDER_FEMALE = 1;
+   */
+  FEMALE = 1,
+
+  /**
+   * @generated from enum value: COUNSELOR_GENDER_NONE = 2;
+   */
+  NONE = 2,
+}
+
+/**
+ * Describes the enum com.hearlers.v1.model.CounselorGender.
+ */
+export const CounselorGenderSchema: GenEnum<CounselorGender> = /*@__PURE__*/
+  enumDesc(file_v1_model_counsel, 1);
+
+/**
+ * @generated from enum com.hearlers.v1.model.CounselPromptType
+ */
+export enum CounselPromptType {
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_SYSTEM_MSG = 0;
+   */
+  SYSTEM_MSG = 0,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_POSITIVE_MSG = 1;
+   */
+  POSITIVE_MSG = 1,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_DEPRESSED_REASON_MSG = 2;
+   */
+  DEPRESSED_REASON_MSG = 2,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_DEPRESSED_NO_REASON_MSG = 3;
+   */
+  DEPRESSED_NO_REASON_MSG = 3,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_ANXIOUS_REASON_MSG = 4;
+   */
+  ANXIOUS_REASON_MSG = 4,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_ANXIOUS_NO_REASON_MSG = 5;
+   */
+  ANXIOUS_NO_REASON_MSG = 5,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_TIRED_REASON_MSG = 6;
+   */
+  TIRED_REASON_MSG = 6,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_TIRED_NO_REASON_MSG = 7;
+   */
+  TIRED_NO_REASON_MSG = 7,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_WHY_LIVE_MSG = 8;
+   */
+  WHY_LIVE_MSG = 8,
+
+  /**
+   * @generated from enum value: COUNSEL_PROMPT_TYPE_BRANCH_MSG = 9;
+   */
+  BRANCH_MSG = 9,
+}
+
+/**
+ * Describes the enum com.hearlers.v1.model.CounselPromptType.
+ */
+export const CounselPromptTypeSchema: GenEnum<CounselPromptType> = /*@__PURE__*/
+  enumDesc(file_v1_model_counsel, 2);
 

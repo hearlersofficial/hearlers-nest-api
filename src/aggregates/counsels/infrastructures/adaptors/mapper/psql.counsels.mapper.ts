@@ -12,7 +12,7 @@ export class PsqlCounselsMapper {
     }
 
     const counselProps = {
-      counselorType: entity.counselorType,
+      counselorId: entity.counselorId,
       userId: entity.userId,
       counselStage: entity.counselStage,
       lastMessage: entity.lastMessage,
@@ -37,7 +37,7 @@ export class PsqlCounselsMapper {
       entity.id = counsels.id.getNumber();
     }
 
-    entity.counselorType = counsels.counselorType;
+    entity.counselorId = counsels.counselorId;
     entity.userId = counsels.userId;
     entity.counselStage = counsels.counselStage;
 

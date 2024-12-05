@@ -16,12 +16,14 @@ import { CreateCounselHandler } from "./applications/commands/CreateCounsel/Crea
 import { BranchCounselStageUseCase } from "./applications/useCases/BranchCounselStageUseCase/BranchCounselStageUseCase";
 import { GenerateGptResponseUseCase } from "./applications/useCases/GenerateGptResponseUseCase/GenerateGptResponseUseCase";
 import { CreateMessageHandler } from "./applications/commands/CreateMessage/CreateMessage.handler";
+import { CounselorsModule } from "~/src/aggregates/counselors/counselors.module";
 
 @Module({
   imports: [
     CounselsModule,
     CounselMessagesModule,
     CounselPromptsModule,
+    CounselorsModule,
     CqrsModule,
     ConfigModule.forRoot({
       envFilePath: [".env", ".env.dev"],

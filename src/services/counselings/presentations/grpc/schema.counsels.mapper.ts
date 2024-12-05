@@ -1,8 +1,18 @@
 import { create } from "@bufbuild/protobuf";
 import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
+import { Counselors } from "~/src/aggregates/counselors/domain/counselors";
 import { CounselPrompts } from "~/src/aggregates/counselPrompts/domain/CounselPrompts";
 import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
-import { Counsel, CounselMessage, CounselMessageSchema, CounselPrompt, CounselPromptSchema, CounselSchema } from "~/src/gen/v1/model/counsel_pb";
+import {
+  Counsel,
+  CounselMessage,
+  CounselMessageSchema,
+  Counselor,
+  CounselorSchema,
+  CounselPrompt,
+  CounselPromptSchema,
+  CounselSchema,
+} from "~/src/gen/v1/model/counsel_pb";
 import { TimestampUtils } from "~/src/shared/utils/Date.utils";
 
 export class SchemaCounselsMapper {
@@ -10,7 +20,7 @@ export class SchemaCounselsMapper {
     return create(CounselSchema, {
       id: counsel.id.getNumber(),
       userId: counsel.userId,
-      counselorType: counsel.counselorType,
+      counselorId: counsel.counselorId,
       lastMessage: counsel.lastMessage,
       lastChatedAt: counsel.lastChatedAt ? TimestampUtils.dayjsToTimestamp(counsel.lastChatedAt) : null,
       createdAt: TimestampUtils.dayjsToTimestamp(counsel.createdAt),
@@ -45,6 +55,23 @@ export class SchemaCounselsMapper {
       createdAt: TimestampUtils.dayjsToTimestamp(counselPrompt.createdAt),
       updatedAt: TimestampUtils.dayjsToTimestamp(counselPrompt.updatedAt),
       deletedAt: counselPrompt.deletedAt ? TimestampUtils.dayjsToTimestamp(counselPrompt.deletedAt) : null,
+    });
+  }
+
+  static toCounselorProto(counselor: Counselors): Counselor {
+    return create(CounselorSchema, {
+      id: counselor.id.getNumber(),
+      counselorType: counselor.counselorType,
+      name: counselor.name,
+      description: counselor.description,
+      gender: counselor.gender,
+      // TODO: bubble 삽입
+      introMessage: counselor.introMessage,
+      responseOption1: counselor.responseOption1,
+      responseOption2: counselor.responseOption2,
+      createdAt: TimestampUtils.dayjsToTimestamp(counselor.createdAt),
+      updatedAt: TimestampUtils.dayjsToTimestamp(counselor.updatedAt),
+      deletedAt: counselor.deletedAt ? TimestampUtils.dayjsToTimestamp(counselor.deletedAt) : null,
     });
   }
 }

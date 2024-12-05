@@ -3,10 +3,11 @@ import { ChatCompletionSystemMessageParam } from "openai/resources";
 import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { CounselorInfo, CounselorType } from "~/src/shared/enums/CounselorType.enum";
 import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 import { isValidVersion, VersionString } from "~/src/shared/types/version.type";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { Counselors } from "../../counselors/domain/counselors";
+import { CounselorGenderMap } from "~/src/shared/enums/CounselorGender.enum";
 
 interface CounselPromptsNewProps {
   persona: string | null;
@@ -157,7 +158,7 @@ export class CounselPrompts extends AggregateRoot<CounselPromptsProps> {
     this.props.deletedAt = null;
   }
 
-  public makePrompt(counselorType?: CounselorType): ChatCompletionSystemMessageParam {
+  public makePrompt(counselor?: Counselors): ChatCompletionSystemMessageParam {
     let content: string = "";
     if (this.persona) {
       content += `
@@ -194,8 +195,9 @@ ${this.additionalPrompt}
       `;
     }
 
-    if (counselorType !== undefined) {
-      const { name, gender } = CounselorInfo[counselorType];
+    if (counselor !== undefined) {
+      const name = counselor.name;
+      const gender = CounselorGenderMap[counselor.gender];
       content = content.replace("{name}", name).replace("{gender}", gender);
     }
 

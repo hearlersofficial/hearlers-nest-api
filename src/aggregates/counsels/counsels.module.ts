@@ -9,21 +9,19 @@ import { GetCounselListUseCase } from "./applications/useCases/GetCounselListUse
 import { GetCounselListHandler } from "./applications/queries/GetCounselList/GetCounselList.handler";
 import { GetCounselUseCase } from "./applications/useCases/GetCounselUseCase/GetCounselUseCase";
 import { UpdateCounselUseCase } from "./applications/useCases/UpdateCounselUseCase/UpdateCounselUseCase";
-import { CounselPromptsEntity } from "~/src/shared/core/infrastructure/entities/CounselPrompts.entity";
+
+const useCases = [CreateCounselUseCase, GetCounselListUseCase, GetCounselUseCase, UpdateCounselUseCase];
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CounselsEntity, CounselPromptsEntity])],
+  imports: [TypeOrmModule.forFeature([CounselsEntity])],
   providers: [
-    CreateCounselUseCase,
-    GetCounselListUseCase,
-    GetCounselUseCase,
-    UpdateCounselUseCase,
+    ...useCases,
     GetCounselListHandler,
     {
       provide: COUNSEL_REPOSITORY,
       useClass: PsqlCounselsRepositoryAdaptor,
     },
   ],
-  exports: [CreateCounselUseCase, GetCounselListUseCase, GetCounselUseCase, UpdateCounselUseCase],
+  exports: [...useCases],
 })
 export class CounselsModule {}
