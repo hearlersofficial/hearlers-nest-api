@@ -40,6 +40,8 @@ export class GrpcCounselCommandController {
     const command: CreateCounselCommand = new CreateCounselCommand({
       userId: request.userId,
       counselorId: request.counselorId,
+      introMessage: request.introMessage,
+      responseMessage: request.responseMessage,
     });
     const { counsel, counselMessages }: CreateCounselCommandResult = await this.commandBus.execute(command);
 

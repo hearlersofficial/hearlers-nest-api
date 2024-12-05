@@ -12,12 +12,7 @@ import { HttpStatusBasedRpcException } from "~/src/shared/filters/exceptions";
 import { HttpStatus } from "@nestjs/common";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { ChatCompletionMessageParam } from "openai/resources";
-import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
-import { getNowDayjs } from "~/src/shared/utils/Date.utils";
-import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
 import { GetCounselorUseCase } from "~/src/aggregates/counselors/applications/useCases/GetCounselorUseCase/GetCounselorUseCase";
-import { Counselors } from "~/src/aggregates/counselors/domain/counselors";
-import { CounselorType } from "~/src/shared/enums/CounselorType.enum";
 
 @CommandHandler(CreateMessageCommand)
 export class CreateMessageHandler implements ICommandHandler<CreateMessageCommand> {
@@ -42,13 +37,24 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     }
     const counsel = getCounselResult.counsel;
 
+    // 사용자 메시지 추가
+    const createUserMessageResult = await this.createCounselMessageUseCase.execute({
+      counselId,
+      message,
+      isUserMessage: true,
+    });
+    if (!createUserMessageResult.ok) {
+      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, createUserMessageResult.error);
+    }
+    const userMessage = createUserMessageResult.counselMessage;
+
     // 상담 단계 초기화여부 체크
-    if (this.checkNeedStageReset(counsel)) {
+    if (counsel.checkNeedStageReset()) {
       counsel.updateCounselStage(CounselStage.SMALL_TALK);
     }
 
     // 극단적 상태 체크
-    if (this.checkExtreme(message)) {
+    if (userMessage.checkExtreme()) {
       counsel.updateCounselStage(CounselStage.EXTREME);
     }
 
@@ -64,23 +70,13 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     // 시스템 프롬프트 가져오기
     // 유저 정보 가져와 집어넣는 로직 필요(프롬프트에서 사용하는 유저 정보 구체화 필요)
     const prompts: ChatCompletionMessageParam[] = [];
-    const systemPrompt = this.decideSystemPrompt(counselor, stage);
-    const getPromptResult = await this.getCounselPromptByTypeUseCase.execute({ promptType: systemPrompt });
+    const systemPromptType = counselor.decideSystemPrompt(stage);
+    const getPromptResult = await this.getCounselPromptByTypeUseCase.execute({ promptType: systemPromptType });
     if (!getPromptResult.ok) {
       throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, getPromptResult.error);
     }
-    const counselPrompt = getPromptResult.counselPrompt;
-    prompts.push(counselPrompt.makePrompt(counselor));
-
-    // 사용자 메시지 추가
-    const createUserMessageResult = await this.createCounselMessageUseCase.execute({
-      counselId,
-      message,
-      isUserMessage: true,
-    });
-    if (!createUserMessageResult.ok) {
-      throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, createUserMessageResult.error);
-    }
+    const systemPrompt = getPromptResult.counselPrompt;
+    prompts.push(systemPrompt.makePrompt(counselor));
 
     // 이전 대화 가져오기 (유저의 대화만 가져오는지 시스템 응답도 포함하는지 확인 필요)
     const getMessageListResult = await this.getCounselMessageListUseCase.execute({ counselId });
@@ -111,7 +107,7 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     const systemMessage = createSystemMessageResult.counselMessage;
 
     // 프롬프트 분기(SMALL_TALK  단계에서만 이루어지는지 확인 필요)
-    if (this.checkNeedBranch(stage, response)) {
+    if (stage == CounselStage.SMALL_TALK && systemMessage.checkNeedBranch()) {
       const branchCounselStageResult = await this.branchCounselStageUseCase.execute({ prompts: prompts.slice(1) });
       if (!branchCounselStageResult.ok) {
         throw new HttpStatusBasedRpcException(HttpStatus.INTERNAL_SERVER_ERROR, branchCounselStageResult.error);
@@ -128,56 +124,5 @@ export class CreateMessageHandler implements ICommandHandler<CreateMessageComman
     }
 
     return systemMessage;
-  }
-
-  private decideSystemPrompt(counselor: Counselors, stage: CounselStage): CounselPromptType {
-    if (stage == CounselStage.SMALL_TALK) {
-      return CounselPromptType.SYSTEM_MSG;
-    }
-    if (stage == CounselStage.POSITIVE) {
-      return CounselPromptType.POSITIVE_MSG;
-    }
-    const type = counselor.counselorType;
-    if (stage == CounselStage.NEGATIVE_WITH_REASON) {
-      if (type == CounselorType.DEPRESSED) {
-        return CounselPromptType.DEPRESSED_REASON_MSG;
-      }
-      if (type == CounselorType.ANXIOUS) {
-        return CounselPromptType.ANXIOUS_REASON_MSG;
-      }
-      if (type == CounselorType.TIRED) {
-        return CounselPromptType.TIRED_REASON_MSG;
-      }
-    }
-    if (stage == CounselStage.NEGATIVE_WITHOUT_REASON) {
-      if (type == CounselorType.DEPRESSED) {
-        return CounselPromptType.DEPRESSED_NO_REASON_MSG;
-      }
-      if (type == CounselorType.ANXIOUS) {
-        return CounselPromptType.ANXIOUS_NO_REASON_MSG;
-      }
-      if (type == CounselorType.TIRED) {
-        return CounselPromptType.TIRED_NO_REASON_MSG;
-      }
-    }
-    if (stage == CounselStage.EXTREME) {
-      return CounselPromptType.WHY_LIVE_MSG;
-    }
-  }
-
-  private checkExtreme(message: string): boolean {
-    return message.includes("왜 사는지");
-  }
-
-  private checkNeedBranch(stage: CounselStage, response: string): boolean {
-    const end_msg = "같이 더 이야기해보자.";
-    return stage == CounselStage.SMALL_TALK && response.includes(end_msg);
-  }
-
-  private checkNeedStageReset(counsel: Counsels): boolean {
-    const lastChatedAt = counsel.lastChatedAt;
-    const now = getNowDayjs();
-
-    return now.isAfter(lastChatedAt.add(6, "hour"));
   }
 }

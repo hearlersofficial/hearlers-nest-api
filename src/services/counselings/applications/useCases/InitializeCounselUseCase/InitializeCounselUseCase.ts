@@ -4,7 +4,6 @@ import { InitializeCounselUseCaseRequest } from "./dto/InitializeCounsel.request
 import { InitializeCounselUseCaseResponse } from "./dto/InitializeCounsel.response";
 import { CreateCounselUseCase } from "~/src/aggregates/counsels/applications/useCases/CreateCounselUseCase/CreateCounselUseCase";
 import { CreateCounselMessageUseCase } from "~/src/aggregates/counselMessages/applications/useCases/CreateCounselMessageUseCase/CreateCounselMessageUseCase";
-import { GetCounselUseCase } from "~/src/aggregates/counsels/applications/useCases/GetCounselUseCase/GetCounselUseCase";
 import { UpdateCounselUseCase } from "~/src/aggregates/counsels/applications/useCases/UpdateCounselUseCase/UpdateCounselUseCase";
 
 @Injectable()
@@ -13,7 +12,6 @@ export class InitializeCounselUseCase implements UseCase<InitializeCounselUseCas
     private readonly createCounselUseCase: CreateCounselUseCase,
     private readonly createCounselMessageUseCase: CreateCounselMessageUseCase,
     private readonly updateCounselUseCase: UpdateCounselUseCase,
-    private readonly getCounselUseCase: GetCounselUseCase,
   ) {}
 
   async execute(request: InitializeCounselUseCaseRequest): Promise<InitializeCounselUseCaseResponse> {
