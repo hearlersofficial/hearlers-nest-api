@@ -6,6 +6,8 @@ import { CounselorType } from "~/src/shared/enums/CounselorType.enum";
 import { CounselorGender } from "~/src/shared/enums/CounselorGender.enum";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
 import { BubbleList } from "./consts/Bubble.const";
+import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
+import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 
 interface CounselorsNewProps {
   counselorType: CounselorType;
@@ -153,5 +155,40 @@ export class Counselors extends AggregateRoot<CounselorsProps> {
     this.props.introMessage = bubble.introMessage;
     this.props.responseOption1 = bubble.responseOption1;
     this.props.responseOption2 = bubble.responseOption2;
+  }
+
+  public decideSystemPrompt(stage: CounselStage): CounselPromptType {
+    if (stage == CounselStage.SMALL_TALK) {
+      return CounselPromptType.SYSTEM_MSG;
+    }
+    if (stage == CounselStage.POSITIVE) {
+      return CounselPromptType.POSITIVE_MSG;
+    }
+    const type = this.props.counselorType;
+    if (stage == CounselStage.NEGATIVE_WITH_REASON) {
+      if (type == CounselorType.DEPRESSED) {
+        return CounselPromptType.DEPRESSED_REASON_MSG;
+      }
+      if (type == CounselorType.ANXIOUS) {
+        return CounselPromptType.ANXIOUS_REASON_MSG;
+      }
+      if (type == CounselorType.TIRED) {
+        return CounselPromptType.TIRED_REASON_MSG;
+      }
+    }
+    if (stage == CounselStage.NEGATIVE_WITHOUT_REASON) {
+      if (type == CounselorType.DEPRESSED) {
+        return CounselPromptType.DEPRESSED_NO_REASON_MSG;
+      }
+      if (type == CounselorType.ANXIOUS) {
+        return CounselPromptType.ANXIOUS_NO_REASON_MSG;
+      }
+      if (type == CounselorType.TIRED) {
+        return CounselPromptType.TIRED_NO_REASON_MSG;
+      }
+    }
+    if (stage == CounselStage.EXTREME) {
+      return CounselPromptType.WHY_LIVE_MSG;
+    }
   }
 }

@@ -130,6 +130,15 @@ export class Counsels extends AggregateRoot<CounselsProps> {
     return Result.ok<void>();
   }
 
+  public checkNeedStageReset(): boolean {
+    const lastChatedAt = this.props.lastChatedAt;
+    if (!lastChatedAt) {
+      return false;
+    }
+    const now = getNowDayjs();
+    return now.isAfter(lastChatedAt.add(6, "hour"));
+  }
+
   public delete(): void {
     this.props.deletedAt = getNowDayjs();
   }

@@ -116,4 +116,13 @@ export class CounselMessages extends AggregateRoot<CounselMessagesProps> {
       content: this.props.message,
     };
   }
+
+  public checkExtreme(): boolean {
+    return this.props.message.includes("왜 사는지");
+  }
+
+  public checkNeedBranch(): boolean {
+    const end_msg = "같이 더 이야기해보자.";
+    return this.props.message.includes(end_msg);
+  }
 }

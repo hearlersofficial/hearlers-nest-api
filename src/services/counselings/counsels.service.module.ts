@@ -17,6 +17,7 @@ import { BranchCounselStageUseCase } from "./applications/useCases/BranchCounsel
 import { GenerateGptResponseUseCase } from "./applications/useCases/GenerateGptResponseUseCase/GenerateGptResponseUseCase";
 import { CreateMessageHandler } from "./applications/commands/CreateMessage/CreateMessage.handler";
 import { CounselorsModule } from "~/src/aggregates/counselors/counselors.module";
+import { InitializeCounselWithBubbleUseCase } from "./applications/useCases/InitializeCounselWithBubbleUseCase/InitializeCounselWithBubbleUseCase";
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CounselorsModule } from "~/src/aggregates/counselors/counselors.module"
   controllers: [GrpcCounselCommandController, GrpcCounselQueryController],
   providers: [
     InitializeCounselUseCase,
+    InitializeCounselWithBubbleUseCase,
     BranchCounselStageUseCase,
     GenerateGptResponseUseCase,
     CreateCounselHandler,
