@@ -1,9 +1,12 @@
+import { create } from "@bufbuild/protobuf";
 import { Dayjs } from "dayjs";
 import { ChatCompletionAssistantMessageParam, ChatCompletionUserMessageParam } from "openai/resources";
+import { CounselMessageCreatedPayloadSchema } from "~/src/gen/v1/message/counsel_pb";
 import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { getNowDayjs, TimestampUtils } from "~/src/shared/utils/Date.utils";
+import { CounselMessageCreatedEvent } from "./events/CounselMessageCreatedEvents";
 
 interface CounselMessagesNewProps {
   counselId: UniqueEntityId;
@@ -34,7 +37,7 @@ export class CounselMessages extends AggregateRoot<CounselMessagesProps> {
   public static createNew(newProps: CounselMessagesNewProps): Result<CounselMessages> {
     const now = getNowDayjs();
     const newId = new UniqueEntityId();
-    return this.create(
+    const createdMessage = this.create(
       {
         ...newProps,
         createdAt: now,
@@ -43,6 +46,18 @@ export class CounselMessages extends AggregateRoot<CounselMessagesProps> {
       },
       newId,
     );
+    if (createdMessage.isSuccess) {
+      const message = createdMessage.value;
+      const counselMessageCreated = create(CounselMessageCreatedPayloadSchema, {
+        counselId: message.counselId.getNumber(),
+        message: message.message,
+        isUserMessage: message.isUserMessage,
+        occurredAt: TimestampUtils.now(),
+      });
+      createdMessage.value.addDomainEvent(new CounselMessageCreatedEvent(counselMessageCreated));
+    }
+
+    return createdMessage;
   }
 
   validateDomain(): Result<void> {
