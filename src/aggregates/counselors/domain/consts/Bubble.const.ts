@@ -1,4 +1,4 @@
-interface Bubble {
+export interface Bubble {
   introMessage: string;
   responseOption1: string;
   responseOption2: string;

@@ -59,6 +59,7 @@ export class SchemaCounselsMapper {
   }
 
   static toCounselorProto(counselor: Counselors): Counselor {
+    const bubble = counselor.bubble;
     return create(CounselorSchema, {
       id: counselor.id.getNumber(),
       counselorType: counselor.counselorType,
@@ -66,9 +67,9 @@ export class SchemaCounselsMapper {
       description: counselor.description,
       gender: counselor.gender,
       // TODO: bubble 삽입
-      introMessage: counselor.introMessage,
-      responseOption1: counselor.responseOption1,
-      responseOption2: counselor.responseOption2,
+      introMessage: bubble.introMessage,
+      responseOption1: bubble.responseOption1,
+      responseOption2: bubble.responseOption2,
       createdAt: TimestampUtils.dayjsToTimestamp(counselor.createdAt),
       updatedAt: TimestampUtils.dayjsToTimestamp(counselor.updatedAt),
       deletedAt: counselor.deletedAt ? TimestampUtils.dayjsToTimestamp(counselor.deletedAt) : null,

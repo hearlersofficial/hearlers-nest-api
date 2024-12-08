@@ -17,11 +17,6 @@ export class GetCounselorListHandler implements IQueryHandler<GetCounselorListQu
     }
     const counselorList = getCounselorListResult.counselorList;
 
-    // 버블 추가
-    counselorList.forEach((counselor) => {
-      counselor.addBubble();
-    });
-
     return counselorList;
   }
 }
