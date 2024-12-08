@@ -1,10 +1,13 @@
+import { create } from "@bufbuild/protobuf";
 import { Dayjs } from "dayjs";
 import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
+import { CounselCreatedPayloadSchema } from "~/src/gen/v1/message/counsel_pb";
 import { AggregateRoot } from "~/src/shared/core/domain/AggregateRoot";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
-import { getNowDayjs } from "~/src/shared/utils/Date.utils";
+import { getNowDayjs, TimestampUtils } from "~/src/shared/utils/Date.utils";
+import { CounselCreatedEvent } from "./events/CounselCreatedEvents";
 
 interface CounselsNewProps {
   counselorId: number;
@@ -37,7 +40,7 @@ export class Counsels extends AggregateRoot<CounselsProps> {
   public static createNew(newProps: CounselsNewProps): Result<Counsels> {
     const now = getNowDayjs();
     const newId = new UniqueEntityId();
-    return this.create(
+    const createdCounsel = this.create(
       {
         ...newProps,
         counselStage: CounselStage.SMALL_TALK,
@@ -49,10 +52,22 @@ export class Counsels extends AggregateRoot<CounselsProps> {
       },
       newId,
     );
+    if (createdCounsel.isSuccess) {
+      const counsel = createdCounsel.value;
+      const counselCreated = create(CounselCreatedPayloadSchema, {
+        counselId: counsel.id.getNumber(),
+        userId: counsel.userId,
+        counselorId: counsel.counselorId,
+        occurredAt: TimestampUtils.now(),
+      });
+      createdCounsel.value.addDomainEvent(new CounselCreatedEvent(counselCreated));
+    }
+
+    return createdCounsel;
   }
 
   validateDomain(): Result<void> {
-    // counselorType 검증
+    // counselorId 검증
     if (this.props.counselorId === null || this.props.counselorId === undefined) {
       return Result.fail<void>("[Counsels] 상담사 ID는 필수입니다");
     }

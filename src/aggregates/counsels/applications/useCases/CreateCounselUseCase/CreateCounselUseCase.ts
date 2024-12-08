@@ -23,9 +23,7 @@ export class CreateCounselUseCase implements UseCase<CreateCounselUseCaseRequest
       };
     }
     const counsel: Counsels = counselOrError.value;
-    console.log("counsel", counsel);
     const savedCounsel: Counsels = await this.counselsRepository.create(counsel);
-    console.log("savedCounsel", savedCounsel);
     return {
       ok: true,
       counsel: savedCounsel,
