@@ -26,7 +26,7 @@ gRPC 호스트 서버로 gateway에게만 포트를 노출하며 기타 마이�
 #### proto 파일 동기화 및 빌드
 
 ```bash
-git submodule update --init --recursive
+git submodule foreach git pull origin main
 make build
 ```
 
