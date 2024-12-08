@@ -88,8 +88,6 @@ export class GrpcUserCommandController {
     const command: UpdateUserCommand = new UpdateUserCommand({
       userId: request.userId,
       nickname: request.nickname,
-      authChannel: request.authChannel,
-      uniqueId: request.uniqueId,
       userProfile: request.userProfile,
     });
     const updatedUser: Users = await this.commandBus.execute(command);
