@@ -20,9 +20,9 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.DEV_EC2_HOST }} << EOF
-            cd ~/handybus-api
-            git pull origin main
+          ssh -o StrictHostKeyChecking=no ${{ secrets.DEV_EC2_USER }}@${{ secrets.DEV_EC2_HOST }} << EOF
+            cd ~/hearlers-nest-api
+            git pull origin develop
             sudo docker-compose -f docker-compose.dev.yml pull
             sudo docker-compose -f docker-compose.dev.yml up -d --build
           EOF
