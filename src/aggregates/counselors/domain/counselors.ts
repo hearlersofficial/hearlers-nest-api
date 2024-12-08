@@ -5,7 +5,7 @@ import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { CounselorType } from "~/src/shared/enums/CounselorType.enum";
 import { CounselorGender } from "~/src/shared/enums/CounselorGender.enum";
 import { getNowDayjs } from "~/src/shared/utils/Date.utils";
-import { BubbleList } from "./consts/Bubble.const";
+import { Bubble, BubbleList } from "./consts/Bubble.const";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
 import { CounselPromptType } from "~/src/shared/enums/CounselPromptType.enum";
 
@@ -17,9 +17,6 @@ interface CounselorsNewProps {
 }
 
 export interface CounselorsProps extends CounselorsNewProps {
-  introMessage: string | null;
-  responseOption1: string | null;
-  responseOption2: string | null;
   createdAt: Dayjs;
   updatedAt: Dayjs;
   deletedAt: Dayjs | null;
@@ -45,9 +42,6 @@ export class Counselors extends AggregateRoot<CounselorsProps> {
     return this.create(
       {
         ...newProps,
-        introMessage: null,
-        responseOption1: null,
-        responseOption2: null,
         createdAt: now,
         updatedAt: now,
         deletedAt: null,
@@ -117,16 +111,9 @@ export class Counselors extends AggregateRoot<CounselorsProps> {
     return this.props.description;
   }
 
-  get introMessage(): string | null {
-    return this.props.introMessage;
-  }
-
-  get responseOption1(): string | null {
-    return this.props.responseOption1;
-  }
-
-  get responseOption2(): string | null {
-    return this.props.responseOption2;
+  get bubble(): Bubble {
+    const bubble = BubbleList[Math.floor(Math.random() * BubbleList.length)];
+    return bubble;
   }
 
   get createdAt(): Dayjs {
@@ -148,13 +135,6 @@ export class Counselors extends AggregateRoot<CounselorsProps> {
 
   public restore(): void {
     this.props.deletedAt = null;
-  }
-
-  public addBubble(): void {
-    const bubble = BubbleList[Math.floor(Math.random() * BubbleList.length)];
-    this.props.introMessage = bubble.introMessage;
-    this.props.responseOption1 = bubble.responseOption1;
-    this.props.responseOption2 = bubble.responseOption2;
   }
 
   public decideSystemPrompt(stage: CounselStage): CounselPromptType {
