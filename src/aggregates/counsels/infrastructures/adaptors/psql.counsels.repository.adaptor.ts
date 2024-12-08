@@ -4,13 +4,30 @@ import { CounselsEntity } from "~/src/shared/core/infrastructure/entities/Counse
 import { Counsels } from "~/src/aggregates/counsels/domain/Counsels";
 import { PsqlCounselsMapper } from "~/src/aggregates/counsels/infrastructures/adaptors/mapper/psql.counsels.mapper";
 import { FindManyOptions, FindOneOptions, FindOptionsOrder, FindOptionsWhere, Repository } from "typeorm";
+import { Inject } from "@nestjs/common";
+import { KAFKA_CLIENT } from "~/src/shared/core/infrastructure/Config";
+import { ClientKafka } from "@nestjs/microservices";
 
 export class PsqlCounselsRepositoryAdaptor implements CounselsRepositoryPort {
-  constructor(@InjectRepository(CounselsEntity) private readonly counselsRepository: Repository<CounselsEntity>) {}
+  constructor(
+    @InjectRepository(CounselsEntity) private readonly counselsRepository: Repository<CounselsEntity>,
+    @Inject(KAFKA_CLIENT) private readonly kafkaProducer: ClientKafka,
+  ) {}
+
+  async publishDomainEvents(counsel: Counsels): Promise<void> {
+    const domainEvents = counsel.domainEvents;
+    for (const domainEvent of domainEvents) {
+      this.kafkaProducer.emit(domainEvent.topic, domainEvent.binary);
+    }
+    counsel.clearEvents();
+  }
 
   async create(counsel: Counsels): Promise<Counsels> {
     const counselsEntity = PsqlCounselsMapper.toEntity(counsel);
     const createdCounselsEntity = await this.counselsRepository.save(counselsEntity);
+
+    await this.publishDomainEvents(counsel);
+
     return PsqlCounselsMapper.toDomain(createdCounselsEntity);
   }
 
@@ -29,7 +46,11 @@ export class PsqlCounselsRepositoryAdaptor implements CounselsRepositoryPort {
     };
 
     const counselsEntities: CounselsEntity[] = await this.counselsRepository.find(findManyOptions);
-    return counselsEntities.map((entity) => PsqlCounselsMapper.toDomain(entity));
+    const counselList = counselsEntities.map((entity) => PsqlCounselsMapper.toDomain(entity));
+    if (counselList.length === 0) {
+      counselList.forEach((counsel) => this.publishDomainEvents(counsel));
+    }
+    return counselList;
   }
 
   async findOne(props: FindOnePropsInCounselsRepository): Promise<Counsels | null> {
@@ -44,12 +65,19 @@ export class PsqlCounselsRepositoryAdaptor implements CounselsRepositoryPort {
     };
 
     const counselsEntity: CounselsEntity = await this.counselsRepository.findOne(findOneOptions);
-    return PsqlCounselsMapper.toDomain(counselsEntity);
+    const counsel = PsqlCounselsMapper.toDomain(counselsEntity);
+    if (counsel) {
+      await this.publishDomainEvents(counsel);
+    }
+    return counsel;
   }
 
   async update(counsel: Counsels): Promise<Counsels> {
     const counselsEntity = PsqlCounselsMapper.toEntity(counsel);
     const updatedCounselsEntity = await this.counselsRepository.save(counselsEntity, { reload: true });
+
+    await this.publishDomainEvents(counsel);
+
     return PsqlCounselsMapper.toDomain(updatedCounselsEntity);
   }
 }

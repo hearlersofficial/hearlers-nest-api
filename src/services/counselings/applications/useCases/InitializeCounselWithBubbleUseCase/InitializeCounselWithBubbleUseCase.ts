@@ -7,7 +7,6 @@ import { InitializeCounselWithBubbleUseCaseRequest } from "./dto/InitializeCouns
 import { InitializeCounselWithBubbleUseCaseResponse } from "./dto/InitializeCounselWithBubble.response";
 import { CounselMessages } from "~/src/aggregates/counselMessages/domain/CounselMessages";
 import { CounselStage } from "~/src/shared/enums/CounselStage.enum";
-import { GetCounselorUseCase } from "~/src/aggregates/counselors/applications/useCases/GetCounselorUseCase/GetCounselorUseCase";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { GenerateGptResponseUseCase } from "../GenerateGptResponseUseCase/GenerateGptResponseUseCase";
 import { GetCounselPromptByTypeUseCase } from "~/src/aggregates/counselPrompts/applications/useCases/GetCounselPromptByTypeUseCase/GetCounselPromptByTypeUseCase";
@@ -17,17 +16,16 @@ export class InitializeCounselWithBubbleUseCase implements UseCase<InitializeCou
   constructor(
     private readonly createCounselUseCase: CreateCounselUseCase,
     private readonly createCounselMessageUseCase: CreateCounselMessageUseCase,
-    private readonly getCounselorUseCase: GetCounselorUseCase,
     private readonly getCounselPromptByTypeUseCase: GetCounselPromptByTypeUseCase,
     private readonly generateGptResponseUseCase: GenerateGptResponseUseCase,
     private readonly updateCounselUseCase: UpdateCounselUseCase,
   ) {}
 
   async execute(request: InitializeCounselWithBubbleUseCaseRequest): Promise<InitializeCounselWithBubbleUseCaseResponse> {
-    const { userId, counselorId, introMessage, responseMessage } = request;
+    const { userId, counselor, introMessage, responseMessage } = request;
 
     // 상담 생성
-    const createCounselResult = await this.createCounselUseCase.execute({ userId, counselorId });
+    const createCounselResult = await this.createCounselUseCase.execute({ userId, counselorId: counselor.id.getNumber() });
     if (!createCounselResult.ok) {
       return { ok: false, error: createCounselResult.error };
     }
@@ -64,13 +62,6 @@ export class InitializeCounselWithBubbleUseCase implements UseCase<InitializeCou
     }
 
     const stage = counsel.counselStage;
-
-    // 상담사 정보 가져오기
-    const getCounselorResult = await this.getCounselorUseCase.execute({ counselorId: counsel.counselorId });
-    if (!getCounselorResult.ok) {
-      return { ok: false, error: getCounselorResult.error };
-    }
-    const counselor = getCounselorResult.counselor;
 
     // 시스템 프롬프트 가져오기
     // 유저 정보 가져와 집어넣는 로직 필요(프롬프트에서 사용하는 유저 정보 구체화 필요)
