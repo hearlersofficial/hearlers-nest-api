@@ -1,6 +1,5 @@
 import { Controller } from "@nestjs/common";
 import { GrpcMethod } from "@nestjs/microservices";
-
 import { QueryBus } from "@nestjs/cqrs";
 import { FindOneUserQuery } from "~/src/aggregates/users/applications/queries/FindOneUser/FindOneUser.query";
 import { Users } from "~/src/aggregates/users/domain/Users";
@@ -21,7 +20,7 @@ import { SchemaAuthUsersMapper } from "~/src/services/users/presentations/grpc/s
 export class GrpcUserQueryController {
   constructor(private readonly queryBus: QueryBus) {}
 
-  @GrpcMethod("UserService", "findOneUser")
+  @GrpcMethod("UserService", "FindOneUser")
   async findOneUser(data: FindOneUserRequest): Promise<FindOneUserResponse> {
     const query: FindOneUserQuery = new FindOneUserQuery({ userId: data.userId, nickname: data.nickname });
     const user: Users = await this.queryBus.execute(query);
@@ -29,7 +28,7 @@ export class GrpcUserQueryController {
     return create(FindOneUserResponseSchema, { user: SchemaUsersMapper.toUserProto(user) });
   }
 
-  @GrpcMethod("UserService", "findOneAuthUser")
+  @GrpcMethod("UserService", "FindOneAuthUser")
   async findOneAuthUser(data: FindOneAuthUserRequest): Promise<FindOneAuthUserResponse> {
     const query: FindOneAuthUserQuery = new FindOneAuthUserQuery({
       authUserId: data.authUserId,

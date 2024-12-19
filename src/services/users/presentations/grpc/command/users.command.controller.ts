@@ -83,7 +83,7 @@ export class GrpcUserCommandController {
     });
   }
 
-  @GrpcMethod("UserService", "update")
+  @GrpcMethod("UserService", "UpdateUser")
   async updateUser(request: UpdateUserRequest): Promise<UpdateUserResponse> {
     const command: UpdateUserCommand = new UpdateUserCommand({
       userId: request.userId,
