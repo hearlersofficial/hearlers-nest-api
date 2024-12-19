@@ -5,6 +5,9 @@ import { FindOneUserQuery } from "~/src/aggregates/users/applications/queries/Fi
 import { Users } from "~/src/aggregates/users/domain/Users";
 import { create } from "@bufbuild/protobuf";
 import {
+  CheckRemainingTokensRequest,
+  CheckRemainingTokensResponse,
+  CheckRemainingTokensResponseSchema,
   FindOneAuthUserRequest,
   FindOneAuthUserResponse,
   FindOneAuthUserResponseSchema,
@@ -15,6 +18,10 @@ import {
 import { SchemaUsersMapper } from "~/src/services/users/presentations/grpc/schema.users.mapper";
 import { FindOneAuthUserQuery } from "~/src/aggregates/authUsers/applications/queries/FindOneAuthUser/FindOneAuthUser.query";
 import { SchemaAuthUsersMapper } from "~/src/services/users/presentations/grpc/schema.authUsers.mapper";
+import {
+  CheckRemainingTokensQuery,
+  CheckRemainingTokensQueryResponse,
+} from "~/src/aggregates/users/applications/queries/CheckRemainingTokens/CheckRemainingTokens.query";
 
 @Controller("user")
 export class GrpcUserQueryController {
@@ -38,5 +45,18 @@ export class GrpcUserQueryController {
     });
     const { authUser } = await this.queryBus.execute(query);
     return create(FindOneAuthUserResponseSchema, { authUser: SchemaAuthUsersMapper.toAuthUserProto(authUser) });
+  }
+
+  @GrpcMethod("UserService", "CheckRemainingTokens")
+  async checkRemainingTokens(data: CheckRemainingTokensRequest): Promise<CheckRemainingTokensResponse> {
+    const query: CheckRemainingTokensQuery = new CheckRemainingTokensQuery({ userId: data.userId });
+    const { remainingTokens, maxTokens, reserved }: CheckRemainingTokensQueryResponse = await this.queryBus.execute(
+      query,
+    );
+    return create(CheckRemainingTokensResponseSchema, {
+      remainingTokens,
+      maxTokens,
+      reserved,
+    });
   }
 }

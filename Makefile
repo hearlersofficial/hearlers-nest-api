@@ -8,16 +8,22 @@ GEN_DIR=src/gen
 BUF=buf
 
 build:
-	@echo "Building Protocol Buffers..."
+	@echo "[LOG] Fetching Protocol Buffers..."
+	git submodule foreach git pull origin main
+	@echo "[LOG] Building Protocol Buffers..."
 	cd $(PROTO_DIR) && $(BUF) generate --template=buf.gen.ts.yaml
-	@echo "Protocol Buffers build completed!"
+	@echo "[LOG] Protocol Buffers build completed!"
 
 clean:
-	@echo "Cleaning generated files..."
+	@echo "[LOG] Cleaning generated files..."
 	rm -rf $(GEN_DIR)/*
-	@echo "Clean completed!"
+	@echo "[LOG] Clean completed!"
 
 # 빌드 후 타입스크립트 파일 생성 확인
 check:
-	@echo "Checking generated files..."
+	@echo "[LOG] Checking generated files..."
 	@ls -la $(GEN_DIR)/v1
+
+fetchProto:
+	@echo "[LOG] Fetching Protocol Buffers..."
+	git submodule foreach git pull origin main
