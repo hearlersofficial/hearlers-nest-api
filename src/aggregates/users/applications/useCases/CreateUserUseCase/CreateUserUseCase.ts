@@ -20,11 +20,12 @@ export class CreateUserUseCase implements UseCase<CreateUserUseCaseRequest, Crea
     if (userResult.isFailure) {
       return { ok: false, error: userResult.error };
     }
-
     const progressResult = this.createUserProgresses(userResult.value);
     if (progressResult.isFailure) {
       return { ok: false, error: progressResult.error };
     }
+    const user = userResult.value;
+    user.userMessageToken.updateMaxTokens(7);
 
     const savedUser = await this.usersRepository.create(userResult.value);
     return { ok: true, user: savedUser };

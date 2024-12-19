@@ -15,7 +15,7 @@ describe("Kakao", () => {
   });
 
   const validProps = {
-    userId: new UniqueEntityId(),
+    authUserId: new UniqueEntityId(),
     uniqueId: faker.string.numeric(10), // 카카오 고유 ID 형식으로 생성
   };
 
@@ -26,7 +26,7 @@ describe("Kakao", () => {
       expect(result.isSuccess).toBe(true);
       if (result.isSuccess) {
         const kakao = result.value;
-        expect(kakao.userId.equals(validProps.userId)).toBe(true);
+        expect(kakao.authUserId.equals(validProps.authUserId)).toBe(true);
         expect(kakao.uniqueId).toBe(validProps.uniqueId);
         expect(kakao.createdAt.toISOString()).toBe(fixedDate);
         expect(kakao.updatedAt.toISOString()).toBe(fixedDate);
@@ -37,7 +37,7 @@ describe("Kakao", () => {
     it("userId가 없��면 생성에 실패한다", () => {
       const result = Kakao.createNew({
         ...validProps,
-        userId: undefined as unknown as UniqueEntityId,
+        authUserId: undefined as unknown as UniqueEntityId,
       });
 
       expect(result.isFailure).toBe(true);
@@ -73,7 +73,7 @@ describe("Kakao", () => {
     it("모든 getter가 올바른 값을 반환한다", () => {
       const kakao = Kakao.createNew(validProps).value as Kakao;
 
-      expect(kakao.userId.equals(validProps.userId)).toBe(true);
+      expect(kakao.authUserId.equals(validProps.authUserId)).toBe(true);
       expect(kakao.uniqueId).toBe(validProps.uniqueId);
       expect(kakao.createdAt.toISOString()).toBe(fixedDate);
       expect(kakao.updatedAt.toISOString()).toBe(fixedDate);

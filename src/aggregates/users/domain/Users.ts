@@ -11,6 +11,8 @@ import { create } from "@bufbuild/protobuf";
 import { UserUpdatedPayloadSchema } from "~/src/gen/v1/message/user_pb";
 import { UserUpdatedEvent } from "~/src/aggregates/users/domain/events/UserUpdatedEvents";
 import { generateUUID } from "~/src/shared/utils/UUID.utils";
+import { UserMessageTokens } from "~/src/aggregates/users/domain/UserMessageTokens";
+import { TokenResetInterval } from "~/src/shared/enums/TokenResetInterval.enum";
 
 interface UsersNewProps {}
 
@@ -18,6 +20,7 @@ export interface UsersProps extends UsersNewProps {
   nickname: string;
   userProfile: UserProfiles;
   userProgresses: UserProgresses[];
+  userMessageToken: UserMessageTokens;
   userPrompts: UserPrompts[];
   createdAt: Dayjs;
   updatedAt: Dayjs;
@@ -54,6 +57,13 @@ export class Users extends AggregateRoot<UsersProps> {
           mbti: Mbti.UNSPECIFIED,
           birthday: getNowDayjs(),
           introduction: "",
+        }).value,
+        // 계정 생성 시 메시지 토큰 기본값
+        userMessageToken: UserMessageTokens.createNew({
+          userId: newId,
+          resetInterval: TokenResetInterval.SIX_HOURS,
+          maxTokens: 7,
+          remainingTokens: 7,
         }).value,
         userProgresses: [],
         userPrompts: [],
@@ -110,6 +120,10 @@ export class Users extends AggregateRoot<UsersProps> {
 
   get userPrompts(): UserPrompts[] {
     return [...this.props.userPrompts];
+  }
+
+  get userMessageToken(): UserMessageTokens {
+    return this.props.userMessageToken;
   }
 
   get createdAt(): Dayjs {

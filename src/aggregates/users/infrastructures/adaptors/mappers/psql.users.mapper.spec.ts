@@ -5,21 +5,36 @@ import { UserProgresses } from "~/src/aggregates/users/domain/UserProgresses";
 import { PsqlUsersMapper } from "./psql.users.mapper";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 import { ProgressType, ProgressStatus } from "~/src/gen/v1/model/user_pb";
 import { getNowDayjs, formatDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/UserProfiles.entity";
-import { Kakao } from "~/src/aggregates/authUsers/domain/Kakao";
-import { KakaoEntity } from "~/src/shared/core/infrastructure/entities/Kakao.entity";
+import { UserMessageTokensEntity } from "~/src/shared/core/infrastructure/entities/UserMessageTokens.entity";
+import { TokenResetInterval } from "~/src/shared/enums/TokenResetInterval.enum";
 
 describe("PsqlUsersMapper", () => {
   const createMockUserEntity = () => {
     const entity = new UsersEntity();
     entity.id = faker.number.int();
     entity.nickname = faker.internet.userName().slice(0, 10);
-    entity.authChannel = AuthChannel.KAKAO;
+    entity.userMessageTokens = createMockUserMessageTokensEntity();
+    entity.createdAt = formatDayjs(getNowDayjs());
+    entity.updatedAt = formatDayjs(getNowDayjs());
+    entity.deletedAt = null;
+    return entity;
+  };
+
+  const createMockUserMessageTokensEntity = () => {
+    const entity = new UserMessageTokensEntity();
+    entity.id = faker.number.int();
+    entity.userId = faker.number.int();
+    entity.maxTokens = faker.number.int({ min: 1000, max: 10000 });
+    entity.remainingTokens = faker.number.int({ min: 0, max: entity.maxTokens });
+    entity.reserved = faker.datatype.boolean();
+    entity.reservedTimeout = formatDayjs(getNowDayjs().add(1, "hour"));
+    entity.resetInterval = faker.helpers.arrayElement(Object.values(TokenResetInterval));
+    entity.lastReset = formatDayjs(getNowDayjs());
     entity.createdAt = formatDayjs(getNowDayjs());
     entity.updatedAt = formatDayjs(getNowDayjs());
     entity.deletedAt = null;
@@ -34,7 +49,7 @@ describe("PsqlUsersMapper", () => {
       expect(domain).toBeDefined();
       expect(domain?.id.equals(new UniqueEntityId(entity.id))).toBe(true);
       expect(domain?.nickname).toBe(entity.nickname);
-      expect(domain?.authChannel).toBe(entity.authChannel);
+      expect(domain?.userMessageToken).toBeDefined();
     });
 
     it("관계가 포함된 Entity를 Domain으로 변환할 수 있다", () => {
@@ -65,19 +80,12 @@ describe("PsqlUsersMapper", () => {
         } as UserProgressesEntity,
       ];
 
-      // Kakao 추가
-      entity.kakao = {
-        id: faker.number.int(),
-        userId: entity.id,
-        uniqueId: "164425",
-      } as KakaoEntity;
-
       const domain = PsqlUsersMapper.toDomain(entity);
 
       expect(domain).toBeDefined();
       expect(domain?.userProfile).toBeDefined();
       expect(domain?.userProgresses).toHaveLength(1);
-      expect(domain?.kakao).toBeDefined();
+      expect(domain?.userMessageToken).toBeDefined();
     });
 
     it("null Entity를 변환하면 null을 반환한다", () => {
@@ -90,20 +98,17 @@ describe("PsqlUsersMapper", () => {
     it("Domain을 Entity로 변환할 수 있다", () => {
       const users = Users.createNew({
         nickname: faker.internet.userName().slice(0, 10),
-        authChannel: AuthChannel.KAKAO,
       }).value as Users;
 
       const entity = PsqlUsersMapper.toEntity(users);
 
       expect(entity).toBeDefined();
       expect(entity.nickname).toBe(users.nickname);
-      expect(entity.authChannel).toBe(users.authChannel);
     });
 
     it("관계가 포함된 Domain을 Entity로 변환할 수 있다", () => {
       const users = Users.createNew({
         nickname: faker.internet.userName().slice(0, 10),
-        authChannel: AuthChannel.KAKAO,
       }).value;
 
       // Profile 추가
@@ -126,19 +131,11 @@ describe("PsqlUsersMapper", () => {
       }).value;
       users.addProgress(progress);
 
-      // Kakao 추가
-      const kakao = Kakao.createNew({
-        userId: users.id,
-        uniqueId: "164425",
-      }).value;
-      users.setKakao(kakao);
-
       const entity = PsqlUsersMapper.toEntity(users);
 
       expect(entity).toBeDefined();
       expect(entity.userProfiles).toBeDefined();
       expect(entity.userProgresses).toHaveLength(1);
-      expect(entity.kakao).toBeDefined();
     });
   });
 });

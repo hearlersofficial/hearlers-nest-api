@@ -1,5 +1,5 @@
 import { InternalServerErrorException } from "@nestjs/common";
-import { Users } from "~/src/aggregates/users/domain/Users";
+import { Users, UsersProps } from "~/src/aggregates/users/domain/Users";
 import { Result } from "~/src/shared/core/domain/Result";
 import { UniqueEntityId } from "~/src/shared/core/domain/UniqueEntityId";
 import { UsersEntity } from "~/src/shared/core/infrastructure/entities/Users.entity";
@@ -7,6 +7,7 @@ import { PsqlUserProfilesMapper } from "./psql.userProfiles.mapper";
 import { PsqlUserProgressesMapper } from "./psql.userProgresses.mapper";
 import { PsqlUserPromptsMapper } from "./psql.userPrompts.mapper";
 import { convertDayjs, formatDayjs } from "~/src/shared/utils/Date.utils";
+import { PsqlUserMessageTokensMapper } from "~/src/aggregates/users/infrastructures/adaptors/mappers/psql.userMessageTokens.mapper";
 
 export class PsqlUsersMapper {
   static toDomain(entity: UsersEntity): Users | null {
@@ -14,12 +15,15 @@ export class PsqlUsersMapper {
       return null;
     }
 
-    const userProps = {
+    const userProps: UsersProps = {
       nickname: entity.nickname,
       userProfile: entity.userProfiles ? PsqlUserProfilesMapper.toDomain(entity.userProfiles) : undefined,
       userProgresses:
         entity.userProgresses?.map((progress) => PsqlUserProgressesMapper.toDomain(progress)).filter(Boolean) || [],
       userPrompts: entity.userPrompts?.map((prompt) => PsqlUserPromptsMapper.toDomain(prompt)).filter(Boolean) || [],
+      userMessageToken: entity.userMessageTokens
+        ? PsqlUserMessageTokensMapper.toDomain(entity.userMessageTokens)
+        : undefined,
       createdAt: convertDayjs(entity.createdAt),
       updatedAt: convertDayjs(entity.updatedAt),
       deletedAt: entity.deletedAt ? convertDayjs(entity.deletedAt) : null,
@@ -45,6 +49,9 @@ export class PsqlUsersMapper {
     // 관계 매핑
     if (users.userProfile) {
       entity.userProfiles = PsqlUserProfilesMapper.toEntity(users.userProfile);
+    }
+    if (users.userMessageToken) {
+      entity.userMessageTokens = PsqlUserMessageTokensMapper.toEntity(users.userMessageToken);
     }
 
     entity.userProgresses = users.userProgresses.map((progress) => {

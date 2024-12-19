@@ -9,7 +9,6 @@ import { UserProfilesEntity } from "~/src/shared/core/infrastructure/entities/Us
 import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/UserProgresses.entity";
 import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
 import { Users } from "~/src/aggregates/users/domain/Users";
-import { AuthChannel } from "~/src/gen/v1/model/user_pb";
 import { Gender, Mbti } from "~/src/gen/v1/model/user_pb";
 import { ProgressStatus, ProgressType } from "~/src/gen/v1/model/user_pb";
 import { formatDayjs, getNowDayjs, convertDayjs } from "~/src/shared/utils/Date.utils";
@@ -26,7 +25,6 @@ describe("PsqlUsersRepositoryAdaptor", () => {
     const user = new UsersEntity();
     user.id = faker.number.int();
     user.nickname = faker.internet.userName().slice(0, 10);
-    user.authChannel = AuthChannel.KAKAO;
     user.createdAt = formatDayjs(getNowDayjs());
     user.updatedAt = formatDayjs(getNowDayjs());
     user.deletedAt = null;

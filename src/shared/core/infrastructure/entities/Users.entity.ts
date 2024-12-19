@@ -7,6 +7,7 @@ import { UserProgressesEntity } from "~/src/shared/core/infrastructure/entities/
 import { UserPromptsEntity } from "~/src/shared/core/infrastructure/entities/UserPrompts.entity";
 import { AuthUsersEntity } from "~/src/shared/core/infrastructure/entities/AuthUsers.entity";
 import { CoreStatus } from "~/src/shared/core/constants/status.constants";
+import { UserMessageTokensEntity } from "~/src/shared/core/infrastructure/entities/UserMessageTokens.entity";
 
 @Entity({
   name: "users",
@@ -54,6 +55,12 @@ export class UsersEntity extends CoreEntity {
     orphanedRowAction: "disable",
   })
   authUser: AuthUsersEntity;
+
+  @OneToOne(() => UserMessageTokensEntity, (userMessageTokens) => userMessageTokens.user, {
+    cascade: true,
+    orphanedRowAction: "disable",
+  })
+  userMessageTokens: UserMessageTokensEntity;
 
   @Column({
     type: "enum",

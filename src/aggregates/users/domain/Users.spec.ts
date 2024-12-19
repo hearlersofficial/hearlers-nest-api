@@ -11,7 +11,6 @@ import { UserPrompts } from "~/src/aggregates/users/domain/UserPrompts";
 import { convertDayjs } from "~/src/shared/utils/Date.utils";
 
 describe("Users", () => {
-  const validNickname = "테스트유저";
   const validPhoneNumber = "01012345678";
 
   describe("createNew", () => {
@@ -21,29 +20,18 @@ describe("Users", () => {
       expect(result.isSuccess).toBe(true);
       if (result.isSuccess) {
         const user = result.value;
-        expect(user.nickname).toBe(validNickname);
+        expect(user.nickname).toBeDefined();
         expect(user.userProfile).toBeDefined();
         expect(user.userProgresses).toHaveLength(0);
         expect(user.userPrompts).toHaveLength(0);
         expect(user.isNew()).toBe(true);
       }
     });
-
-    it("닉네임이 없으면 생성에 실패한다", () => {
-      const result = Users.createNew({
-        nickname: "",
-      });
-
-      expect(result.isFailure).toBe(true);
-      expect(result.error).toContain("[Users] 닉네임은 필수입니다");
-    });
   });
 
   describe("setProfile", () => {
     it("프로필을 설정할 수 있다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-      }).value as Users;
+      const user = Users.createNew({}).value;
 
       const profileResult = UserProfiles.createNew({
         userId: user.id,
@@ -65,9 +53,7 @@ describe("Users", () => {
     });
 
     it("다른 사용자의 프로필은 설정할 수 없다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-      }).value as Users;
+      const user = Users.createNew({}).value;
 
       const profileResult = UserProfiles.createNew({
         userId: new UniqueEntityId(999),
@@ -90,9 +76,7 @@ describe("Users", () => {
 
   describe("addProgress", () => {
     it("진행 상태를 추가할 수 있다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-      }).value as Users;
+      const user = Users.createNew({}).value;
 
       const progressResult = UserProgresses.createNew({
         userId: user.id,
@@ -112,9 +96,7 @@ describe("Users", () => {
 
   describe("addPrompt", () => {
     it("프롬프트를 추가할 수 있다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-      }).value as Users;
+      const user = Users.createNew({}).value;
 
       const promptResult = UserPrompts.createNew({
         userId: user.id,
@@ -137,9 +119,7 @@ describe("Users", () => {
 
   describe("delete/restore", () => {
     it("삭제하고 복구할 수 있다", () => {
-      const user = Users.createNew({
-        nickname: validNickname,
-      }).value as Users;
+      const user = Users.createNew({}).value;
 
       expect(user.deletedAt).toBeNull();
 
