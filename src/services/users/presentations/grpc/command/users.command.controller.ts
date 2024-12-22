@@ -4,6 +4,7 @@ import { CommandBus } from "@nestjs/cqrs";
 import { GrpcMethod } from "@nestjs/microservices";
 import { SaveRefreshTokenCommand } from "~/src/aggregates/authUsers/applications/commands/SaveRefreshToken/SaveRefreshToken.command";
 import { VerifyRefreshTokenCommand } from "~/src/aggregates/authUsers/applications/commands/VerifyRefreshToken/VerifyRefreshToken.command";
+import { ReserveTokensCommand } from "~/src/aggregates/users/applications/commands/ReserveTokens/ReserveTokens.command";
 import { UpdateUserCommand } from "~/src/aggregates/users/applications/commands/UpdateUser/UpdateUser.command";
 import { Users } from "~/src/aggregates/users/domain/Users";
 import {
@@ -12,6 +13,9 @@ import {
   ConnectAuthChannelResponseSchema,
   InitializeUserResponse,
   InitializeUserResponseSchema,
+  ReserveTokensRequest,
+  ReserveTokensResponse,
+  ReserveTokensResponseSchema,
   SaveRefreshTokenRequest,
   SaveRefreshTokenResponse,
   SaveRefreshTokenResponseSchema,
@@ -92,5 +96,18 @@ export class GrpcUserCommandController {
     });
     const updatedUser: Users = await this.commandBus.execute(command);
     return create(UpdateUserResponseSchema, { user: SchemaUsersMapper.toUserProto(updatedUser) });
+  }
+
+  @GrpcMethod("UserService", "ReserveTokens")
+  async reserveTokens(request: ReserveTokensRequest): Promise<ReserveTokensResponse> {
+    const command: ReserveTokensCommand = new ReserveTokensCommand({
+      userId: request.userId,
+    });
+    const { remainingTokens, maxTokens, reserved } = await this.commandBus.execute(command);
+    return create(ReserveTokensResponseSchema, {
+      remainingTokens,
+      maxTokens,
+      reserved,
+    });
   }
 }

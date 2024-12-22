@@ -1,6 +1,8 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { ReserveTokensHandler } from "~/src/aggregates/users/applications/commands/ReserveTokens/ReserveTokens.handler";
 import { UpdateUserHandler } from "~/src/aggregates/users/applications/commands/UpdateUser/UpdateUser.handler";
+import { CheckRemainingTokensHandler } from "~/src/aggregates/users/applications/queries/CheckRemainingTokens/CheckRemainingTokens.handler";
 import { FindOneUserHandler } from "~/src/aggregates/users/applications/queries/FindOneUser/FindOneUser.handler";
 import { CreateUserUseCase } from "~/src/aggregates/users/applications/useCases/CreateUserUseCase/CreateUserUseCase";
 import { FindOneUserUseCase } from "~/src/aggregates/users/applications/useCases/FindOneUserUseCase/FindOneUserUseCase";
@@ -21,6 +23,8 @@ const useCases = [CreateUserUseCase, FindOneUserUseCase, UpdateUserUseCase];
     ...useCases,
     FindOneUserHandler,
     UpdateUserHandler,
+    CheckRemainingTokensHandler,
+    ReserveTokensHandler,
     {
       provide: USER_REPOSITORY,
       useClass: PsqlUsersRepositoryAdaptor,

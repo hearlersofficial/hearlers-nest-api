@@ -16,6 +16,7 @@ export class PsqlUsersRepositoryAdaptor implements UsersRepositoryPort {
     userProfiles: true,
     userProgresses: true,
     userPrompts: true,
+    userMessageTokens: true,
   };
 
   constructor(

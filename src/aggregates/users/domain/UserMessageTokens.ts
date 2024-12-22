@@ -103,6 +103,10 @@ export class UserMessageTokens extends DomainEntity<UserMessageTokensProps> {
     return Result.ok<void>();
   }
 
+  public hasRemainingTokens(): boolean {
+    return this.props.remainingTokens > 0;
+  }
+
   // 토큰 예약 체크
   public isReserved(): boolean {
     if (!this.props.reserved) {
@@ -119,7 +123,7 @@ export class UserMessageTokens extends DomainEntity<UserMessageTokensProps> {
   // 토큰 예약
   public reserveTokens(): Result<void> {
     this.props.reserved = true;
-    this.props.reservedTimeout = getNowDayjs().add(1, "minute");
+    this.props.reservedTimeout = getNowDayjs().add(30, "second");
     return Result.ok<void>();
   }
 
